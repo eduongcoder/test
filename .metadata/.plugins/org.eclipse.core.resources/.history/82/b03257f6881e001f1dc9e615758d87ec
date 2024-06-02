@@ -1,0 +1,80 @@
+package com.example.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.Entity.OrderItem;
+import com.example.Entity.Orders;
+import com.example.From.OrderitemForm;
+import com.example.Repository.IOrderItemRepository;
+import com.example.Repository.IOrderRepository;
+
+@Service
+public class OrderItemService implements IOrderItemService {
+
+	@Autowired
+	private IOrderItemRepository service;
+
+	@Autowired
+	private ModelMapper modelMapper;
+
+	@Autowired
+	private IProductVersionService serviceProductVersionService;
+
+	@Autowired
+	private IOrderService serviceOrder;
+
+	@Override
+	public List<OrderItem> getAllOrderItems() {
+
+		return service.findAll();
+	}
+
+	@Override
+	public OrderItem createOrderItem(OrderitemForm form, int idOrder, int idProductVersion) {
+		try {
+
+			OrderItem orderItem = modelMapper.map(form, OrderItem.class);
+			orderItem.setOrders(serviceOrder.getOrderByID(idOrder));
+			orderItem.setProductVersion(serviceProductVersionService.getProductVersionByID(idProductVersion));
+			
+			return service.save(orderItem);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Override
+	public List<OrderItem> findbyIDOrdersItem(int id) {
+		List<OrderItem> list = service.findAll();
+
+		List<OrderItem> orderItems = new ArrayList<OrderItem>();
+		for (OrderItem orderItem : list) {
+			if (orderItem.getOrders().getOrders_id() == id) {
+
+				orderItems.add(orderItem);
+			}
+		}
+		return orderItems;
+	}
+
+	@Override
+	public OrderItem findbyID(int id) {
+		return service.findById(id).get();
+	}
+
+	@Override
+	public OrderItem updateOrderItem(OrderitemForm form) {
+		System.out.println(form);
+
+		OrderItem orderItem= modelMapper.map(form, OrderItem.class);
+		System.out.println("1"+form);
+
+		service.save(orderItem);
+		return null;
+	}
+}

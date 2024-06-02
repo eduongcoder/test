@@ -1,0 +1,20 @@
+package com.example.Entity.Account;
+
+public class Snippet {
+	React (còn được gọi là React.js hoặc ReactJS) là một thư viện JavaScript mã nguồn mở được phát triển bởi Facebook để xây dựng các giao diện người dùng (UI). React giúp tạo ra các ứng dụng web phức tạp và hiệu quả bằng cách sử dụng một cách tiếp cận thành phần hóa (component-based approach). Dưới đây là một số đặc điểm chính của React:
+	
+	Component-Based Architecture (Kiến trúc dựa trên thành phần): React cho phép phát triển các thành phần (components) tái sử dụng. Mỗi thành phần có thể chứa logic, giao diện và trạng thái riêng, giúp việc phát triển và bảo trì dễ dàng hơn.
+	
+	Virtual DOM (DOM Ảo): React sử dụng một phiên bản ảo của DOM để tối ưu hóa hiệu suất. Khi trạng thái của một thành phần thay đổi, React tạo ra một cây DOM ảo mới, so sánh với cây DOM ảo cũ và chỉ cập nhật những phần của thực DOM cần thiết, giúp ứng dụng chạy nhanh hơn.
+	
+	Declarative Syntax (Cú pháp khai báo): React sử dụng cú pháp khai báo, cho phép lập trình viên mô tả giao diện người dùng như một hàm của trạng thái. Điều này giúp mã nguồn dễ đọc và dễ duy trì hơn.
+	
+	JSX (JavaScript XML): JSX là một phần mở rộng cú pháp cho phép viết mã HTML bên trong JavaScript. Nó làm cho việc phát triển giao diện người dùng trở nên trực quan hơn và dễ dàng tích hợp với logic JavaScript.
+	
+	Unidirectional Data Flow (Dòng dữ liệu một chiều): Dữ liệu trong React di chuyển theo một chiều, từ cha đến con (top-down). Điều này giúp dễ dàng theo dõi và kiểm soát trạng thái của ứng dụng.
+	
+	React Hooks: Các hooks như useState và useEffect cho phép sử dụng trạng thái và các tính năng khác của React mà không cần viết các lớp (class). Điều này làm cho mã React dễ dàng hơn và giảm bớt các vấn đề liên quan đến lớp.
+	
+	Ecosystem (Hệ sinh thái): React có một hệ sinh thái phong phú với nhiều thư viện và công cụ hỗ trợ, như React Router (để quản lý routing), Redux (quản lý trạng thái ứng dụng), và nhiều thư viện khác.
+}
+

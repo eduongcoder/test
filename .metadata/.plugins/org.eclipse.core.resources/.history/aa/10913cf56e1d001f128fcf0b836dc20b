@@ -1,0 +1,9 @@
+package com.example.Service;
+
+import java.util.List;
+
+import com.example.Entity.OrderItem;
+
+public interface IOrderItemService {
+	public List<OrderItem> getAllOrderItems();
+}

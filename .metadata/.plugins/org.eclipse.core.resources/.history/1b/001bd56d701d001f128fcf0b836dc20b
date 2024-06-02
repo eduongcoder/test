@@ -1,0 +1,76 @@
+package com.example.Service;
+
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.Entity.OrderItem;
+import com.example.Entity.OrderItemDTO;
+import com.example.Entity.OrderItemDTOVariant;
+import com.example.Entity.Orders;
+import com.example.From.OrdersForm;
+import com.example.Repository.IOrderRepository;
+
+@Service
+public class OrderService implements IOrderService {
+	
+	@Autowired
+	private IOrderRepository service;
+	
+	@Autowired
+	private OrderItemService serviceOrderItem;
+	
+	@Autowired
+	private ModelMapper modelMapper;
+
+	@Override
+	public List<Orders> getallOrders() {
+		return service.findAll();
+	}
+
+	@Override
+	public boolean createOrder(OrdersForm form) {
+		try {
+			Orders orders=modelMapper.map(form, Orders.class);
+			service.save(orders);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+		
+	}
+
+	@Override
+	public void deleteOrder(int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean updateOrder(OrdersForm form) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List<Orders> getAllOrdersMapVariant() {
+		List<Orders> list= service.findAll();
+		for (Orders orders : list) {
+			
+		}
+		
+		List<OrderItem> orderItems=serviceOrderItem.getAllOrderItems();
+		List<OrderItemDTO> dtos=modelMapper.map(list, new TypeToken<List<OrderItemDTO>>()
+		{}.getType());
+		List<OrderItemDTOVariant> dtoVariants=modelMapper.map(dtos, new TypeToken<List<OrderItemDTOVariant>>()
+		{}.getType());
+		
+		
+		return null;
+	}
+	
+	
+}

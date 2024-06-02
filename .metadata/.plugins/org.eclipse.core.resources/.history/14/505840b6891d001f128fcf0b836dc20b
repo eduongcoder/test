@@ -1,0 +1,17 @@
+package com.example.Entity;
+
+import java.util.List;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+public class OrdersDTOShopCart {
+	private int orders_id;
+//	private String status;
+
+	private Integer account;
+
+	private List<OrderItemDTOShopCart> orderItems;
+}

@@ -1,0 +1,16 @@
+package com.example.Entity;
+
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.util.List;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+public class OrdersDTOShopCart {
+	private int orders_id;
+		
+	private List<OrderItemDTOShopCart> orderItems;
+}

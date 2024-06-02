@@ -1,0 +1,10 @@
+package com.example.Service;
+
+import java.util.List;
+
+import com.example.Entity.Orders;
+
+public interface IOrderService {
+	public List<Orders> getallOrders();
+	public void createOrder(OrdersForm form);
+}

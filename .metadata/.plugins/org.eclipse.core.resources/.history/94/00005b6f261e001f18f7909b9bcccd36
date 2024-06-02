@@ -1,0 +1,34 @@
+package com.example.From;
+
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.util.List;
+
+import com.example.Entity.SalesDTO;
+import com.example.Entity.Variant;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+@Data
+@NoArgsConstructor
+public class OrderitemForm {
+	private Integer order_items_id;
+	
+	private String product_name;
+	
+    private BigDecimal product_price;
+	
+	private Integer quantity;
+	
+	private Date created_at;
+	
+	private Date updated_at;
+	
+//	private List<SalesDTO> sales;
+
+	private Integer orders;
+	
+//	private List<Variant> variants;
+	
+	private Integer productVersion;
+}
