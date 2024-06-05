@@ -11,4 +11,5 @@ public interface IDepartmentService {
 	public void deleteDepartmentByID(int id);
 	public List<Department> getAllDepartments();
 	public Department createDepartment(DepartmentForm form);
+	public void deleteDepartmentAll(int id);
 }

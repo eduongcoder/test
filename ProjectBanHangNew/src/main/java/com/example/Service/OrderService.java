@@ -63,7 +63,7 @@ public class OrderService implements IOrderService {
 		List<Orders> list=getallOrders();
 		
 		for (Orders orders : list) {
-			if (orders.getAccount().getAccounts_id()==id && orders.getStatus().equals("Prepare")) {
+			if (orders.getAccount().getAccount_id()==id && orders.getStatus().equals("Prepare")) {
 				return orders;
 			}
 		}

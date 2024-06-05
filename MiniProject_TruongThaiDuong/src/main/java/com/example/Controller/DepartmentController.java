@@ -30,13 +30,12 @@ import com.example.Service.IRelativeService;
 @RequestMapping("/api/department")
 public class DepartmentController implements WebMvcConfigurer {
 	@Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://26.22.243.2:5173","http://localhost:5173") // URL của ứng dụng React
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedHeaders("*")
-                .allowCredentials(true);
-    }
+	public void addCorsMappings(CorsRegistry registry) {
+		registry.addMapping("/**").allowedOrigins("http://26.110.249.245:5173", "http://localhost:5173") // URL của ứng
+																											// dụng
+																											// React
+				.allowedMethods("GET", "POST", "PUT", "DELETE").allowedHeaders("*").allowCredentials(true);
+	}
 
 	@Autowired
 	private IDepartmentService service;
@@ -65,12 +64,12 @@ public class DepartmentController implements WebMvcConfigurer {
 		} catch (Exception e) {
 			return null;
 		}
-		
+
 	}
 
 	@PostMapping("/create")
 	public DepartmentDTO createDepartment(@RequestBody DepartmentForm form) {
-	    Department department= service.createDepartment(form);
+		Department department = service.createDepartment(form);
 
 		DepartmentDTO dto = modelMapper.map(department, DepartmentDTO.class);
 		return dto;
@@ -86,36 +85,24 @@ public class DepartmentController implements WebMvcConfigurer {
 
 	@DeleteMapping(value = "/delete/{id}")
 	public int deleteDepartmentById(@PathVariable(name = "id") int id) {
-		
-			if(getDepartmentbyID(id)==null)
-				return -1;
-			else {
-				service.deleteDepartmentByID(id);
-				return id;
-			}
-			
-		
-		
+
+		if (getDepartmentbyID(id) == null)
+			return -1;
+		else {
+			service.deleteDepartmentByID(id);
+			return id;
+		}
+
 	}
 
 	@DeleteMapping(value = "deleteall/{id}")
-	public void deleteEmployeeByIdall(@PathVariable(name = "id") int id) {
-		Department department=service.getDepartmentByID(id);
-//		department.setEmployees(null);
-//		DepartmentForm departmentForm=modelMapper.map(department, DepartmentForm.class);
-//		service.updateDepartmentByID(departmentForm);
-		List<Employee> employees = serviceemploy.getAllEmployees();
-		for (Employee employee : employees) {
-			if (employee.getIdDepartment() != null && employee.getIdDepartment().getId() == id) {
-				
-				employee.setIdDepartment(null);
-				System.out.println(employee);
-				System.out.println(department.toString());
-				EmployeeForm form = modelMapper.map(employee, EmployeeForm.class);
-				
-				serviceemploy.updateEmployeeByID(form);
-			}
+	public int deleteEmployeeByIdall(@PathVariable(name = "id") int id) {
+		try {
+			service.deleteDepartmentAll(id);
+			return id;
+
+		} catch (Exception e) {
+			return -1;
 		}
-		service.deleteDepartmentByID(id);
 	}
 }

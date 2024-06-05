@@ -22,7 +22,7 @@ public class OrdersDTO {
 	
 	private LocalDateTime updated_at;
 	
-	private Integer account;
+	private Integer account_id;
 	
 //	private List<InventoriesDTO> inventories; 
 	

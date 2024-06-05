@@ -3,10 +3,13 @@ package com.example.Controller;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,45 +18,48 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-
+import com.example.Entity.Images;
+import com.example.Entity.ImagesDTO;
 import com.example.Entity.Product;
 import com.example.Entity.ProductDTO;
 import com.example.Entity.ProductShowDTO;
 import com.example.Entity.TypeOfProduct;
 import com.example.Entity.TypeOfProductDTO;
-import com.example.Repository.IImageProductRepository;
+import com.example.Repository.IImageRepository;
 import com.example.Repository.IProductRepository;
 import com.example.Repository.ITypeOfProductRepository;
 import com.example.Service.IImageService;
 import com.example.Service.IProductService;
+import com.example.Service.ImageHandelService;
 import com.example.Service.TeraBoxService;
 
 @RequestMapping("/api/product")
 @RestController
 public class ProductController implements WebMvcConfigurer {
 	@Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://26.22.243.2:5173","http://localhost:5173") // URL của ứng dụng React
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedHeaders("*")
-                .allowCredentials(true);
-    }
-	@Autowired 
+	public void addCorsMappings(CorsRegistry registry) {
+		registry.addMapping("/**").allowedOrigins("http://26.110.249.245:5173", "http://localhost:5173") // URL của ứng
+																											// dụng
+																											// React
+				.allowedMethods("GET", "POST", "PUT", "DELETE").allowedHeaders("*").allowCredentials(true);
+	}
+
+	@Autowired
 	private IProductService service;
-	
-//	@Autowired
-//	private TeraBoxService teraBoxService;
-	
-	@Autowired 
-	private IImageProductRepository service1;
+
+	@Autowired
+	private IImageService service1;
 	@Autowired
 	private ITypeOfProductRepository service2;
 
 	@Autowired
-	private ModelMapper modelMapper;
+	private ImageHandelService service3;
 	
-	List<String> conver= new ArrayList<String>();
+	@Autowired
+	private ModelMapper modelMapper;
+
+	List<String> conver = new ArrayList<String>();
+
 //	@GetMapping("/image")
 //	public List<ImageDTO> getAll() {
 //		List<ImageProduct> list=service1.findAll();
@@ -64,58 +70,47 @@ public class ProductController implements WebMvcConfigurer {
 //	}
 	@GetMapping("/typedto")
 	public List<TypeOfProductDTO> getAlltypedto() {
-		List<TypeOfProduct> list=service2.findAll();
-		List<TypeOfProductDTO> dtos=modelMapper.map(list, new TypeToken<List<TypeOfProductDTO>>()
-		{}.getType());
+		List<TypeOfProduct> list = service2.findAll();
+		List<TypeOfProductDTO> dtos = modelMapper.map(list, new TypeToken<List<TypeOfProductDTO>>() {
+		}.getType());
 		return dtos;
 	}
 
 	@GetMapping("/productshow")
 	public List<ProductShowDTO> getAllProductShow() {
-		List<Product> list= service.getAllProducts();
-		List<ProductShowDTO> dtos=modelMapper.map(list, new TypeToken<List<ProductShowDTO>>()
-		{}.getType());
-		
+		List<Product> list = service.getAllProducts();
+		List<ProductShowDTO> dtos = modelMapper.map(list, new TypeToken<List<ProductShowDTO>>() {
+		}.getType());
+
 		return dtos;
 	}
-	
+
 	@GetMapping
 	public List<ProductDTO> getAllProduct() {
-		List<Product> list= service.getAllProducts();
-		List<ProductDTO> dtos=modelMapper.map(list, new TypeToken<List<ProductDTO>>()
-		{}.getType());
-		
+		List<Product> list = service.getAllProducts();
+		List<ProductDTO> dtos = modelMapper.map(list, new TypeToken<List<ProductDTO>>() {
+		}.getType());
+
 		return dtos;
 	}
-	
+
+	@GetMapping(value = "/imagechuoi/{id}")
+	public CompletableFuture<String> getImageChuoi(@PathVariable(name = "id") int id) {
+
+		return service3.getImageBase64(id);
+	}
+
+	@GetMapping(value = "/image/{id}")
+	public ImagesDTO getImageByID(@PathVariable(name = "id") int id) {
+
+		return modelMapper.map(service1.getImageByID(id), ImagesDTO.class);
+	}
+
 	@GetMapping(value = "/{id}")
-	public ProductDTO getProductByID(@PathVariable(name = "id")int id) {
-		Product product=service.getProductByID(id);
-		ProductDTO dto=modelMapper.map(product, ProductDTO.class);
+	public ProductDTO getProductByID(@PathVariable(name = "id") int id) {
+		Product product = service.getProductByID(id);
+		ProductDTO dto = modelMapper.map(product, ProductDTO.class);
 		return dto;
 	}
-//	List<String> urList=new ArrayList<String>();
-//	@GetMapping( "/urlimage")
-//	public List<String> getUrlimage(){
-//		List<ImageProduct> list=service1.findAll();
-//		for (ImageProduct imageProduct : list) {
-//			urList.add(convertToImageUrl(imageProduct.getImageupload()) );
-//		}
-//		return urList;
-//	}
-	 public String convertToImageUrl(byte[] base64Image) {
-	        try {
-	            // Giải mã chuỗi Base64 thành mảng byte
-	            //byte[] imageBytes = Base64.getDecoder().decode(base64Image);
-//	        	System.out.println(base64Image);
-	            // Tạo URL từ mảng byte
-	            String imageUrl = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(base64Image);
-//	            System.out.println(imageUrl);
-	            return imageUrl;
-	        } catch (IllegalArgumentException e) {
-	            // Xử lý nếu dữ liệu Base64 không hợp lệ
-	            e.printStackTrace();
-	            return null;
-	        }
-	    }
+
 }

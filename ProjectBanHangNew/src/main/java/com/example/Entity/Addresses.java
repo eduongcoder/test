@@ -2,6 +2,7 @@ package com.example.Entity;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 import com.example.Enum.Gender;
 
@@ -30,7 +31,7 @@ public class Addresses implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "account_id")
-	private Account account;
+	private Account account_id;
 
 	@Column(name = "city", length = 100, updatable = true)
 	private String city;
@@ -43,10 +44,10 @@ public class Addresses implements Serializable {
 
 	private String country;
 
-	@Column(name = "created_at")
-	private Date created_at;
+	@Column(name = "created_at", updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	private LocalDateTime created_at;
 	
-	@Column(name = "updated_at", updatable = true)
-	private Date updated_at;
+	@Column(name = "updated_at", updatable = true,   columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+	private LocalDateTime updated_at;
 	
 }

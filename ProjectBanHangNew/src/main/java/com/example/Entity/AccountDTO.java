@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.example.Enum.Gender;
 
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,11 +13,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AccountDTO {
 
-	private Integer accounts_id;
-	
+	private Integer account_id;
+
 	private String username;
 
-	
 	private String password;
 
 	private String email;
@@ -26,17 +24,17 @@ public class AccountDTO {
 	private Short height;
 
 	private Short weight;
-	
+
 	private String phoneNumber;
-	
+
 	private Date dayOfBirth;
 
-	private Date created_at;
-	
-	private Date updated_at;
-	
+	private LocalDateTime created_at;
+
+	private LocalDateTime updated_at;
+
 	private Gender gender;
-	
+
 	private List<AddressesDTO> addresses;
 
 	private List<OrdersDTO> orders;

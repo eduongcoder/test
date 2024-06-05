@@ -11,4 +11,5 @@ public interface IEmployeeService {
 	public void deleteEmployeeByID(int id);
 	public List<Employee> getAllEmployees();
 	public Employee createEmployee(EmployeeForm form);
+	public void deleteEmployeeAll(int id);
 }

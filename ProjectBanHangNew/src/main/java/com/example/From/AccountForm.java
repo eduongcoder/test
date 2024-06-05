@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class AccountForm {
-	private Integer accounts_id;
+	private Integer account_id;
 	
 	private String username;
 
@@ -33,9 +33,9 @@ public class AccountForm {
 	
 	private Date dayOfBirth;
 
-	private Date created_at;
+	private LocalDateTime created_at;
 	
-	private Date updated_at;
+	private LocalDateTime updated_at;
 	
 	private Gender gender;
 	

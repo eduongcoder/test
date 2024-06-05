@@ -1,6 +1,6 @@
 package com.example.Entity;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ public class AddressesDTO {
 
 	private int id;
 
-	private Integer account;
+	private Integer account_id;
 
 	private String city;
 
@@ -19,7 +19,7 @@ public class AddressesDTO {
 
 	private String country;
 
-	private Date created_at;
+	private LocalDateTime created_at;
 
-	private Date updated_at;
+	private LocalDateTime updated_at;
 }

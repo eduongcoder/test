@@ -32,7 +32,7 @@ public class Images implements Serializable {
 	private int images_id;
 
 	@Column(name = "image_url", updatable = true)
-	private String image_url;
+	private byte[] image_url;
 
 	@Column(name = "created_at", updatable = true)
 	private Date created_at;

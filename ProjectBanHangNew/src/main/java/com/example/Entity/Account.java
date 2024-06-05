@@ -2,6 +2,7 @@ package com.example.Entity;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -31,7 +32,7 @@ public class Account implements Serializable {
 	@Column(name = "id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int accounts_id;
+	private int account_id;
 	@Column(name = "username",length = 255,updatable = true)
 	private String username;
 
@@ -53,17 +54,17 @@ public class Account implements Serializable {
 	@Column(name = "dayOfBirth", updatable = true)
 	private Date dayOfBirth;
 
-	@Column(name = "created_at",updatable = true)
-	private Date created_at;
+	@Column(name = "created_at", updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	private LocalDateTime created_at;
 	
-	@Column(name = "updated_at",updatable = true)
-	private Date updated_at;
+	@Column(name = "updated_at",  updatable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+	private LocalDateTime updated_at;
 	
 	@Column(name = "gender")
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
 	
-	@OneToMany(mappedBy = "account")
+	@OneToMany(mappedBy = "account_id")
 	private List<Addresses> addresses;
 	
 	@OneToMany(mappedBy = "account")

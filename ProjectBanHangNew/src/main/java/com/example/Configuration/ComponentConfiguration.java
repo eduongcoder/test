@@ -1,10 +1,13 @@
 package com.example.Configuration;
 
+import org.checkerframework.checker.units.qual.s;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.example.Entity.Account;
+import com.example.Entity.AccountDTO;
 import com.example.Entity.Addresses;
 import com.example.Entity.AddressesDTO;
 import com.example.Entity.Inventories;
@@ -28,6 +31,8 @@ import com.example.Entity.Sales;
 import com.example.Entity.SalesDTO;
 import com.example.Entity.Variant;
 import com.example.Entity.VariantDTO;
+import com.example.Entity.VariantNoAccountDTO;
+import com.example.From.AccountForm;
 import com.example.From.OrderitemForm;
 
 import net.bytebuddy.asm.MemberSubstitution.Source;
@@ -82,6 +87,12 @@ public class ComponentConfiguration {
 				map().setSize(source.getSize().getSize_name());
 			}
 		});
+		modelMapper.addMappings(new PropertyMap<Variant, VariantNoAccountDTO>() {
+			@Override
+			protected void configure() {
+				map().setProductversionName(source.getProductversion().getVersion_name());
+			}
+		});
 		modelMapper.addMappings(new PropertyMap<Inventories, InventoriesDTO>() {
 			@Override
 			protected void configure() {
@@ -98,20 +109,20 @@ public class ComponentConfiguration {
 		modelMapper.addMappings(new PropertyMap<Orders, OrdersDTO>() {
 			@Override
 			protected void configure() {
-				map().setAccount(source.getAccount().getAccounts_id());
+//				map().setAccount(source.getAccount().getAccount_id());
 			}
 		});
 		modelMapper.addMappings(new PropertyMap<Orders, OrdersDTOShopCart>() {
 			@Override
 			protected void configure() {
-				map().setAccount(source.getAccount().getAccounts_id());
+				map().setAccount(source.getAccount().getAccount_id());
 			}
 		});
 		
 		modelMapper.addMappings(new PropertyMap<OrderItem, OrderItemDTOVariant>() {
 			@Override
 			protected void configure() {
-				map().setProductVersion(source.getProductVersion().getProductVersion_id());
+//				map().setProductVersion(source.getProductVersion().getProductVersion_id());
 
 			}
 		});
@@ -124,9 +135,10 @@ public class ComponentConfiguration {
 		modelMapper.addMappings(new PropertyMap<Addresses, AddressesDTO>() {
 			@Override
 			protected void configure() {
-				map().setAccount(source.getAccount().getAccounts_id());
+//				map().setAccount(source.getAccount().getAccount_id());
 			}
 		});
+
 //		modelMapper.addMappings(new PropertyMap<OrderitemForm,OrderItem >() {
 //			@Override
 //			protected void configure() {

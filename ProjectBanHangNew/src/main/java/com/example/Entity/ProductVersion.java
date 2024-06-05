@@ -29,6 +29,9 @@ public class ProductVersion implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int productVersion_id;
 	
+	
+	@Column(name = "version_name" ,length = 255,updatable = true)
+	private String version_name;
 	@Column(name = "price", precision = 10, scale = 2,updatable = true)
     private BigDecimal price;
 

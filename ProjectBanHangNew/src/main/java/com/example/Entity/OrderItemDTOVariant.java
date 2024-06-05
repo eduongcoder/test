@@ -25,10 +25,10 @@ public class OrderItemDTOVariant {
 	
 //	private List<SalesDTO> sales;
 
-	private Integer orders;
+	private Integer orders_id;
 	
-	private List<VariantDTO> variants;
+//	private List<VariantDTO> variants;
 	
 	
-	private Integer productVersion;
+//	private Integer productVersion;
 }

@@ -22,9 +22,11 @@ import com.example.Entity.OrderItem;
 import com.example.Entity.OrderItemDTO;
 import com.example.Entity.OrderItemDTOVariant;
 import com.example.Entity.Orders;
+import com.example.Entity.ProductVersionShowDTO;
 import com.example.Entity.TypeOfProductDTO;
 import com.example.Entity.Variant;
 import com.example.Entity.VariantDTO;
+import com.example.Entity.VariantNoAccountDTO;
 import com.example.From.OrderitemForm;
 import com.example.From.OrdersForm;
 import com.example.Repository.IOrderItemRepository;
@@ -35,13 +37,13 @@ import com.example.Service.IVariantService;
 
 @RequestMapping("/api/variant")
 @RestController
-public class VariantController implements WebMvcConfigurer {
-	@Override
-	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**").allowedOrigins("http://26.22.243.2:5173", "http://localhost:5173") // URL của ứng
-																										// dụng React
-				.allowedMethods("GET", "POST", "PUT", "DELETE").allowedHeaders("*").allowCredentials(true);
-	}
+public class VariantController  {
+//	@Override
+//	public void addCorsMappings(CorsRegistry registry) {
+//		registry.addMapping("/**").allowedOrigins("http://26.22.243.2:5173", "http://localhost:5173") // URL của ứng
+//																										// dụng React
+//				.allowedMethods("GET", "POST", "PUT", "DELETE").allowedHeaders("*").allowCredentials(true);
+//	}implements WebMvcConfigurer
 
 	@Autowired
 	private IVariantService service;
@@ -54,7 +56,7 @@ public class VariantController implements WebMvcConfigurer {
 
 	@Autowired
 	private IAccountService serviceAccount;
-	
+
 	@Autowired
 	private IOrderItemService serviceIOrderItem;
 
@@ -64,6 +66,14 @@ public class VariantController implements WebMvcConfigurer {
 		List<VariantDTO> dtos = modelMapper.map(list, new TypeToken<List<VariantDTO>>() {
 		}.getType());
 		return dtos;
+	}
+
+	@GetMapping(value = "/getVariant/{idvariant}")
+	public VariantNoAccountDTO createOrderItemNoAccount(@PathVariable(name = "idvariant") int idvariant) {
+
+		VariantNoAccountDTO variantNoAccountDTO= modelMapper.map(service.getVariantByID(idvariant), VariantNoAccountDTO.class);
+		variantNoAccountDTO.setQuantity(1);
+		return variantNoAccountDTO;
 	}
 
 	@GetMapping("/orderitem")
@@ -103,24 +113,23 @@ public class VariantController implements WebMvcConfigurer {
 		Orders orders = serviceOrder.getOrderPrepare(idAccount);
 		if (orders != null) {
 			form.setOrders(orders.getOrders_id());
-			OrderItem orderItem= serviceIOrderItem.createOrderItem(form, form.getOrders(), form.getProductVersion());
-			
+			OrderItem orderItem = serviceIOrderItem.createOrderItem(form, form.getOrders(), form.getProductVersion());
+
 			return orderItem.getOrder_items_id();
-		}else {
-			Account account=serviceAccount.findAccountByID(idAccount);
-			
-			OrdersForm ordersForm=new OrdersForm();
+		} else {
+			Account account = serviceAccount.findAccountByID(idAccount);
+
+			OrdersForm ordersForm = new OrdersForm();
 			ordersForm.setAccount(account);
 			ordersForm.setTotal_amount(BigDecimal.valueOf(1000.00));
 			ordersForm.setOrderItems(null);
 			ordersForm.setStatus("Prepare");
 			ordersForm.setUpdated_at(null);
-			Orders orderscreateOrders=serviceOrder.createOrder(ordersForm);
+			Orders orderscreateOrders = serviceOrder.createOrder(ordersForm);
 			form.setOrders(orderscreateOrders.getOrders_id());
-			OrderItem orderItem= serviceIOrderItem.createOrderItem(form, form.getOrders(), form.getProductVersion());
+			OrderItem orderItem = serviceIOrderItem.createOrderItem(form, form.getOrders(), form.getProductVersion());
 
 			return orderItem.getOrder_items_id();
-
 		}
 	}
 

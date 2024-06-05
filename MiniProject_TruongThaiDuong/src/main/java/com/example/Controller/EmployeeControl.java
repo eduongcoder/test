@@ -30,7 +30,7 @@ public class EmployeeControl implements WebMvcConfigurer {
 	@Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://26.22.243.2:5173","http://localhost:5173") // URL của ứng dụng React
+                .allowedOrigins("http://26.110.249.245:5173","http://localhost:5173") // URL của ứng dụng React
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")
                 .allowCredentials(true);
@@ -81,21 +81,21 @@ public class EmployeeControl implements WebMvcConfigurer {
 			return -1;
 		}
 		else {
-			Service.deleteEmployeeByID(id);
-			return id;
+			try {
+				Service.deleteEmployeeByID(id);
+				return id;
+			} catch (Exception e) {
+				return -2;
+			}
+			
 		}
 		
 	}
 
-//	@DeleteMapping(value = "/deleteall/{id}")
-//	public void deleteEmployeeByIdAll(@PathVariable(name = "id") int id) {
-//		List<Relative> relatives = servicerRelative.getAllRelatives();
-//		for (Relative relative : relatives) {
-//			if (relative.getEmployeeid().getId() == id) {
-//				servicerRelative.deleteRelativeByID(relative.getId());
-//			}	
-//		}
-//		Service.deleteEmployeeByID(id);
-//	}
+	@DeleteMapping(value = "/deleteall/{id}")
+	public int deleteEmployeeByIdAll(@PathVariable(name = "id") int id) {
+		Service.deleteEmployeeAll(id);
+		return id;
+	}
 
 }

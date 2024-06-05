@@ -22,7 +22,6 @@ public class ComponentConfiguration {
             @Override
             protected void configure() {
                 map().setIdDepartment(source.getIdDepartment().getId()); 
-                
             }
         });
         modelMapper.addMappings(new PropertyMap<Relative, RelativeDTO>() {

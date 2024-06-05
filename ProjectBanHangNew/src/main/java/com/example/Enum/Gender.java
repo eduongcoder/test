@@ -1,5 +1,5 @@
 package com.example.Enum;
 
 public enum Gender {
-	Nam,Nữ
+	Nam, Nữ, Khác;
 }

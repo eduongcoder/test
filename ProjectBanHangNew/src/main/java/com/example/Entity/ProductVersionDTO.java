@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 public class ProductVersionDTO {
 	private Integer productVersion_id;
 	
+	private String version_name;
+	
     private BigDecimal price;
 
     private Integer quantity_in_stock;

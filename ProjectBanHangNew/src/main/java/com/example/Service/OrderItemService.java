@@ -1,5 +1,6 @@
 package com.example.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +49,7 @@ public class OrderItemService implements IOrderItemService {
 		try {
 
 			OrderItem orderItem = modelMapper.map(form, OrderItem.class);
+			orderItem.setUpdatedAt(LocalDateTime.now());
 			orderItem.setOrders(serviceOrder.getOrderByID(idOrder));
 			orderItem.setProductVersion(serviceProductVersionService.getProductVersionByID(idProductVersion));
 
@@ -114,6 +116,10 @@ public class OrderItemService implements IOrderItemService {
 	@Override
     public boolean deleteOrderItemAll(int orderId) {
         try {
+            Query deleteSalesQuery = entityManager.createQuery("DELETE FROM Sales s WHERE s.orderitem.id = :orderId");
+            deleteSalesQuery.setParameter("orderId", orderId);
+            deleteSalesQuery.executeUpdate();
+        	
             Query query = entityManager.createQuery("DELETE FROM OrderItem e WHERE e.orders.id = :orderId");
             query.setParameter("orderId", orderId);
             query.executeUpdate();

@@ -19,35 +19,40 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.example.Entity.Account;
 import com.example.Entity.AccountDTO;
+import com.example.Entity.AddressesDTO;
 import com.example.Entity.TypeOfProductDTO;
 import com.example.From.AccountForm;
 import com.example.Repository.IAccountRepository;
 import com.example.Repository.IClientRepository;
 import com.example.Service.IAccountService;
+import com.example.Service.IAddressesService;
 
 @RequestMapping("/api/account")
 @RestController
-public class AccountController implements WebMvcConfigurer {
-	@Override
-	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**").allowedOrigins("http://26.22.243.2:5173", "http://localhost:5173") // URL của ứng
-																										// dụng React
-				.allowedMethods("GET", "POST", "PUT", "DELETE").allowedHeaders("*").allowCredentials(true);
-	}
+public class AccountController {
+//	@Override
+//	public void addCorsMappings(CorsRegistry registry) {
+//		registry.addMapping("/**").allowedOrigins("http://26.110.249.245:5173", "http://localhost:5173") // URL của ứng
+//																										// dụng React
+//				.allowedMethods("GET", "POST", "PUT", "DELETE").allowedHeaders("*").allowCredentials(true);
+//	}implements WebMvcConfigurer
 
 	@Autowired
 	private IAccountService service;
 	@Autowired
 	private ModelMapper modelMapper;
 
+	
+	@Autowired
+	private IAddressesService serviceAddress; 
+	
 	@PostMapping("/create")
 	private boolean createAccount(@RequestBody AccountForm form) {
 		try {
 			return service.createEmployee(form);
 		} catch (Exception e) {
-			// TODO: handle exception
+			return false;
 		}
-		return false;
 
 	}
 
@@ -59,17 +64,26 @@ public class AccountController implements WebMvcConfigurer {
 		return dtos;
 	}
 
+	@GetMapping("/address")
+	private List<AddressesDTO> getAllAddress(){
+		List<AddressesDTO> dtos=modelMapper.map(serviceAddress.getAddresses(), new TypeToken<List<AddressesDTO>>() {}.getType());
+		return dtos;
+	}
+	
 	@PutMapping("/updateaccount")
 	public AccountDTO updateAccount(@RequestBody AccountForm form) {
-		return service.updateAccountByID(form);
+		if (verificationUser(form.getEmail())) {
+			return service.updateAccountByID(form);
+		}
+		return null;
 	}
-	
+
 	@GetMapping(value = "/getaccount/{id}")
-	public AccountDTO getAccountByID(@PathVariable(name = "id")int id) {
-		AccountDTO  dto=modelMapper.map(service.findAccountByID(id), AccountDTO.class);
+	public AccountDTO getAccountByID(@PathVariable(name = "id") int id) {
+		AccountDTO dto = modelMapper.map(service.findAccountByID(id), AccountDTO.class);
 		return dto;
 	}
-	
+
 	@GetMapping("/Verification/user")
 	private boolean verificationUser(@RequestParam String email) {
 		List<Account> list = service.getAllAccount();
@@ -90,11 +104,9 @@ public class AccountController implements WebMvcConfigurer {
 		List<AccountDTO> dtos = modelMapper.map(list, new TypeToken<List<AccountDTO>>() {
 		}.getType());
 		for (AccountDTO accountDTO : dtos) {
-
 			if (accountDTO.getPassword().equals(pass) && accountDTO.getEmail().equals(email)) {
-				return accountDTO.getAccounts_id();
+				return accountDTO.getAccount_id();
 			}
-
 		}
 		return -1;
 	}
