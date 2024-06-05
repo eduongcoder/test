@@ -33,6 +33,8 @@ import com.example.Service.IProductService;
 import com.example.Service.ImageHandelService;
 import com.example.Service.TeraBoxService;
 
+import jakarta.transaction.Transactional;
+
 @RequestMapping("/api/product")
 @RestController
 public class ProductController implements WebMvcConfigurer {
@@ -93,12 +95,12 @@ public class ProductController implements WebMvcConfigurer {
 
 		return dtos;
 	}
-
-	@GetMapping(value = "/imagechuoi/{id}")
-	public CompletableFuture<String> getImageChuoi(@PathVariable(name = "id") int id) {
-
-		return service3.getImageBase64(id);
-	}
+//	@Transactional
+//	@GetMapping(value = "/imagechuoi/{id}")
+//	public CompletableFuture<String> getImageChuoi(@PathVariable(name = "id") int id) {
+//
+//		return service3.getImageBase64(id);
+//	}
 
 	@GetMapping(value = "/image/{id}")
 	public ImagesDTO getImageByID(@PathVariable(name = "id") int id) {

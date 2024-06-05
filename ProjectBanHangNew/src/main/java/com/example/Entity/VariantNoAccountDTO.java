@@ -1,5 +1,6 @@
 package com.example.Entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,6 +23,10 @@ private int variants_id;
 	private int quantity;
 	
 	private Integer productversion;
+	
+	
+	
+	private BigDecimal price;
 	
 	private String productversionName;
 	

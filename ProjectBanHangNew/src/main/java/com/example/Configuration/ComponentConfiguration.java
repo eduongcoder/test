@@ -1,8 +1,8 @@
 package com.example.Configuration;
 
-import org.checkerframework.checker.units.qual.s;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,6 +10,8 @@ import com.example.Entity.Account;
 import com.example.Entity.AccountDTO;
 import com.example.Entity.Addresses;
 import com.example.Entity.AddressesDTO;
+import com.example.Entity.Images;
+import com.example.Entity.ImagesDTO;
 import com.example.Entity.Inventories;
 import com.example.Entity.InventoriesDTO;
 import com.example.Entity.OrderItem;
@@ -34,15 +36,17 @@ import com.example.Entity.VariantDTO;
 import com.example.Entity.VariantNoAccountDTO;
 import com.example.From.AccountForm;
 import com.example.From.OrderitemForm;
+import com.example.Service.ImageHandelService;
 
-import net.bytebuddy.asm.MemberSubstitution.Source;
 
 @Configuration
 public class ComponentConfiguration {
+
 	@Bean
 	public ModelMapper initModelMapper() {
 		ModelMapper modelMapper = new ModelMapper();
-
+		
+		
 		modelMapper.addMappings(new PropertyMap<ProductVersion, ProductVersionDTO>() {
 			@Override
 			protected void configure() {
@@ -91,6 +95,7 @@ public class ComponentConfiguration {
 			@Override
 			protected void configure() {
 				map().setProductversionName(source.getProductversion().getVersion_name());
+				map().setPrice(source.getProductversion().getPrice());
 			}
 		});
 		modelMapper.addMappings(new PropertyMap<Inventories, InventoriesDTO>() {
@@ -130,6 +135,12 @@ public class ComponentConfiguration {
 			@Override
 			protected void configure() {
 				map().setProductVersion(source.getProductVersion().getProductVersion_id());
+			}
+		});
+		modelMapper.addMappings(new PropertyMap<Images, ImagesDTO>() {
+			@Override
+			protected void configure() {
+//				map().setImageBytes(source.getImage_url());
 			}
 		});
 		modelMapper.addMappings(new PropertyMap<Addresses, AddressesDTO>() {
