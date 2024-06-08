@@ -2,6 +2,7 @@ package com.example.Entity;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.Data;
@@ -18,9 +19,9 @@ public class OrderItemDTOShopCart {
 
 	private Integer quantity;
 
-	private Date created_at;
+	private LocalDateTime createdAt;
 
-	private Date updated_at;
+	private LocalDateTime updatedAt;
 
 //	private Integer orders;
 

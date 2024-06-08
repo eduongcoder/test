@@ -48,12 +48,9 @@ public class AccountController {
 	
 	@PostMapping("/create")
 	private boolean createAccount(@RequestBody AccountForm form) {
-		try {
+		
 			return service.createEmployee(form);
-		} catch (Exception e) {
-			return false;
-		}
-
+		
 	}
 
 	@GetMapping

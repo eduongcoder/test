@@ -1,16 +1,12 @@
 package com.example.Controller;
 
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,16 +27,14 @@ import com.example.Repository.ITypeOfProductRepository;
 import com.example.Service.IImageService;
 import com.example.Service.IProductService;
 import com.example.Service.ImageHandelService;
-import com.example.Service.TeraBoxService;
 
-import jakarta.transaction.Transactional;
 
 @RequestMapping("/api/product")
 @RestController
 public class ProductController implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**").allowedOrigins("http://26.110.249.245:5173", "http://localhost:5173") // URL của ứng
+		registry.addMapping("/**").allowedOrigins("http://26.229.166.254:5173", "http://localhost:5173") // URL của ứng
 																											// dụng
 																											// React
 				.allowedMethods("GET", "POST", "PUT", "DELETE").allowedHeaders("*").allowCredentials(true);
@@ -60,16 +54,19 @@ public class ProductController implements WebMvcConfigurer {
 	@Autowired
 	private ModelMapper modelMapper;
 
+
+	
 	List<String> conver = new ArrayList<String>();
 
-//	@GetMapping("/image")
-//	public List<ImageDTO> getAll() {
-//		List<ImageProduct> list=service1.findAll();
-//		List<ImageDTO> dtos=modelMapper.map(list, new TypeToken<List<ImageDTO>>()
-//		{}.getType());
-//		
-//		return dtos;
-//	}
+	@GetMapping("/image")
+	public List<ImagesDTO> getAll() {
+		List<Images> list=service1.getAllImage();
+		List<ImagesDTO> dtos=modelMapper.map(list, new TypeToken<List<ImagesDTO>>()
+		{}.getType());
+
+		return dtos;
+
+	}
 	@GetMapping("/typedto")
 	public List<TypeOfProductDTO> getAlltypedto() {
 		List<TypeOfProduct> list = service2.findAll();
@@ -95,12 +92,11 @@ public class ProductController implements WebMvcConfigurer {
 
 		return dtos;
 	}
-//	@Transactional
-//	@GetMapping(value = "/imagechuoi/{id}")
-//	public CompletableFuture<String> getImageChuoi(@PathVariable(name = "id") int id) {
-//
-//		return service3.getImageBase64(id);
-//	}
+	@GetMapping(value = "/imagechuoi/{id}")
+	public CompletableFuture<String> getImageChuoi(@PathVariable(name = "id") int id) {
+
+		return service3.getImageBase64(id);
+	}
 
 	@GetMapping(value = "/image/{id}")
 	public ImagesDTO getImageByID(@PathVariable(name = "id") int id) {

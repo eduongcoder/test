@@ -16,5 +16,5 @@ public interface IOrderService {
 
 	public void deleteOrder(int id);
 
-	public boolean updateOrder(OrdersForm form);
+	public Orders updateOrder(int id);
 }

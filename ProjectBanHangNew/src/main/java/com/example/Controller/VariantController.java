@@ -1,6 +1,7 @@
 package com.example.Controller;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,6 +74,7 @@ public class VariantController  {
 
 		VariantNoAccountDTO variantNoAccountDTO= modelMapper.map(service.getVariantByID(idvariant), VariantNoAccountDTO.class);
 		variantNoAccountDTO.setQuantity(1);
+		variantNoAccountDTO.setCreateTime(LocalDateTime.now());
 		return variantNoAccountDTO;
 	}
 

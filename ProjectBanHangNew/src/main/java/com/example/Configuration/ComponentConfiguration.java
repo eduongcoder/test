@@ -1,5 +1,9 @@
 package com.example.Configuration;
 
+
+
+
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +46,25 @@ import com.example.Service.ImageHandelService;
 @Configuration
 public class ComponentConfiguration {
 
+	@Autowired
+	private ImageHandelService service;
+	
 	@Bean
 	public ModelMapper initModelMapper() {
 		ModelMapper modelMapper = new ModelMapper();
 		
+
+		  Converter<Images, String> imageConverter = context -> {
+	            int imageID = context.getSource().getImages_id();
+	            return service.getImageBase64String(imageID);
+	        };
+	        modelMapper.addMappings(new PropertyMap<Images, ImagesDTO>() {
+	            @Override
+	            protected void configure() {
+	                using(imageConverter).map(source, destination.getImage_urlString());
+	               
+	            }
+	        });
 		
 		modelMapper.addMappings(new PropertyMap<ProductVersion, ProductVersionDTO>() {
 			@Override
@@ -137,18 +156,7 @@ public class ComponentConfiguration {
 				map().setProductVersion(source.getProductVersion().getProductVersion_id());
 			}
 		});
-		modelMapper.addMappings(new PropertyMap<Images, ImagesDTO>() {
-			@Override
-			protected void configure() {
-//				map().setImageBytes(source.getImage_url());
-			}
-		});
-		modelMapper.addMappings(new PropertyMap<Addresses, AddressesDTO>() {
-			@Override
-			protected void configure() {
-//				map().setAccount(source.getAccount().getAccount_id());
-			}
-		});
+
 
 //		modelMapper.addMappings(new PropertyMap<OrderitemForm,OrderItem >() {
 //			@Override

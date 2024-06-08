@@ -1,5 +1,6 @@
 package com.example.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +22,8 @@ public class OrderService implements IOrderService {
 	@Autowired
 	private IOrderRepository service;
 
-//	@Autowired
-//	private OrderItemService serviceOrderItem;
+	@Autowired
+	private OrderItemService serviceOrderItem;
 
 	@Autowired
 	private ModelMapper modelMapper;
@@ -36,8 +37,6 @@ public class OrderService implements IOrderService {
 	public Orders createOrder(OrdersForm form) {
 		try {
 			Orders orders = modelMapper.map(form, Orders.class);
-//			System.out.println("Orders"+orders);
-//			System.out.println("Form"+form);
 			service.save(orders);
 			return orders;
 		} catch (Exception e) {
@@ -53,17 +52,25 @@ public class OrderService implements IOrderService {
 	}
 
 	@Override
-	public boolean updateOrder(OrdersForm form) {
-		// TODO Auto-generated method stub
-		return false;
+	public Orders updateOrder(int id) {
+		Orders orders = getOrderByID(id);
+		orders.setStatus("Pending");
+		orders.setUpdated_at(LocalDateTime.now());
+		try {
+			service.save(orders);
+			return orders;
+		} catch (Exception e) {
+			return null;
+		}
+
 	}
 
 	@Override
 	public Orders getOrderPrepare(int id) {
-		List<Orders> list=getallOrders();
-		
+		List<Orders> list = getallOrders();
+
 		for (Orders orders : list) {
-			if (orders.getAccount().getAccount_id()==id && orders.getStatus().equals("Prepare")) {
+			if (orders.getAccount().getAccount_id() == id && orders.getStatus().equals("Prepare")) {
 				return orders;
 			}
 		}
@@ -72,7 +79,7 @@ public class OrderService implements IOrderService {
 
 	@Override
 	public Orders getOrderByID(int id) {
-		
+
 		return service.findById(id).get();
 	}
 

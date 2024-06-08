@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,11 +21,13 @@ import com.example.Entity.OrdersDTOShopCart;
 import com.example.Entity.Variant;
 import com.example.Entity.VariantDTO;
 import com.example.From.OrderitemForm;
+import com.example.From.OrdersForm;
 import com.example.Service.IOrderItemService;
 import com.example.Service.IOrderService;
 import com.example.Service.IVariantService;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RequestMapping("/api/orders")
@@ -62,10 +65,6 @@ public class OrderController {
 			List<OrderItemDTOShopCart> dtos = modelMapper.map(list, new TypeToken<List<OrderItemDTOShopCart>>() {
 			}.getType());
 
-//			List<Variant> variant = serviceVariantService.getAllVariants();
-//			List<VariantDTO> variantDTOs = modelMapper.map(variant, new TypeToken<List<VariantDTO>>() {
-//			}.getType());
-
 			dto.setOrderItems(dtos);
 			dto.setIdvariant(idVariant);
 			return dto;
@@ -73,6 +72,10 @@ public class OrderController {
 		return null;
 	}
 
+	@PutMapping(value = "/{id}")
+	private OrdersDTO completeShopCart(@PathVariable(name = "id") int id) {
 
+		return modelMapper.map(service.updateOrder(id), OrdersDTO.class);
+	}
 
 }
