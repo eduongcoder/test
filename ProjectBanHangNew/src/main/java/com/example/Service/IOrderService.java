@@ -14,7 +14,11 @@ public interface IOrderService {
 
 	public Orders createOrder(OrdersForm form);
 
+	public int createOrderPending(OrdersForm form);
+	
 	public void deleteOrder(int id);
 
 	public Orders updateOrder(int id);
+	
+	public boolean updateAdressOrder(int id,String address);
 }

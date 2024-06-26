@@ -37,13 +37,17 @@ public class Addresses implements Serializable {
 	private String city;
 
 	@Column(name = "state", length = 100, updatable = true)
-
 	private String state;
 
 	@Column(name = "country", length = 100, updatable = true)
-
 	private String country;
 
+	@Column(name = "title",length = 100,updatable = true)
+	private String title;
+	
+	@Column(name = "phonenumer", length = 10)
+	private String phonenumer;
+	
 	@Column(name = "created_at", updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime created_at;
 	

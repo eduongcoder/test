@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class OrdersDTO {
 	private int orders_id;
 	
-    private BigDecimal total_amount;
+    private Integer total_amount;
 	
 	private String status;
 	
@@ -22,9 +22,10 @@ public class OrdersDTO {
 	
 	private LocalDateTime updated_at;
 	
-	private Integer account_id;
+	private Integer account;
 	
-//	private List<InventoriesDTO> inventories; 
+	private String addressorder;
 	
 	private List<OrderItemDTOVariant> orderItems;
+//	private List<OrderItemDTO> orderItems;
 }

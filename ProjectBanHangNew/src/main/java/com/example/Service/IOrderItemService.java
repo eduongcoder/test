@@ -2,7 +2,9 @@ package com.example.Service;
 
 import java.util.List;
 
+import com.example.Entity.Color;
 import com.example.Entity.OrderItem;
+import com.example.Enum.SizeEnum;
 import com.example.From.OrderitemForm;
 
 public interface IOrderItemService {
@@ -21,4 +23,8 @@ public interface IOrderItemService {
 	public boolean deleteOrderItem(int id);
 	
 	public boolean deleteOrderItemAll(int orderId);
+	
+	public SizeEnum getSizeEnum(int idVariant);
+	
+	public String getColor(int idVariant);
 }

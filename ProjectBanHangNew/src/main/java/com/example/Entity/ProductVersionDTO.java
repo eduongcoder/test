@@ -2,6 +2,7 @@ package com.example.Entity;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.Data;
@@ -22,11 +23,14 @@ public class ProductVersionDTO {
 	
 	private Date dateDelete;
 	
-	private Date created_at;
+	private LocalDateTime created_at;
 	
-	private Date updated_at;
+	private LocalDateTime updated_at;
 	
 	private Integer product;
+	
+	private List<PersonFixDTO> personFixs;
+
 	
 	private List<VariantDTO> variants;
 

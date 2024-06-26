@@ -10,8 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.Entity.Color;
 import com.example.Entity.OrderItem;
 import com.example.Entity.Orders;
+import com.example.Entity.Variant;
+import com.example.Enum.SizeEnum;
 import com.example.From.OrderitemForm;
 import com.example.Repository.IOrderItemRepository;
 import com.example.Repository.IOrderRepository;
@@ -29,6 +32,12 @@ public class OrderItemService implements IOrderItemService {
 	@Autowired
 	private IOrderItemRepository service;
 
+	@Autowired
+	private ISizeService sizeService;
+	
+	@Autowired
+	private IVariantService variantService;
+	
 	@Autowired
 	private ModelMapper modelMapper;
 
@@ -116,9 +125,9 @@ public class OrderItemService implements IOrderItemService {
 	@Override
     public boolean deleteOrderItemAll(int orderId) {
         try {
-            Query deleteSalesQuery = entityManager.createQuery("DELETE FROM Sales s WHERE s.orderitem.id = :orderId");
-            deleteSalesQuery.setParameter("orderId", orderId);
-            deleteSalesQuery.executeUpdate();
+//            Query deleteSalesQuery = entityManager.createQuery("DELETE FROM Sales s WHERE s.orderitem.id = :orderId");
+//            deleteSalesQuery.setParameter("orderId", orderId);
+//            deleteSalesQuery.executeUpdate();
         	
             Query query = entityManager.createQuery("DELETE FROM OrderItem e WHERE e.orders.id = :orderId");
             query.setParameter("orderId", orderId);
@@ -129,4 +138,18 @@ public class OrderItemService implements IOrderItemService {
             return false;
         }
     }
+
+	@Override
+	public SizeEnum getSizeEnum(int idVariant) {
+		Variant variant=variantService.getVariantByID(idVariant);
+		SizeEnum sizeEnum=variant.getSize().getSize_name();
+		return sizeEnum;
+	}
+
+	@Override
+	public String getColor(int idVariant) {
+		Variant variant=variantService.getVariantByID(idVariant);
+		String color=variant.getColor().getColor_name();
+		return color;
+	}
 }

@@ -32,13 +32,13 @@ public class AccountService implements IAccountService {
 	}
 
 	@Override
-	public boolean createEmployee(AccountForm form) {
+	public Account createEmployee(AccountForm form) {
 		try {
 			Account account = modelMapper.map(form, Account.class);
-			service.save(account);
-			return true;
+			
+			return service.save(account);
 		} catch (Exception e) {
-			return false;
+			return null;
 		}
 
 	}
@@ -61,6 +61,17 @@ public class AccountService implements IAccountService {
 		AccountDTO dto = modelMapper.map(account, AccountDTO.class);
 		return dto;
 
+	}
+
+	@Override
+	public int createAccountOnlyEmail(AccountForm form) {
+		try {
+			Account account = modelMapper.map(form, Account.class);
+
+			return service.save(account).getAccount_id();
+		} catch (Exception e) {
+			return -1;
+		}
 	}
 
 }

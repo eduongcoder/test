@@ -12,25 +12,25 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class VariantNoAccountDTO {
-private int variants_id;
-	
+	private int variants_id;
+
 	private int quantity_in_stock;
 	
+	private boolean isDelete;
+
 	private String color;
-	
+
 	private SizeEnum size;
-	
+
 	private int quantity;
-	
+
 	private Integer productversion;
-	
-	
-	
-	private BigDecimal price;
-	
+
+	private int price; 
+
 	private String productversionName;
-	
+
 	private List<ImagesDTO> images;
-	
+
 	private LocalDateTime createTime;
 }

@@ -31,6 +31,8 @@ public class Variant implements Serializable{
 	@Column(name = "quantity_in_stock",updatable = true)
 	private int quantity_in_stock;
 	
+	@Column(name = "isDelete")
+	private boolean isDelete;
 	@ManyToOne
 	@JoinColumn(name = "color_id")
 	private Color color;

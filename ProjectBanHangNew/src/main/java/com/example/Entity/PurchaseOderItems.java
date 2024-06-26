@@ -26,12 +26,15 @@ public class PurchaseOderItems implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int purchase_order_items_id;
 
-	@Column(name = "purchase_price", precision = 10, scale = 2, updatable = true)
-	private BigDecimal purchase_price;
+	@Column(name = "purchase_price", updatable = true)
+	private int purchase_price;
 
 	@Column(name = "quantity", updatable = true)
 	private int quantity;
 
+	@Column(name = "variant")
+	private int variant;
+	
 	@ManyToOne
 	@JoinColumn(name = "purchase_order_id")
 	private PurchaseOrders purchaseOrder;

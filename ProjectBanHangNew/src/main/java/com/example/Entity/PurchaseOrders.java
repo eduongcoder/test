@@ -3,6 +3,7 @@ package com.example.Entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -25,15 +26,12 @@ public class PurchaseOrders implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int purchase_orders_id;
-
-	@Column(name = "supplier_id", updatable = true)
-	private int supplier_id;
 	
-	@Column(name = "order_date", updatable = true)
-	private Date order_date;
+	@Column(name = "order_date", updatable = false ,insertable = false,columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	private LocalDateTime order_date;
 	
-	@Column(name = "total_amount", precision = 10, scale = 2,updatable = true)
-    private BigDecimal total_amount;
+	@Column(name = "total_amount",updatable = true)
+    private int total_amount;
     
 	@Column(name = "status", length = 50,updatable = true)
 	private String status;

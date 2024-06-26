@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.Entity.Product;
 import com.example.Entity.ProductVersion;
 import com.example.From.ProductVersionForm;
 import com.example.Repository.IProductVersionRepository;
@@ -19,6 +20,9 @@ public class ProductVersionService implements IProductVersionService {
 		@Autowired
 		private IProductVersionRepository service;
 
+		@Autowired
+		private IProductService productService;
+		
 		@Override
 		public List<ProductVersion> getAllProductVersion() {
 			
@@ -44,8 +48,10 @@ public class ProductVersionService implements IProductVersionService {
 		}
 
 		@Override
-		public void createProductVersion(ProductVersionForm form) {
-			// TODO Auto-generated method stub
-			
+		public ProductVersion createProductVersion(ProductVersionForm form) {
+			Product product=productService.getProductByID(form.getProduct());
+			ProductVersion productVersion=modelMapper.map(form, ProductVersion.class);
+			productVersion.setProduct(product);
+			return service.save(productVersion);
 		}
 }

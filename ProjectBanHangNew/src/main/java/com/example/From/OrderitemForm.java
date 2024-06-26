@@ -39,4 +39,6 @@ public class OrderitemForm {
 	
 	private Integer orders;
 	
+	private Integer typeOfVariant;
+	
 }

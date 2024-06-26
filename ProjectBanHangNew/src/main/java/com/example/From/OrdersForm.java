@@ -27,8 +27,8 @@ public class OrdersForm {
 	private LocalDateTime updated_at;
 
 	private Account account;
-
-//	private List<Inventories> inventories;
-
+	
+	private String addressorder;
+	
 	private List<OrderItem> orderItems;
 }

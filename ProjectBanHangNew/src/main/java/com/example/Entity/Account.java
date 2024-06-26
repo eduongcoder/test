@@ -70,6 +70,10 @@ public class Account implements Serializable {
 	@OneToMany(mappedBy = "account")
 	private List<Orders> orders;
 	
+	@OneToMany(mappedBy = "account_id")
+	private List<PersonFix> personFixs;
+	
+	
 
 
 }

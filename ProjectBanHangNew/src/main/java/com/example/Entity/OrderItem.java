@@ -33,7 +33,7 @@ public class OrderItem implements Serializable {
 	private String product_name;
 
 	@Column(name = "product_price", precision = 10, scale = 2, updatable = true)
-	private BigDecimal product_price;
+	private int product_price;
 
 	@Column(name = "quantity", updatable = true)
 	private int quantity;
@@ -41,11 +41,14 @@ public class OrderItem implements Serializable {
 	@Column(name = "created_at", updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime createdAt;
 
-	@Column(name = "updated_at",updatable = true,   columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+	@Column(name = "updated_at", updatable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
 	private LocalDateTime updatedAt;
 
-	@OneToMany(mappedBy = "orderitem")
-	private List<Sales> sales;
+	@Column(name = "variant",updatable = true)
+	private int typeOfVariant;
+	
+//	@OneToMany(mappedBy = "orderitem")
+//	private List<Sales> sales;
 
 	@ManyToOne
 	@JoinColumn(name = "order_id")

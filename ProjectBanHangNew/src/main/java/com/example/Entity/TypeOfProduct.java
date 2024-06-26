@@ -40,7 +40,7 @@ public class TypeOfProduct implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private TypeOfProductGender typeofproductgender;
 	
-	@OneToMany(mappedBy  = "typeofproduct")
+	@OneToMany(mappedBy  = "typeofproduct_id")
 	private List<Product> Product;
 
 }

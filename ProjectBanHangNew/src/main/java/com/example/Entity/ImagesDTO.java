@@ -16,7 +16,7 @@ public class ImagesDTO {
 
 	private int images_id;
 
-	private CompletableFuture<String> image_url;
+//	private CompletableFuture<String> image_url;
 	private String image_urlString;
 
 //	private byte[] imageByte;

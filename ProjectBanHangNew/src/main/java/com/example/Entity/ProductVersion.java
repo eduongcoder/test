@@ -3,6 +3,7 @@ package com.example.Entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -32,8 +33,8 @@ public class ProductVersion implements Serializable {
 	
 	@Column(name = "version_name" ,length = 255,updatable = true)
 	private String version_name;
-	@Column(name = "price", precision = 10, scale = 2,updatable = true)
-    private BigDecimal price;
+	@Column(name = "price",updatable = true)
+    private int price;
 
 	@Column(name = "quantity_in_stock",updatable = true)
     private int quantity_in_stock;
@@ -44,11 +45,14 @@ public class ProductVersion implements Serializable {
 	@Column(name = "dateDelete",updatable = true)
 	private Date dateDelete;
 	
-	@Column(name = "created_at",updatable = true)
-	private Date created_at;
+	@Column(name = "created_at", updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	private LocalDateTime created_at;
 	
-	@Column(name = "updated_at",updatable = true)
-	private Date updated_at;
+	@Column(name = "updated_at",updatable = true,   columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+	private LocalDateTime updated_at;
+	
+	@OneToMany(mappedBy = "product_version_id")
+	private List<PersonFix> personFixs;
 	
 	@ManyToOne
 	@JoinColumn(name = "product_id")

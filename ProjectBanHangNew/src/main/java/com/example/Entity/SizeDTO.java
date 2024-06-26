@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class SizeDTO {
-	private int id;
+	private int size_id;
 	
 	private SizeEnum size_name;
 	

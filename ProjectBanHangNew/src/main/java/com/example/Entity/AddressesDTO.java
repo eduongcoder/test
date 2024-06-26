@@ -19,6 +19,10 @@ public class AddressesDTO {
 
 	private String country;
 
+	private String title;
+	
+	private String phonenumer;
+
 	private LocalDateTime created_at;
 
 	private LocalDateTime updated_at;

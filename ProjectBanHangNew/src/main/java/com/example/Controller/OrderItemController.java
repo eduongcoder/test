@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.Entity.Account;
 import com.example.Entity.OrderItem;
 import com.example.Entity.OrderItemDTO;
+import com.example.Entity.OrderItemDTOVariant;
 import com.example.Entity.Orders;
 import com.example.Entity.ProductVersionDTO;
 import com.example.Entity.ProductVersionShowDTO;
@@ -47,6 +48,13 @@ public class OrderItemController {
 	@Autowired
 	private IProductVersionService serviceProductVersion;
 
+	
+	@PostMapping("/createorderitem")
+	public OrderItemDTOVariant createOrderItem(@RequestBody OrderitemForm form) {
+		OrderItem orderItem= service.createOrderItem(form, form.getOrders(), form.getProductVersion());
+		return modelMapper.map(orderItem, OrderItemDTOVariant.class);
+	}
+	
 	@PutMapping(value = "/updatequantity/{id}")
 	public boolean updateOrderItemQuantity(@PathVariable(name = "id") int id, @RequestParam int quantity) {
 		return service.updateOrderItemQuantity(id, quantity);

@@ -10,4 +10,5 @@ public interface  IVariantService {
 	public Variant getVariantByID(int id);
 	public int deleteVariant(int id);
 	public Variant updateVariant(VariantForm form);
+	public Variant createVariant(VariantForm form);
 }

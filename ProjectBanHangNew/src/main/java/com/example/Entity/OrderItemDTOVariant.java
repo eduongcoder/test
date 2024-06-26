@@ -5,6 +5,8 @@ import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.example.Enum.SizeEnum;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,7 +17,7 @@ public class OrderItemDTOVariant {
 	
 	private String product_name;
 	
-    private BigDecimal product_price;
+    private Integer product_price;
 	
 	private Integer quantity;
 	
@@ -26,6 +28,13 @@ public class OrderItemDTOVariant {
 //	private List<SalesDTO> sales;
 
 	private Integer orders_id;
+	
+	private Integer typeOfVariant;
+
+	private SizeEnum size;
+	
+	private String color;
+	
 	
 //	private List<VariantDTO> variants;
 	

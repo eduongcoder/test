@@ -13,6 +13,8 @@ import com.example.Entity.Images;
 public class ImageHandelService {
 	@Autowired
 	private ImageService service;	
+	@Autowired
+	private ISaleService saleService;
 	
 	
 	@Async("threadPoolTaskExecutor")

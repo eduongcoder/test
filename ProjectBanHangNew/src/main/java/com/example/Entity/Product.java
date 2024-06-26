@@ -2,6 +2,7 @@ package com.example.Entity;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -42,18 +43,18 @@ public class Product implements Serializable {
 	@Column(name = "materialProduct", length = 255, updatable = true)
 	private String materialProduct;
 
-	@Column(name = "created_at", updatable = true)
-	private Date created_at;
+	@Column(name = "created_at", updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	private LocalDateTime created_at;
 
-	@Column(name = "updated_at", updatable = true)
-	private Date updated_at;
+	@Column(name = "updated_at", updatable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+	private LocalDateTime updated_at;
 
 	@OneToMany(mappedBy = "product")
 	private List<ProductVersion> productVersion;
 
 	@ManyToOne
 	@JoinColumn(name = "typeofproductid")
-	private TypeOfProduct typeofproduct;
+	private TypeOfProduct typeofproduct_id;
 
 
 

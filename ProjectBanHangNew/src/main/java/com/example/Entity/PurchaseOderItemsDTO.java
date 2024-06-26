@@ -1,6 +1,5 @@
 package com.example.Entity;
 
-import java.math.BigDecimal;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,11 +9,13 @@ import lombok.NoArgsConstructor;
 public class PurchaseOderItemsDTO {
 	private Integer purchase_order_items_id;
 
-	private BigDecimal purchase_price;
+	private Integer purchase_price;
 
 	private Integer quantity;
 
 	private Integer purchaseOrder;
+
+	private Integer variant;
 
 	private Integer productVersion;
 }

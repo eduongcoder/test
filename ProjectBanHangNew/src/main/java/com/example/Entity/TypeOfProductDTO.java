@@ -16,12 +16,12 @@ import lombok.NonNull;
 @Data
 @NoArgsConstructor
 public class TypeOfProductDTO {
-	private int id;
+	private int typeofproduct_id;
 
 	private TypeOfProductEnum typeofproduct;
 
 	private TypeOfProductGender typeofproductgender;
 
-	private List<Product> Product;
+	private List<ProductDTO> Product;
 
 }

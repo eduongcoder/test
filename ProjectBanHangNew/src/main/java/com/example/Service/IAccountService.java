@@ -13,7 +13,9 @@ public interface IAccountService {
 
 	public List<Account> getAllAccount();
 
-	public boolean createEmployee(AccountForm form);
+	public Account createEmployee(AccountForm form);
+
+	public int createAccountOnlyEmail(AccountForm form);
 
 	public Account findAccountByID(int id);
 }

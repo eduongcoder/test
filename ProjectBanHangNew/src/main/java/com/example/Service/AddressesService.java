@@ -47,12 +47,36 @@ public class AddressesService implements IAddressesService {
 
 		try {
 			Addresses addresses = modelMapper.map(form, Addresses.class);
-			service.save(addresses);
-			return addresses;
+			
+			return service.save(addresses);
 		} catch (Exception e) {
 			return null;
 		}
 
+	}
+
+	@Override
+	public Addresses createAddresses(AddressesForm form) {
+		try {
+			Addresses addresses=modelMapper.map(form, Addresses.class);
+			
+			return service.save(addresses);
+		} catch (Exception e) {
+			return null;
+		}
+		
+	}
+
+	@Override
+	public boolean checkAddresses(AddressesForm form) {
+		List<Addresses> list=getAddresses();
+		for (Addresses addresses : list) {
+			if (addresses.getCity().equals(form.getCity())&& 
+				addresses.getState().equals(form.getState()) && addresses.getCountry().equals(form.getCountry()) && addresses.getAccount_id().getAccount_id()==form.getAccount_id()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

@@ -31,10 +31,12 @@ public class Orders implements Serializable{
 	private int orders_id;
 	
 	@Column(name = "total_amount", precision = 10, scale = 2,updatable = true)
-    private BigDecimal total_amount;
+    private int total_amount;
 	
 	@Column(name = "status",length = 50,updatable = true)
 	private String status;
+	@Column(name = "addressorder",length = 100,updatable = true)
+	private String addressorder;
 	
 	@Column(name = "created_at", updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime created_at;

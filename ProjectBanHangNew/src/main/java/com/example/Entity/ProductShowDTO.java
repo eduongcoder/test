@@ -1,6 +1,7 @@
 package com.example.Entity;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.example.Enum.TypeOfProductEnum;
@@ -26,10 +27,11 @@ public class ProductShowDTO {
 
 	private String materialProduct;
 
-	private Date created_at;
+	private LocalDateTime created_at;
 
-	private Date updated_at;
+	private LocalDateTime updated_at;
 
 	private List<ProductVersionShowDTO> productVersion;
 
+	private List<PersonFixDTO> personFixs;
 }

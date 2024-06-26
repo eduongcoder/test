@@ -7,30 +7,50 @@ import java.util.concurrent.CompletableFuture;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.example.Entity.Color;
+import com.example.Entity.ColoronlyDTO;
 import com.example.Entity.Images;
 import com.example.Entity.ImagesDTO;
+import com.example.Entity.PersonFix;
+import com.example.Entity.PersonFixDTO;
 import com.example.Entity.Product;
 import com.example.Entity.ProductDTO;
+import com.example.Entity.ProductOnlyDTO;
 import com.example.Entity.ProductShowDTO;
+import com.example.Entity.Size;
+import com.example.Entity.SizeonlyDTO;
 import com.example.Entity.TypeOfProduct;
 import com.example.Entity.TypeOfProductDTO;
+import com.example.Entity.TypeOfProductonlyDTO;
+import com.example.From.PersonFixForm;
+import com.example.From.ProductForm;
+import com.example.From.TypeProductVersionSizeColorVariantForm;
 import com.example.Repository.IImageRepository;
 import com.example.Repository.IProductRepository;
 import com.example.Repository.ITypeOfProductRepository;
+import com.example.Service.IColorService;
 import com.example.Service.IImageService;
+import com.example.Service.IPersonFixService;
 import com.example.Service.IProductService;
+import com.example.Service.ISizeService;
+import com.example.Service.ITypeOfProductService;
 import com.example.Service.ImageHandelService;
 
+import jakarta.transaction.Transactional;
 
 @RequestMapping("/api/product")
 @RestController
+@EnableTransactionManagement
 public class ProductController implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
@@ -50,23 +70,34 @@ public class ProductController implements WebMvcConfigurer {
 
 	@Autowired
 	private ImageHandelService service3;
-	
+
+	@Autowired
+	private ITypeOfProductService service4;
+
+	@Autowired
+	private ISizeService sizeService;
+
+	@Autowired
+	private IColorService colorService;
+
+	@Autowired
+	private IPersonFixService personFixService;
+
 	@Autowired
 	private ModelMapper modelMapper;
 
-
-	
 	List<String> conver = new ArrayList<String>();
 
 	@GetMapping("/image")
 	public List<ImagesDTO> getAll() {
-		List<Images> list=service1.getAllImage();
-		List<ImagesDTO> dtos=modelMapper.map(list, new TypeToken<List<ImagesDTO>>()
-		{}.getType());
+		List<Images> list = service1.getAllImage();
+		List<ImagesDTO> dtos = modelMapper.map(list, new TypeToken<List<ImagesDTO>>() {
+		}.getType());
 
 		return dtos;
 
 	}
+
 	@GetMapping("/typedto")
 	public List<TypeOfProductDTO> getAlltypedto() {
 		List<TypeOfProduct> list = service2.findAll();
@@ -83,6 +114,15 @@ public class ProductController implements WebMvcConfigurer {
 
 		return dtos;
 	}
+	
+	@GetMapping("/getproductonly")
+	public List<ProductOnlyDTO> getProductOnly(){
+		List<Product> list = service.getAllProducts();
+		List<ProductOnlyDTO> dtos = modelMapper.map(list, new TypeToken<List<ProductOnlyDTO>>() {
+		}.getType());
+
+		return dtos;
+	}
 
 	@GetMapping
 	public List<ProductDTO> getAllProduct() {
@@ -92,6 +132,39 @@ public class ProductController implements WebMvcConfigurer {
 
 		return dtos;
 	}
+
+	@GetMapping("/typeofproduct")
+	public List<TypeOfProductDTO> getAllTypeOfProduct() {
+		List<TypeOfProduct> list = service4.getAllTypeOfProduct();
+		List<TypeOfProductDTO> dtos = modelMapper.map(list, new TypeToken<List<TypeOfProductDTO>>() {
+		}.getType());
+		return dtos;
+	}
+
+	@GetMapping("/sizeOnly")
+	public List<SizeonlyDTO> getAllSizeOnly() {
+		List<Size> list = sizeService.getAllList();
+		List<SizeonlyDTO> dtos = modelMapper.map(list, new TypeToken<List<SizeonlyDTO>>() {
+		}.getType());
+		return dtos;
+	}
+
+	@GetMapping("/typeofproductOnly")
+	public List<TypeOfProductonlyDTO> getAllTypeOfProductOnly() {
+		List<TypeOfProduct> list = service4.getAllTypeOfProduct();
+		List<TypeOfProductonlyDTO> dtos = modelMapper.map(list, new TypeToken<List<TypeOfProductonlyDTO>>() {
+		}.getType());
+		return dtos;
+	}
+
+	@GetMapping("/colorOnly")
+	public List<ColoronlyDTO> getAllColorOnly() {
+		List<Color> list = colorService.getAllList();
+		List<ColoronlyDTO> dtos = modelMapper.map(list, new TypeToken<List<ColoronlyDTO>>() {
+		}.getType());
+		return dtos;
+	}
+
 	@GetMapping(value = "/imagechuoi/{id}")
 	public CompletableFuture<String> getImageChuoi(@PathVariable(name = "id") int id) {
 
@@ -104,11 +177,40 @@ public class ProductController implements WebMvcConfigurer {
 		return modelMapper.map(service1.getImageByID(id), ImagesDTO.class);
 	}
 
+	@PostMapping("/createproductbig")
+	public boolean createProductAll(@RequestBody TypeProductVersionSizeColorVariantForm form) {
+		return service.createProductBig(form);
+	}
+
 	@GetMapping(value = "/{id}")
 	public ProductDTO getProductByID(@PathVariable(name = "id") int id) {
 		Product product = service.getProductByID(id);
 		ProductDTO dto = modelMapper.map(product, ProductDTO.class);
 		return dto;
 	}
+
+	@PostMapping("/createproduct")
+	public ProductDTO creatProduct(@RequestBody ProductForm form) {
+		Product product=service.createProduct(form);
+		ProductDTO dto = modelMapper.map(product, ProductDTO.class);
+		return dto;
+	}
+	
+	@GetMapping("/getPersonFix")
+	public List<PersonFixDTO> getAllPersonFix() {
+		List<PersonFix> list = personFixService.getAlList();
+		List<PersonFixDTO> dtos = modelMapper.map(list, new TypeToken<List<PersonFixDTO>>() {
+		}.getType());
+		return dtos;
+	}
+
+	@PostMapping("/createPersonFix")
+	public PersonFixDTO getPersonFix(@RequestBody PersonFixForm form) {
+		PersonFix personFix=personFixService.createPersonFix(form);
+		PersonFixDTO dtos = modelMapper.map(personFix, PersonFixDTO.class);
+		return dtos;
+	}
+	
+	
 
 }

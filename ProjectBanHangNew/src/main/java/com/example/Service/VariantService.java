@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.example.Entity.Color;
 import com.example.Entity.Variant;
 import com.example.From.VariantForm;
 import com.example.Repository.IVariantRepository;
@@ -17,7 +19,15 @@ public class VariantService  implements IVariantService{
 	private IVariantRepository service;
 	
 	@Autowired
+	private ISizeService sizeService;
+	
+	@Autowired
+	private IColorService colorService;
+	
+	@Autowired
 	private ModelMapper modelMapper;
+	
+
 	
 	@Override
 	public List<Variant> getAllVariants() {
@@ -41,6 +51,16 @@ public class VariantService  implements IVariantService{
 	public Variant updateVariant(VariantForm form) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Variant createVariant(VariantForm form) {
+
+		Variant variant=modelMapper.map(form, Variant.class);
+		variant.setColor(colorService.getColorByID(form.getColorID()));
+		variant.setSize(sizeService.getSizeByID(form.getSizeID()));
+		
+		return service.save(variant);
 	}
 
 }

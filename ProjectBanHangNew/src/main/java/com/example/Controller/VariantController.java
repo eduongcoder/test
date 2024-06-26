@@ -19,10 +19,12 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.example.Entity.Account;
+import com.example.Entity.AddressesDTO;
 import com.example.Entity.OrderItem;
 import com.example.Entity.OrderItemDTO;
 import com.example.Entity.OrderItemDTOVariant;
 import com.example.Entity.Orders;
+import com.example.Entity.OrdersDTO;
 import com.example.Entity.ProductVersionShowDTO;
 import com.example.Entity.TypeOfProductDTO;
 import com.example.Entity.Variant;
@@ -30,6 +32,7 @@ import com.example.Entity.VariantDTO;
 import com.example.Entity.VariantNoAccountDTO;
 import com.example.From.OrderitemForm;
 import com.example.From.OrdersForm;
+import com.example.From.VariantForm;
 import com.example.Repository.IOrderItemRepository;
 import com.example.Service.IAccountService;
 import com.example.Service.IOrderItemService;
@@ -69,6 +72,12 @@ public class VariantController  {
 		return dtos;
 	}
 
+	@PostMapping("/create")
+	public VariantDTO createVariant(@RequestBody VariantForm form) {
+		Variant variant=service.createVariant(form);
+		return modelMapper.map(variant, VariantDTO.class);
+	}
+	
 	@GetMapping(value = "/getVariant/{idvariant}")
 	public VariantNoAccountDTO createOrderItemNoAccount(@PathVariable(name = "idvariant") int idvariant) {
 
@@ -100,12 +109,19 @@ public class VariantController  {
 
 	@GetMapping("/ordersigleitem")
 	private OrderItemDTO getItemDTO(@RequestParam int idOrderItem, @RequestParam int idVariant) {
-		OrderItem item = serviceIOrderItem.findbyID(idOrderItem);
-		OrderItemDTO dto = modelMapper.map(item, OrderItemDTO.class);
-		VariantDTO variantDTO = modelMapper.map(service.getVariantByID(idVariant), VariantDTO.class);
-		dto.setVariants(variantDTO);
-		dto.setIdvariant(idVariant);
-		return dto;
+		try {
+			OrderItem item = serviceIOrderItem.findbyID(idOrderItem);
+			OrderItemDTO dto = modelMapper.map(item, OrderItemDTO.class);
+			VariantDTO variantDTO = modelMapper.map(service.getVariantByID(idVariant), VariantDTO.class);
+			dto.setVariants(variantDTO);
+			dto.setIdvariant(idVariant);
+			return dto;
+		} catch (Exception e) {
+			// TODO: handle exception
+			return null;
+		}
+		
+	
 	}
 
 	@PostMapping("/createorderitem")
@@ -115,6 +131,7 @@ public class VariantController  {
 		Orders orders = serviceOrder.getOrderPrepare(idAccount);
 		if (orders != null) {
 			form.setOrders(orders.getOrders_id());
+			form.setTypeOfVariant(idVariant);
 			OrderItem orderItem = serviceIOrderItem.createOrderItem(form, form.getOrders(), form.getProductVersion());
 
 			return orderItem.getOrder_items_id();
@@ -122,13 +139,16 @@ public class VariantController  {
 			Account account = serviceAccount.findAccountByID(idAccount);
 
 			OrdersForm ordersForm = new OrdersForm();
-			ordersForm.setAccount(account);
-			ordersForm.setTotal_amount(BigDecimal.valueOf(1000.00));
+			
+			ordersForm.setTotal_amount(BigDecimal.valueOf(0.00));
 			ordersForm.setOrderItems(null);
 			ordersForm.setStatus("Prepare");
-			ordersForm.setUpdated_at(null);
+			ordersForm.setAccount(account);
+
 			Orders orderscreateOrders = serviceOrder.createOrder(ordersForm);
+
 			form.setOrders(orderscreateOrders.getOrders_id());
+			form.setTypeOfVariant(idVariant);
 			OrderItem orderItem = serviceIOrderItem.createOrderItem(form, form.getOrders(), form.getProductVersion());
 
 			return orderItem.getOrder_items_id();

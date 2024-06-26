@@ -1,7 +1,6 @@
 package com.example.Entity;
 
-import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,11 +12,19 @@ public class SalesDTO {
 
 	private Integer quantity;
 
-	private BigDecimal sale_price;
+	private Integer sale_price;
 
-	private Date sale_date;
+	private LocalDateTime date_create;
+	
+	private LocalDateTime date_update;
+	
+	private LocalDateTime sale_date_start;
+	
+	private LocalDateTime sale_date_end;
 
 	private Integer productVersion;
 
+	
+	
 //	private Integer orderitem;
 }
