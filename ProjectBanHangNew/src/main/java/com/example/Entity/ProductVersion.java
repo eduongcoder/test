@@ -1,7 +1,6 @@
 package com.example.Entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,13 +32,11 @@ public class ProductVersion implements Serializable {
 	
 	@Column(name = "version_name" ,length = 255,updatable = true)
 	private String version_name;
-	@Column(name = "price",updatable = true)
-    private int price;
 
 	@Column(name = "quantity_in_stock",updatable = true)
     private int quantity_in_stock;
 
-	@Column(name = "isDelete",updatable = true)
+	@Column(name = "isDelete", updatable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private Boolean isDelete;
 	
 	@Column(name = "dateDelete",updatable = true)
@@ -48,7 +45,7 @@ public class ProductVersion implements Serializable {
 	@Column(name = "created_at", updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime created_at;
 	
-	@Column(name = "updated_at",updatable = true,   columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+	@Column(name = "updated_at",updatable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
 	private LocalDateTime updated_at;
 	
 	@OneToMany(mappedBy = "product_version_id")
@@ -63,9 +60,6 @@ public class ProductVersion implements Serializable {
 	
 	@OneToMany(mappedBy = "productVersion")
 	private List<PurchaseOderItems> purchaseOderItems;
-	
-	@OneToMany(mappedBy = "productVersion")
-	private List<Inventories> inventories;
 	
 	@OneToMany(mappedBy = "productVersion")
 	private List<OrderItem> orderItems;

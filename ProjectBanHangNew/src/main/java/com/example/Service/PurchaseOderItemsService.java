@@ -9,11 +9,14 @@ import org.springframework.stereotype.Service;
 
 import com.example.Entity.Images;
 import com.example.Entity.ImagesDTO;
+import com.example.Entity.ImagesDTOOnlyID;
 import com.example.Entity.PurchaseOderItems;
+import com.example.Entity.PurchaseOrders;
 import com.example.Entity.SalesDTO;
 import com.example.Entity.Variant;
 import com.example.Enum.SizeEnum;
 import com.example.From.PurchaseOderItemsForm;
+import com.example.From.PurchaseOrdersForm;
 import com.example.Repository.IPurchaseOderItemsRepository;
 
 @Service
@@ -28,6 +31,12 @@ public class PurchaseOderItemsService implements IPurchaseOderItemsService {
 	@Autowired
 	private IVariantService variantService;
 
+	@Autowired
+	private IProductVersionService productVersionService;
+	
+	@Autowired
+	private IPurchaseOrdersService purchaseOrdersService;
+	
 	@Override
 	public List<PurchaseOderItems> getAllPurchaseOderItems() {
 		// TODO Auto-generated method stub
@@ -35,7 +44,7 @@ public class PurchaseOderItemsService implements IPurchaseOderItemsService {
 	}
 
 	@Override
-	public PurchaseOderItems getAllPurchaseOderItemsByID(int id) {
+	public PurchaseOderItems getPurchaseOderItemsByID(int id) {
 		// TODO Auto-generated method stub
 		return service.findById(id).get();
 	}
@@ -43,18 +52,39 @@ public class PurchaseOderItemsService implements IPurchaseOderItemsService {
 	@Override
 	public PurchaseOderItems updatePurchaseOderItems(PurchaseOderItemsForm form) {
 		PurchaseOderItems purchaseOderItems = modelMapper.map(form, PurchaseOderItems.class);
+		purchaseOderItems.setProductVersion(productVersionService.getProductVersionByID(form.getProductVersion()));
+		purchaseOderItems.setPurchaseOrder(purchaseOrdersService.getPurchaseOrdersByID(form.getPurchaseOrder()));
 		return service.save(purchaseOderItems);
 	}
 
 	@Override
 	public PurchaseOderItems deletePurchaseOderItems(int id) {
-		// TODO Auto-generated method stub
+		service.deleteById(id);
 		return null;
 	}
 
 	@Override
-	public PurchaseOderItems createPurchaseOderItemsByID(PurchaseOderItemsForm form) {
+	public PurchaseOderItems createPurchaseOderItems(PurchaseOderItemsForm form) {
+		
+		List<PurchaseOrders> list=purchaseOrdersService.getAllPurchaseOrders();
+		PurchaseOrders temp=null;
+		for (PurchaseOrders purchaseOrders : list) {
+			if (purchaseOrders.getStatus().equals("Prepare")) {
+				temp=purchaseOrders;
+				break;
+			}
+		}
+		if (temp==null) {
+			PurchaseOrdersForm form1=new PurchaseOrdersForm();
+			form1.setTotal_amount(0);
+			temp=purchaseOrdersService.createPurchaseOrders(form1);
+		}
+		
+		form.setPurchaseOrder(temp.getPurchase_orders_id());
 		PurchaseOderItems purchaseOderItems = modelMapper.map(form, PurchaseOderItems.class);
+		purchaseOderItems.setProductVersion(productVersionService.getProductVersionByID(form.getProductVersion()));
+		purchaseOderItems.setPurchaseOrder(purchaseOrdersService.getPurchaseOrdersByID(form.getPurchaseOrder()));
+		
 		return service.save(purchaseOderItems);
 	}
 
@@ -72,10 +102,10 @@ public class PurchaseOderItemsService implements IPurchaseOderItemsService {
 	}
 
 	@Override
-	public List<ImagesDTO> getImages(int idvariant) {
+	public List<ImagesDTOOnlyID> getImages(int idvariant) {
 		Variant variant=variantService.getVariantByID(idvariant);
 		List<Images> list= variant.getImages();
-		List<ImagesDTO> dtos = modelMapper.map(list, new TypeToken<List<ImagesDTO>>() {
+		List<ImagesDTOOnlyID> dtos = modelMapper.map(list, new TypeToken<List<ImagesDTOOnlyID>>() {
 		}.getType());
 		return dtos;
 	}

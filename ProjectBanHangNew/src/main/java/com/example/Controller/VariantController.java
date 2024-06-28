@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -78,6 +79,12 @@ public class VariantController  {
 		return modelMapper.map(variant, VariantDTO.class);
 	}
 	
+	@PostMapping("/createint")
+	public int createVariantInt(@RequestBody VariantForm form) {
+		Variant variant=service.createVariant(form);
+		return variant.getVariants_id();
+	}
+	
 	@GetMapping(value = "/getVariant/{idvariant}")
 	public VariantNoAccountDTO createOrderItemNoAccount(@PathVariable(name = "idvariant") int idvariant) {
 
@@ -123,6 +130,12 @@ public class VariantController  {
 		
 	
 	}
+	
+	@PutMapping("/updateVariant")
+	private int updateVariant(@RequestBody VariantForm form) {
+		return modelMapper.map(service.updateVariant(form), VariantDTO.class).getVariants_id();
+	}
+	
 
 	@PostMapping("/createorderitem")
 	private int postMethodName(@RequestBody OrderitemForm form, @RequestParam int idAccount,

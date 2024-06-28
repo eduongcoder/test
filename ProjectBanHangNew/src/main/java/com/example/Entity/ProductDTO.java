@@ -24,8 +24,6 @@ public class ProductDTO  {
 	private LocalDateTime updated_at;
 
 	private List<ProductVersionDTO> productVersion;
-
-	private Integer typeofproduct_id;
-
 	
+	private Integer typeofproduct_id;
 }

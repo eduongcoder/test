@@ -1,8 +1,6 @@
 package com.example.From;
 
-import java.util.List;
 
-import com.example.Entity.PurchaseOderItemsDTO;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +14,5 @@ public class PurchaseOrdersForm {
     
 	private String status;
 
-	private List<PurchaseOderItemsDTO> purchaseorderitem;
 
 }

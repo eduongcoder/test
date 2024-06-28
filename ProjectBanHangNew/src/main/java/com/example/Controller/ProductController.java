@@ -11,14 +11,18 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.example.Entity.Category;
+import com.example.Entity.CategoryDTO;
 import com.example.Entity.Color;
 import com.example.Entity.ColoronlyDTO;
+import com.example.Entity.HistoryCategoryDTO;
 import com.example.Entity.Images;
 import com.example.Entity.ImagesDTO;
 import com.example.Entity.PersonFix;
@@ -32,13 +36,17 @@ import com.example.Entity.SizeonlyDTO;
 import com.example.Entity.TypeOfProduct;
 import com.example.Entity.TypeOfProductDTO;
 import com.example.Entity.TypeOfProductonlyDTO;
+import com.example.From.CategoryForm;
+import com.example.From.HistoryCategoryForm;
 import com.example.From.PersonFixForm;
 import com.example.From.ProductForm;
 import com.example.From.TypeProductVersionSizeColorVariantForm;
 import com.example.Repository.IImageRepository;
 import com.example.Repository.IProductRepository;
 import com.example.Repository.ITypeOfProductRepository;
+import com.example.Service.ICategoryService;
 import com.example.Service.IColorService;
+import com.example.Service.IHistoryCategoryService;
 import com.example.Service.IImageService;
 import com.example.Service.IPersonFixService;
 import com.example.Service.IProductService;
@@ -83,6 +91,12 @@ public class ProductController implements WebMvcConfigurer {
 	@Autowired
 	private IPersonFixService personFixService;
 
+	@Autowired
+	private ICategoryService categoryService;
+	
+	@Autowired
+	private IHistoryCategoryService historyCategoryService;
+	
 	@Autowired
 	private ModelMapper modelMapper;
 
@@ -177,10 +191,7 @@ public class ProductController implements WebMvcConfigurer {
 		return modelMapper.map(service1.getImageByID(id), ImagesDTO.class);
 	}
 
-	@PostMapping("/createproductbig")
-	public boolean createProductAll(@RequestBody TypeProductVersionSizeColorVariantForm form) {
-		return service.createProductBig(form);
-	}
+
 
 	@GetMapping(value = "/{id}")
 	public ProductDTO getProductByID(@PathVariable(name = "id") int id) {
@@ -194,6 +205,12 @@ public class ProductController implements WebMvcConfigurer {
 		Product product=service.createProduct(form);
 		ProductDTO dto = modelMapper.map(product, ProductDTO.class);
 		return dto;
+	}
+	
+	@PostMapping("/createproductint")
+	public int creatProductInt(@RequestBody ProductForm form) {
+		Product product=service.createProduct(form);
+		return product.getProduct_id();
 	}
 	
 	@GetMapping("/getPersonFix")
@@ -211,6 +228,47 @@ public class ProductController implements WebMvcConfigurer {
 		return dtos;
 	}
 	
+	@GetMapping("/getcategory")
+	public List<CategoryDTO> getAllCategory(){
+		List<Category> list = categoryService.getAllCategory();
+		List<CategoryDTO> dtos = modelMapper.map(list, new TypeToken<List<CategoryDTO>>() {
+		}.getType());
+		return dtos;
+	}
 	
+	@PostMapping("/createcategoryint")
+	public int createCategoryInt(@RequestBody CategoryForm form) {
+		return categoryService.createCategory(form).getCategory_id();
+	}
+	
+	@PostMapping("/createcategory")
+	public CategoryDTO createCategory(@RequestBody CategoryForm form) {
+		CategoryDTO dto=modelMapper.map(categoryService.createCategory(form), CategoryDTO.class);
+		return dto;
+	}
+	
+	@GetMapping(value = "/getcategory/{id}")
+	public List<CategoryDTO> getAllCategoryByIDProduct(@PathVariable(name = "id") int id){
+		Product product=service.getProductByID(id);
+		List<Category> list = product.getCategories();
+		List<CategoryDTO> dtos = modelMapper.map(list, new TypeToken<List<CategoryDTO>>() {
+		}.getType());
+		return dtos;
+	} 
+	@PutMapping("/updatecategory")
+	public HistoryCategoryDTO updateCategory(@RequestBody CategoryForm form) {
+		int history=categoryService.findCategoryByID(form.getCategory_id()).getPrice_base();
+		Category category=categoryService.updateCategory(form);
+		HistoryCategoryForm form2=new HistoryCategoryForm();
+		if (category.getCategory_id()!=0) {
+			form2.setCategory(category.getCategory_id());
+			form2.setOld_price(history);
+			form2.setNew_price(category.getPrice_base());
+			HistoryCategoryDTO dto =modelMapper.map(historyCategoryService.createHistoryCategories(form2), HistoryCategoryDTO.class) ; 
+			return dto;
+		}
+		return null;
+		
+	}
 
 }

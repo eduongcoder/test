@@ -7,15 +7,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductVersionForm {
 
+	private Integer productVersion_id;
+	
 	private String version_name;
-
-	private Integer price;
 
 	private Integer quantity_in_stock;
 
-	private Boolean isDelete;
-
-	private Integer product;
+	private Integer productID;
 	
 	
 

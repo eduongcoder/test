@@ -25,6 +25,8 @@ public class PurchaseOderItemsDetailDTO {
 
 	private Integer productVersion;
 	
+	private Integer productID;
+	
 	private String version_name;
 	
 	private String color;

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.Entity.Images;
 import com.example.Entity.ImagesDTO;
+import com.example.Entity.ImagesDTOOnlyID;
 import com.example.Entity.PurchaseOderItems;
 import com.example.Enum.SizeEnum;
 import com.example.From.PurchaseOderItemsForm;
@@ -14,9 +15,9 @@ import com.example.From.PurchaseOderItemsForm;
 public interface IPurchaseOderItemsService {
 	public List<PurchaseOderItems> getAllPurchaseOderItems();
 
-	public PurchaseOderItems getAllPurchaseOderItemsByID(int id);
+	public PurchaseOderItems getPurchaseOderItemsByID(int id);
 
-	public PurchaseOderItems createPurchaseOderItemsByID(PurchaseOderItemsForm form);
+	public PurchaseOderItems createPurchaseOderItems(PurchaseOderItemsForm form);
 
 	public PurchaseOderItems updatePurchaseOderItems(PurchaseOderItemsForm form);
 
@@ -26,5 +27,7 @@ public interface IPurchaseOderItemsService {
 
 	public String getColorVariant(int id);
 
-	public List<ImagesDTO> getImages(int idvariant);
+	public List<ImagesDTOOnlyID> getImages(int idvariant);
+	
+	 
 }

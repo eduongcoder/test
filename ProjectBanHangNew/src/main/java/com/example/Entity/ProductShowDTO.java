@@ -33,5 +33,7 @@ public class ProductShowDTO {
 
 	private List<ProductVersionShowDTO> productVersion;
 
+	private List<CategoryDTO> categories;
+	
 	private List<PersonFixDTO> personFixs;
 }

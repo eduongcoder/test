@@ -11,4 +11,5 @@ public interface  IVariantService {
 	public int deleteVariant(int id);
 	public Variant updateVariant(VariantForm form);
 	public Variant createVariant(VariantForm form);
+	public int getPriceFormCategory(int id);
 }

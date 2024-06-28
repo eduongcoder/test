@@ -7,6 +7,7 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,5 +40,17 @@ public class ProductVersionController {
 	private ProductVersionDTO createProductVersion(@RequestBody ProductVersionForm form) {
 		ProductVersion productVersion= service.createProductVersion(form);
 		return modelMapper.map(productVersion, ProductVersionDTO.class);
+	}
+	
+	@PostMapping("/createint")
+	private int createProductVersionInt(@RequestBody ProductVersionForm form) {
+		ProductVersion productVersion= service.createProductVersion(form);
+		
+		return productVersion.getProductVersion_id();
+	}
+	
+	@PutMapping("/updateVersion")
+	private int updateProductVersion(@RequestBody ProductVersionForm form) {
+		return modelMapper.map(service.updateProductVersion(form), ProductVersionDTO.class).getProductVersion_id();
 	}
 }

@@ -12,8 +12,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -23,20 +22,22 @@ import lombok.NoArgsConstructor;
 @Table(name = "sizes")
 @Data
 @NoArgsConstructor
-public class Size implements Serializable{
-	private static final long serialVersionUID=1;
-	
-	
+public class Size implements Serializable {
+	private static final long serialVersionUID = 1;
+
 	@Column(name = "id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int size_id;
-	
-	@Column(name = "size_name",updatable = true)
+
+	@Column(name = "size_name", updatable = true)
 	@Enumerated(EnumType.STRING)
 	private SizeEnum size_name;
-	
+
 	@OneToMany(mappedBy = "size")
 	private List<Variant> variants;
+
+	@OneToMany(mappedBy = "catetorySize")
+	private List<Category> categories;
 
 }

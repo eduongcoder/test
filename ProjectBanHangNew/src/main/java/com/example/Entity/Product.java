@@ -55,7 +55,9 @@ public class Product implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "typeofproductid")
 	private TypeOfProduct typeofproduct_id;
-
+	
+	@OneToMany(mappedBy = "catetoryProduct")
+	private List<Category> categories;
 
 
 }

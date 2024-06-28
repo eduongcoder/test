@@ -51,6 +51,9 @@ public class Sales implements Serializable{
 	@JoinColumn(name ="version_product_id")
 	private ProductVersion productVersion;
 	
-
+	
+	@ManyToOne
+	@JoinColumn(name ="category_id")
+	private Category category;
 	
 }

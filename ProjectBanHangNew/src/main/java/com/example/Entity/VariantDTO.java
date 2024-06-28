@@ -16,7 +16,7 @@ public class VariantDTO {
 	private int quantity_in_stock;
 
 	private boolean isDelete;
-
+	
 	private String color;
 
 	private SizeEnum size;

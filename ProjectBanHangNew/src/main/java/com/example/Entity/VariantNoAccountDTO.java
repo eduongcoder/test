@@ -1,6 +1,5 @@
 package com.example.Entity;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,6 +17,8 @@ public class VariantNoAccountDTO {
 	
 	private boolean isDelete;
 
+//	private int category;
+	
 	private String color;
 
 	private SizeEnum size;

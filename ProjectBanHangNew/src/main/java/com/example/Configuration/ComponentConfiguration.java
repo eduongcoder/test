@@ -10,8 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.example.Entity.Category;
+import com.example.Entity.CategoryDTO;
 import com.example.Entity.Images;
 import com.example.Entity.ImagesDTO;
+import com.example.Entity.ImagesDTOOnlyID;
 import com.example.Entity.Inventories;
 import com.example.Entity.InventoriesDTO;
 import com.example.Entity.OrderItem;
@@ -76,10 +79,10 @@ public class ComponentConfiguration {
 			return service.getImageBase64String(imageID);
 		};
 
-		Converter<ProductVersion, Integer> priceConverter = context -> {
-			int saleID = context.getSource().getProductVersion_id();
-			return saleService.getSalePrice(saleID);
-		};
+//		Converter<ProductVersion, Integer> priceConverter = context -> {
+//			int saleID = context.getSource().getProductVersion_id();
+//			return saleService.getSalePrice(saleID);
+//		};
 		Converter<OrderItem, SizeEnum> sizeConverter = context -> {
 			int idvariant = context.getSource().getTypeOfVariant();
 			return orderItemService.getSizeEnum(idvariant);
@@ -100,7 +103,7 @@ public class ComponentConfiguration {
 			return purchaseOderItemsService.getColorVariant(idvariant);
 		};
 		
-		Converter<PurchaseOderItems, List<ImagesDTO>> imagesPurchaseConverter = context -> {
+		Converter<PurchaseOderItems, List<ImagesDTOOnlyID>> imagesPurchaseConverter = context -> {
 			int idvariant = context.getSource().getVariant();
 			return purchaseOderItemsService.getImages(idvariant);
 		};
@@ -133,7 +136,7 @@ public class ComponentConfiguration {
 			@Override
 			protected void configure() {
 				map().setProduct(source.getProduct().getProduct_id());
-				using(priceConverter).map(source, destination.getPriceSale());
+//				using(priceConverter).map(source, destination.getPriceSale());
 			}
 		});
 		modelMapper.addMappings(new PropertyMap<ProductVersion, ProductVersionDTO>() {
@@ -180,7 +183,7 @@ public class ComponentConfiguration {
 			@Override
 			protected void configure() {
 				map().setProductversionName(source.getProductversion().getVersion_name());
-				map().setPrice(source.getProductversion().getPrice());
+//				map().setPrice(source.getProductversion().getPrice());
 			}
 		});
 		modelMapper.addMappings(new PropertyMap<Inventories, InventoriesDTO>() {
@@ -221,6 +224,15 @@ public class ComponentConfiguration {
 				map().setProduct_version_id(source.getProduct_version_id().getProductVersion_id());
 			}
 		});
+		modelMapper.addMappings(new PropertyMap<Category, CategoryDTO>() {
+			@Override
+			protected void configure() {
+				map().setCatetoryProduct(source.getCatetoryProduct().getProduct_id());
+				map().setCatetoryColor(source.getCatetoryColor().getColor_id());
+				map().setColor(source.getCatetoryColor().getColor_name());
+				map().setSizeEnum(source.getCatetorySize().getSize_name());
+			}
+		});
 		modelMapper.addMappings(new PropertyMap<PurchaseOderItems, PurchaseOderItemsDetailDTO>() {
 			@Override
 			protected void configure() {
@@ -229,6 +241,7 @@ public class ComponentConfiguration {
 				map().setNameProduct(source.getProductVersion().getProduct().getName());
 				map().setGender(source.getProductVersion().getProduct().getTypeofproduct_id().getTypeofproductgender());
 				map().setTypeOfProductEnum(source.getProductVersion().getProduct().getTypeofproduct_id().getTypeofproduct());
+				map().setProductID(source.getProductVersion().getProduct().getProduct_id());
 
 			}
 		});

@@ -13,7 +13,5 @@ public interface IProductService {
 	public int deleteProduct(int id);
 	public Product updateProduct(ProductForm form);
 	public Product createProduct(ProductForm form);
-	public boolean createProductBig(TypeProductVersionSizeColorVariantForm form);
 
-//	public List<ProductShow> getAllProductShow() {
 }

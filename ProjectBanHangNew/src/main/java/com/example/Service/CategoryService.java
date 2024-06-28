@@ -1,0 +1,70 @@
+package com.example.Service;
+
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.Entity.Category;
+import com.example.From.CategoryForm;
+import com.example.From.HistoryCategoryForm;
+import com.example.Repository.ICategoryRepository;
+
+@Service
+public class CategoryService implements ICategoryService{
+
+	@Autowired
+	private ICategoryRepository service;
+	
+	@Autowired
+	private ModelMapper modelMapper;
+	
+	@Autowired
+	private IColorService colorService;
+	
+	@Autowired
+	private ISizeService sizeService;
+	
+	@Autowired
+	private IProductService productService;
+	
+
+	
+	@Override
+	public Category updateCategory(CategoryForm form) {
+		Category category=modelMapper.map(form, Category.class);
+		category.setCatetoryColor(colorService.getColorByID(form.getCatetoryColor()));
+		category.setCatetorySize(sizeService.getSizeByID(form.getCatetorySize()));
+		category.setCatetoryProduct(productService.getProductByID(form.getCatetoryProduct()));
+		return service.save(category);
+	}
+
+	@Override
+	public void deleteCategoryByID(int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Category> getAllCategory() {
+		// TODO Auto-generated method stub
+		return service.findAll();
+	}
+
+	@Override
+	public Category createCategory(CategoryForm form) {
+		Category category=modelMapper.map(form, Category.class);
+		category.setCatetoryColor(colorService.getColorByID(form.getCatetoryColor()));
+		category.setCatetorySize(sizeService.getSizeByID(form.getCatetorySize()));
+		category.setCatetoryProduct(productService.getProductByID(form.getCatetoryProduct()));
+		return service.save(category);
+	}
+
+	@Override
+	public Category findCategoryByID(int id) {
+		// TODO Auto-generated method stub
+		return service.findById(id).get();
+	}
+
+}

@@ -12,10 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductVersionShowDTO {
 	private Integer productVersion_id;
-	
-    private Integer price;
-
-    private Integer priceSale;
     
     private Integer quantity_in_stock;
 

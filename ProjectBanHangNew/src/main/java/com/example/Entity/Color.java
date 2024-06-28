@@ -30,4 +30,7 @@ public class Color implements Serializable {
 	
 	@OneToMany(mappedBy = "color")
 	private List<Variant> variants;
+	
+	@OneToMany(mappedBy = "catetoryColor")
+	private List<Category> categories;
 }

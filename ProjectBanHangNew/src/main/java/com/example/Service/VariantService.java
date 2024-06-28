@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.example.Entity.Category;
 import com.example.Entity.Color;
 import com.example.Entity.Variant;
 import com.example.From.VariantForm;
@@ -23,6 +24,12 @@ public class VariantService  implements IVariantService{
 	
 	@Autowired
 	private IColorService colorService;
+	
+	@Autowired
+	private ICategoryService categoryService;
+	
+	@Autowired
+	private IProductVersionService productVersionService;
 	
 	@Autowired
 	private ModelMapper modelMapper;
@@ -49,18 +56,28 @@ public class VariantService  implements IVariantService{
 
 	@Override
 	public Variant updateVariant(VariantForm form) {
-		// TODO Auto-generated method stub
-		return null;
+		Variant variant=modelMapper.map(form, Variant.class);
+		variant.setProductversion(productVersionService.getProductVersionByID(form.getProductversion()));
+		variant.setColor(colorService.getColorByID(form.getColorID()));
+		variant.setSize(sizeService.getSizeByID(form.getSizeID()));
+		return service.save(variant);
 	}
 
 	@Override
 	public Variant createVariant(VariantForm form) {
 
 		Variant variant=modelMapper.map(form, Variant.class);
+		variant.setProductversion(productVersionService.getProductVersionByID(form.getProductversion()));
 		variant.setColor(colorService.getColorByID(form.getColorID()));
 		variant.setSize(sizeService.getSizeByID(form.getSizeID()));
 		
 		return service.save(variant);
+	}
+
+	@Override
+	public int getPriceFormCategory(int id) {
+		Category category=categoryService.findCategoryByID(id);
+		return category.getPrice_base();
 	}
 
 }

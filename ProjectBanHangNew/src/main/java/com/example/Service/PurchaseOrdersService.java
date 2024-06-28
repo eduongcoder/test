@@ -34,7 +34,7 @@ public class PurchaseOrdersService implements IPurchaseOrdersService {
 	@Override
 	public PurchaseOrders createPurchaseOrders(PurchaseOrdersForm form) {
 		PurchaseOrders purchaseOrders = modelMapper.map(form, PurchaseOrders.class);
-
+		purchaseOrders.setStatus("Prepare");
 		return service.save(purchaseOrders);
 	}
 
@@ -47,6 +47,19 @@ public class PurchaseOrdersService implements IPurchaseOrdersService {
 
 	@Override
 	public PurchaseOrders deletePurchaseOrders(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PurchaseOrders shippingOrders(int id) {
+		PurchaseOrders purchaseOrders=getPurchaseOrdersByID(id);
+		purchaseOrders.setStatus("Shipping");
+		return service.save(purchaseOrders);
+	}
+
+	@Override
+	public PurchaseOrders creatPurchaseOrdersPerpare(PurchaseOrdersForm form) {
 		// TODO Auto-generated method stub
 		return null;
 	}

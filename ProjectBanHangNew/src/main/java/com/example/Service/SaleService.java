@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.Entity.Category;
 import com.example.Entity.ProductVersion;
 import com.example.Entity.Sales;
 import com.example.From.SaleForm;
@@ -24,7 +25,7 @@ public class SaleService implements ISaleService {
 	private ISaleRepository service;
 
 	@Autowired
-	private IProductVersionService productVersionService;
+	private ICategoryService categoryService;
 
 	@Override
 	public List<Sales> getAllList() {
@@ -63,8 +64,8 @@ public class SaleService implements ISaleService {
 
 	@Override
 	public int getSalePrice(int idProductVersion) {
-		ProductVersion productVersion = productVersionService.getProductVersionByID(idProductVersion);
-		List<Sales> listsSales = productVersion.getSales();
+		Category category = categoryService.findCategoryByID(idProductVersion);
+		List<Sales> listsSales = category.getSales();
 		
 		LocalDateTime now = LocalDateTime.now();
         LocalDateTime closestEndTime = null;

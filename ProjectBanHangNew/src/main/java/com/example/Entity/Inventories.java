@@ -4,6 +4,7 @@ package com.example.Entity;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 
 import org.aspectj.weaver.ast.Or;
 
@@ -14,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -50,4 +52,7 @@ public class Inventories implements Serializable {
 	@JoinColumn(name = "version_product_id")
 	private ProductVersion productVersion;
 
+	@ManyToOne
+	@JoinColumn(name = "variant_id")
+	private Variant inventoryVariant;
 }
