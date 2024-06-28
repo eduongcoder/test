@@ -1,6 +1,8 @@
 package com.example.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import com.example.Entity.Orders;
 import com.example.From.OrdersForm;
@@ -21,4 +23,6 @@ public interface IOrderService {
 	public Orders updateOrder(int id);
 	
 	public boolean updateAdressOrder(int id,String address);
+	
+	public Map<LocalDate, Integer> totalOrderMoney();
 }

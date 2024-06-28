@@ -16,4 +16,5 @@ public interface IHistoryCategoryService {
 
 	public HistoryCategory updateHistoryCategoriesByID(HistoryCategoryForm form);
 
+	
 }

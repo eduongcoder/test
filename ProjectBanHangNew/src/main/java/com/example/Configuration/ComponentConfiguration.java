@@ -168,7 +168,7 @@ public class ComponentConfiguration {
 		modelMapper.addMappings(new PropertyMap<Sales, SalesDTO>() {
 			@Override
 			protected void configure() {
-				map().setProductVersion(source.getProductVersion().getProductVersion_id());
+//				map().setProductVersion(source.getProductVersion().getProductVersion_id());
 			}
 		});
 		modelMapper.addMappings(new PropertyMap<Variant, VariantDTO>() {

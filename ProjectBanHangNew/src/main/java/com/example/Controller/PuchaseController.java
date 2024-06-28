@@ -59,6 +59,16 @@ public class PuchaseController {
 		PurchaseOrdersDTO dtos = modelMapper.map(purchaseOrders, PurchaseOrdersDTO.class);
 		return dtos;
 	}
+	
+	@GetMapping("/checkprepare")
+	public int checkPrepare() {
+		PurchaseOrders result=service.checkPrepare();
+		if (result!=null) {
+			return result.getPurchase_orders_id();
+		}
+		return -1;
+	}
+	
 
 	@PostMapping("/create")
 	public PurchaseOrdersDTO createPurchaseOrder(@RequestBody PurchaseOrdersForm form) {

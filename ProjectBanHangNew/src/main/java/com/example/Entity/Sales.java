@@ -48,11 +48,6 @@ public class Sales implements Serializable{
 	private LocalDateTime sale_date_end;
 	
 	@ManyToOne
-	@JoinColumn(name ="version_product_id")
-	private ProductVersion productVersion;
-	
-	
-	@ManyToOne
 	@JoinColumn(name ="category_id")
 	private Category category;
 	

@@ -63,4 +63,15 @@ public class PurchaseOrdersService implements IPurchaseOrdersService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public PurchaseOrders checkPrepare() {
+		List<PurchaseOrders> list=getAllPurchaseOrders();
+		for (PurchaseOrders purchaseOrders : list) {
+			if (purchaseOrders.getStatus().equals("Prepare")) {
+				return purchaseOrders;
+			}
+		}
+		return null;
+	}
 }

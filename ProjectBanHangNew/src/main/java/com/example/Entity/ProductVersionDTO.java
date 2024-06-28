@@ -34,5 +34,5 @@ public class ProductVersionDTO {
 
 	private List<OrderItemDTO> orderItems;
 
-	private List<SalesDTO> sales;
+
 }

@@ -22,8 +22,7 @@ public class SalesDTO {
 	
 	private LocalDateTime sale_date_end;
 
-	private Integer productVersion;
-
+	private Integer category;
 	
 	
 //	private Integer orderitem;

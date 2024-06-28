@@ -1,8 +1,11 @@
 package com.example.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -112,6 +115,27 @@ public class OrderService implements IOrderService {
 		
 		
 		
+	}
+
+	@Override
+	public Map<LocalDate, Integer> totalOrderMoney() {
+		Map<LocalDate, Integer> myMap = new LinkedHashMap<LocalDate, Integer>();
+		List<Orders> list = getallOrders();
+		for (Orders orders : list) {
+			LocalDate date = orders.getCreated_at().toLocalDate();
+			int sum =0;
+			for (Orders orders2 : list) {
+				
+				if (orders2.getOrders_id() == orders.getOrders_id()) {
+					continue;
+				} else if (date.equals( orders2.getCreated_at().toLocalDate())) {
+					sum+=orders2.getTotal_amount() ;
+				}
+			}
+			myMap.put(date, sum);
+		}
+
+		return myMap;
 	}
 
 }

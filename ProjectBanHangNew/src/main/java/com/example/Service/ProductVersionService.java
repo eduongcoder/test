@@ -26,7 +26,8 @@ public class ProductVersionService implements IProductVersionService {
 	@Autowired
 	private IProductService productService;
 
-
+	@Autowired
+	private IPurchaseOrdersService purchaseOrdersService;
 
 	@Override
 	public List<ProductVersion> getAllProductVersion() {
@@ -48,7 +49,11 @@ public class ProductVersionService implements IProductVersionService {
 
 	@Override
 	public ProductVersion updateProductVersion(ProductVersionForm form) {
-		ProductVersion productVersion=modelMapper.map(form, ProductVersion.class);
+		ProductVersion productVersion = new ProductVersion();
+		productVersion.setProductVersion_id(form.getProductVersion_id());
+		productVersion.setProduct(productService.getProductByID(form.getProductID()));
+		productVersion.setVersion_name(form.getVersion_name());
+		productVersion.setQuantity_in_stock(form.getQuantity_in_stock());
 		productVersion.setUpdated_at(LocalDateTime.now());
 		return service.save(productVersion);
 	}
@@ -59,8 +64,26 @@ public class ProductVersionService implements IProductVersionService {
 		Product product = productService.getProductByID(form.getProductID());
 		ProductVersion productVersion = modelMapper.map(form, ProductVersion.class);
 		productVersion.setProduct(product);
-
+		productVersion.setIsDelete(false);
 		return service.save(productVersion);
 
+	}
+
+	@Override
+	public ProductVersion getIdItemProductVersion(int idproduct) {
+		List<PurchaseOderItems> purchaseOderItems = purchaseOrdersService.checkPrepare().getPurchaseorderitem();
+		for (PurchaseOderItems item : purchaseOderItems) {
+			ProductVersion productVersion = item.getProductVersion();
+			if (productVersion.getProduct().getProduct_id() == idproduct) {
+				return productVersion;
+			}
+		}
+		List<ProductVersion> listProductVersions=productService.getProductByID(idproduct).getProductVersion();
+		for (ProductVersion productVersion : listProductVersions) {
+			if (productVersion.getPurchaseOderItems().isEmpty()) {
+				return productVersion;
+			}
+		}
+		return null;
 	}
 }

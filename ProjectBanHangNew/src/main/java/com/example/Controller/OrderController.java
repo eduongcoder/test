@@ -1,9 +1,9 @@
 package com.example.Controller;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,21 +19,15 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.example.Entity.OrderItem;
-import com.example.Entity.OrderItemDTO;
 import com.example.Entity.OrderItemDTOShopCart;
-import com.example.Entity.OrderItemDTOVariant;
 import com.example.Entity.Orders;
 import com.example.Entity.OrdersDTO;
 import com.example.Entity.OrdersDTOShopCart;
-import com.example.Entity.Variant;
-import com.example.Entity.VariantDTO;
 import com.example.From.OrderAddressForm;
-import com.example.From.OrderitemForm;
 import com.example.From.OrdersForm;
 import com.example.Service.IAccountService;
 import com.example.Service.IOrderItemService;
 import com.example.Service.IOrderService;
-import com.example.Service.IVariantService;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -108,16 +102,16 @@ public class OrderController implements WebMvcConfigurer {
 
 	@GetMapping("/countOrder")
 	private Map<LocalDate, Integer> countOrder() {
-		Map<LocalDate, Integer> myMap = new HashMap<LocalDate, Integer>();
+		Map<LocalDate, Integer> myMap = new LinkedHashMap<LocalDate, Integer>();
 		List<Orders> list = service.getallOrders();
 		for (Orders orders : list) {
 			LocalDate date = orders.getCreated_at().toLocalDate();
 			int count = 1;
 			for (Orders orders2 : list) {
-				
+
 				if (orders2.getOrders_id() == orders.getOrders_id()) {
 					continue;
-				} else if (date.equals( orders2.getCreated_at().toLocalDate())) {
+				} else if (date.equals(orders2.getCreated_at().toLocalDate())) {
 					count++;
 				}
 			}
@@ -126,24 +120,28 @@ public class OrderController implements WebMvcConfigurer {
 
 		return myMap;
 	}
+
 	@GetMapping("/totalOrderMoney")
 	private Map<LocalDate, Integer> totalOrderMoney() {
-		Map<LocalDate, Integer> myMap = new HashMap<LocalDate, Integer>();
-		List<Orders> list = service.getallOrders();
-		for (Orders orders : list) {
-			LocalDate date = orders.getCreated_at().toLocalDate();
-			int sum =0;
-			for (Orders orders2 : list) {
-				
-				if (orders2.getOrders_id() == orders.getOrders_id()) {
-					continue;
-				} else if (date.equals( orders2.getCreated_at().toLocalDate())) {
-					sum+=orders2.getTotal_amount() ;
-				}
-			}
-			myMap.put(date, sum);
-		}
+		return service.totalOrderMoney();
+	}
 
+	@GetMapping("/getrevenuebydate")
+	public Map<String, List<Integer>> getRevenue(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
+		Map<String, List<Integer>> myMap = new LinkedHashMap<>();
+		List<Orders> list = service.getallOrders();
+		for (Orders order : list) {
+
+			if (order.getCreated_at().toLocalDate().isAfter(startDate) && order.getCreated_at().toLocalDate().isBefore(endDate)) {
+				String date = order.getCreated_at().toLocalDate().toString();
+				myMap.computeIfAbsent(date, k -> new ArrayList<>()).add(order.getTotal_amount());
+			}
+
+		}
+//		for (Orders orders : list) {
+
+//		}
 		return myMap;
+
 	}
 }

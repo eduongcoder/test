@@ -19,4 +19,6 @@ public interface IPurchaseOrdersService {
 	public PurchaseOrders shippingOrders(int id);
 
 	public PurchaseOrders creatPurchaseOrdersPerpare(PurchaseOrdersForm form);
+	
+	public PurchaseOrders checkPrepare();
 }

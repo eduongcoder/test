@@ -15,4 +15,6 @@ public interface IProductVersionService {
 	public void deleteProductVersion(int id);
 
 	public ProductVersion updateProductVersion(ProductVersionForm form);
+	
+	public ProductVersion getIdItemProductVersion(int idproduct);
 }
