@@ -1,10 +1,8 @@
 package com.example.Entity;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -53,11 +51,24 @@ public class Product implements Serializable {
 	private List<ProductVersion> productVersion;
 
 	@ManyToOne
-	@JoinColumn(name = "typeofproductid")
-	private TypeOfProduct typeofproduct_id;
+	@JoinColumn(name = "typeofproductnewid")
+	private TypeOfProductNew typeOfProductNew;
+	
+	
+	@ManyToOne
+	@JoinColumn(name = "typeofproductgenderid")
+	private TypeOfProductGender typeOfProductGender;
+	
 	
 	@OneToMany(mappedBy = "catetoryProduct")
 	private List<Category> categories;
+	
+	@OneToMany(mappedBy = "productid")
+	private List<Images> imagesMap;
 
+
+	
+	@OneToMany(mappedBy = "product_id")
+	private List<PersonFix> personFixs;
 
 }

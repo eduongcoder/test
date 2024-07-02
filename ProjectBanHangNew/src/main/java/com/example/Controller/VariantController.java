@@ -1,8 +1,8 @@
 package com.example.Controller;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -16,33 +16,32 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.Entity.Account;
-import com.example.Entity.AddressesDTO;
+import com.example.Entity.Images;
 import com.example.Entity.OrderItem;
 import com.example.Entity.OrderItemDTO;
 import com.example.Entity.OrderItemDTOVariant;
 import com.example.Entity.Orders;
-import com.example.Entity.OrdersDTO;
-import com.example.Entity.ProductVersionShowDTO;
-import com.example.Entity.TypeOfProductDTO;
+
 import com.example.Entity.Variant;
 import com.example.Entity.VariantDTO;
 import com.example.Entity.VariantNoAccountDTO;
+import com.example.From.ImageForm;
 import com.example.From.OrderitemForm;
 import com.example.From.OrdersForm;
 import com.example.From.VariantForm;
-import com.example.Repository.IOrderItemRepository;
 import com.example.Service.IAccountService;
+import com.example.Service.IImageService;
 import com.example.Service.IOrderItemService;
 import com.example.Service.IOrderService;
 import com.example.Service.IVariantService;
+import com.example.Service.ImageHandelService;
 
 @RequestMapping("/api/variant")
 @RestController
-public class VariantController  {
+public class VariantController {
 //	@Override
 //	public void addCorsMappings(CorsRegistry registry) {
 //		registry.addMapping("/**").allowedOrigins("http://26.22.243.2:5173", "http://localhost:5173") // URL của ứng
@@ -65,6 +64,44 @@ public class VariantController  {
 	@Autowired
 	private IOrderItemService serviceIOrderItem;
 
+	@Autowired
+	private IImageService imageService;
+
+	@Autowired
+	private ImageHandelService handelService;
+
+	@PostMapping("/upload")
+	public String handleFileUpload(@RequestParam("file") MultipartFile file) {
+
+		System.out.println("File được tải lên thành công: " + file.getOriginalFilename());
+		try {
+			return handelService.getImageBase64String(file.getBytes());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			return "";
+		}
+	}
+
+	@PostMapping("/creatImage")
+	public int creatImage(@RequestParam("file") MultipartFile file,@RequestParam("idproduct") int idproduct) {
+		ImageForm form=new ImageForm();
+		try {
+			form.setImageByte(file.getBytes());
+			form.setProductid(idproduct);
+			Images images=imageService.createImage(form);
+			return images.getImages_id();
+		} catch (IOException e) {
+			return -1;
+		}
+//		try {
+//			return  handelService.getImageBase64String(file.getBytes()) ;
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			return "";
+//		}
+				
+	}
+
 	@GetMapping
 	private List<VariantDTO> getallVariant() {
 		List<Variant> list = service.getAllVariants();
@@ -75,20 +112,21 @@ public class VariantController  {
 
 	@PostMapping("/create")
 	public VariantDTO createVariant(@RequestBody VariantForm form) {
-		Variant variant=service.createVariant(form);
+		Variant variant = service.createVariant(form);
 		return modelMapper.map(variant, VariantDTO.class);
 	}
-	
+
 	@PostMapping("/createint")
 	public int createVariantInt(@RequestBody VariantForm form) {
-		Variant variant=service.createVariant(form);
+		Variant variant = service.createVariant(form);
 		return variant.getVariants_id();
 	}
-	
+
 	@GetMapping(value = "/getVariant/{idvariant}")
 	public VariantNoAccountDTO createOrderItemNoAccount(@PathVariable(name = "idvariant") int idvariant) {
 
-		VariantNoAccountDTO variantNoAccountDTO= modelMapper.map(service.getVariantByID(idvariant), VariantNoAccountDTO.class);
+		VariantNoAccountDTO variantNoAccountDTO = modelMapper.map(service.getVariantByID(idvariant),
+				VariantNoAccountDTO.class);
 		variantNoAccountDTO.setQuantity(1);
 		variantNoAccountDTO.setCreateTime(LocalDateTime.now());
 		return variantNoAccountDTO;
@@ -127,15 +165,13 @@ public class VariantController  {
 			// TODO: handle exception
 			return null;
 		}
-		
-	
+
 	}
-	
+
 	@PutMapping("/updateVariant")
 	private int updateVariant(@RequestBody VariantForm form) {
 		return modelMapper.map(service.updateVariant(form), VariantDTO.class).getVariants_id();
 	}
-	
 
 	@PostMapping("/createorderitem")
 	private int postMethodName(@RequestBody OrderitemForm form, @RequestParam int idAccount,
@@ -152,7 +188,7 @@ public class VariantController  {
 			Account account = serviceAccount.findAccountByID(idAccount);
 
 			OrdersForm ordersForm = new OrdersForm();
-			
+
 			ordersForm.setTotal_amount(BigDecimal.valueOf(0.00));
 			ordersForm.setOrderItems(null);
 			ordersForm.setStatus("Prepare");

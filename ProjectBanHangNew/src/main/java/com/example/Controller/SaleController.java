@@ -16,13 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Entity.ProductVersion;
 import com.example.Entity.Sales;
 import com.example.Entity.SalesDTO;
 import com.example.From.SaleForm;
 import com.example.Service.ICategoryService;
-import com.example.Service.IProductVersionService;
 import com.example.Service.ISaleService;
+import com.example.Service.IVariantService;
 
 @RequestMapping("/api/sale")
 @RestController
@@ -31,15 +30,11 @@ public class SaleController {
 	private ISaleService service;
 
 	@Autowired
-	private IProductVersionService productVersionService;
-	
-	
-	@Autowired
 	private ModelMapper modelMapper;
 
 	@Autowired
-	private ICategoryService categoryService;
-	
+	private IVariantService variantService;
+
 	@GetMapping
 	private List<SalesDTO> getAllSales() {
 		List<Sales> list = service.getAllList();
@@ -47,39 +42,34 @@ public class SaleController {
 		}.getType());
 		return dtos;
 	}
-	
+
 	@GetMapping(value = "/{id}")
-	private SalesDTO getSalesByID(@PathVariable(name = "id")int id) {
-		Sales sales=service.getSaleByID(id);
+	private SalesDTO getSalesByID(@PathVariable(name = "id") int id) {
+		Sales sales = service.getSaleByID(id);
+		if (sales == null) {
+			return null;
+		}
 		return modelMapper.map(sales, SalesDTO.class);
+
 	}
-	
-//	@PostMapping("/create")
-//	private SalesDTO creatSales(@RequestBody SaleForm form) {
-//		ProductVersion productVersion=productVersionService.getProductVersionByID(form.getProductVersion());
-//		List<Sales> sales= productVersion.getSales();
-//		for (Sales sale : sales) {
-//
-//		}
-//		
-//		Sales sales1=service.createSize(form);
-//		return modelMapper.map(sales1, SalesDTO.class);
-//	}
-	
+
+	@PostMapping("/create")
+	private SalesDTO creatSales(@RequestBody SaleForm form) {
+
+		Sales sales1 = service.createSale(form);
+
+		if (sales1 == null) {
+			return null;
+		}
+
+		return modelMapper.map(sales1, SalesDTO.class);
+	}
+
 	@DeleteMapping(value = "/delete/{id}")
-	private boolean deleteSale(@PathVariable(name = "id")int id) {
+	private boolean deleteSale(@PathVariable(name = "id") int id) {
 		return service.deleteSales(id);
 	}
-	
-	@GetMapping(value = "/getsalechange/{id}")
-	public Map<LocalDateTime, Integer> getSaleChange(@PathVariable(name = "id")int id){
-		Map<LocalDateTime, Integer> myMap=new LinkedHashMap<>();
-		List<Sales> list=categoryService.findCategoryByID(id).getSales();
-		for (Sales sales : list) {
-			myMap.put(sales.getSale_date_end(), sales.getSale_price());
-		}
-		return myMap;
-		
-	}
-	
+
+
+
 }

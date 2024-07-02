@@ -15,7 +15,7 @@ import com.example.Entity.SalesDTO;
 import com.example.Entity.VariantDTO;
 import com.example.Enum.SizeEnum;
 import com.example.Enum.TypeOfProductEnum;
-import com.example.Enum.TypeOfProductGender;
+import com.example.Enum.TypeOfProductGenderEnum;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,7 +28,7 @@ public class TypeProductVersionSizeColorVariantForm {
 
 	private TypeOfProductEnum typeofproductTYPE;
 
-	private TypeOfProductGender typeofproductgender;
+	private TypeOfProductGenderEnum typeofproductgender;
 
 	private List<ProductDTO> Product;
 

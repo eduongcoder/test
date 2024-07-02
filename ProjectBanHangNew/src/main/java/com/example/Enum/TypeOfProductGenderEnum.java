@@ -1,6 +1,6 @@
 package com.example.Enum;
 
-public enum TypeOfProductGender {
+public enum TypeOfProductGenderEnum {
 	Nam,Nữ,Unisex;
 
 

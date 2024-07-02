@@ -14,5 +14,7 @@ public class CategoryForm {
 
 	private Integer catetoryColor;
 
+	private Boolean isdelete;	
+	
 	private Integer catetorySize;
 }

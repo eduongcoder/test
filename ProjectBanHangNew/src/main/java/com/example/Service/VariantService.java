@@ -50,8 +50,8 @@ public class VariantService  implements IVariantService{
 
 	@Override
 	public int deleteVariant(int id) {
-		// TODO Auto-generated method stub
-		return 0;
+		service.deleteById(id);
+		return id;
 	}
 
 	@Override
@@ -60,6 +60,7 @@ public class VariantService  implements IVariantService{
 		variant.setProductversion(productVersionService.getProductVersionByID(form.getProductversion()));
 		variant.setColor(colorService.getColorByID(form.getColorID()));
 		variant.setSize(sizeService.getSizeByID(form.getSizeID()));
+		variant.setQuantity_in_stock(form.getQuantity_in_stock());
 		return service.save(variant);
 	}
 

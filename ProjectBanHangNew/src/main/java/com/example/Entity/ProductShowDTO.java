@@ -1,11 +1,10 @@
 package com.example.Entity;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import com.example.Enum.TypeOfProductEnum;
-import com.example.Enum.TypeOfProductGender;
+import com.example.Enum.TypeOfProductGenderEnum;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +20,7 @@ public class ProductShowDTO {
 
 	private TypeOfProductEnum type;
 
-	private TypeOfProductGender gender;
+	private TypeOfProductGenderEnum gender;
 
 	private String state;
 
@@ -36,4 +35,8 @@ public class ProductShowDTO {
 	private List<CategoryDTO> categories;
 	
 	private List<PersonFixDTO> personFixs;
+	
+	private List<ImagesDTO> imagesMap;
+
+
 }

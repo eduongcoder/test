@@ -21,4 +21,6 @@ public interface IPurchaseOrdersService {
 	public PurchaseOrders creatPurchaseOrdersPerpare(PurchaseOrdersForm form);
 	
 	public PurchaseOrders checkPrepare();
+	
+	public PurchaseOrders receiveOrder(int id);
 }

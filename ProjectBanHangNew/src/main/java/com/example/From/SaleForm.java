@@ -1,7 +1,5 @@
 package com.example.From;
 
-import java.math.BigDecimal;
-import java.sql.Date;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,11 +10,13 @@ public class SaleForm {
 
 	private Integer quantity;
 
-	private BigDecimal sale_price;
+	private Integer sale_price;
+	
+	private Integer sale_base_price;
 
-	private Date sale_date;
+	private Integer variant;
 
-	private Integer productVersion;
-
-	private Integer orderitem;
+	private String sale_date_start;
+	
+	private String sale_date_end;
 }

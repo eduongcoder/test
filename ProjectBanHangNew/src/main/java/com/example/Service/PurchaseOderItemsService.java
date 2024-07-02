@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.example.Entity.Images;
 import com.example.Entity.ImagesDTO;
 import com.example.Entity.ImagesDTOOnlyID;
+import com.example.Entity.Product;
 import com.example.Entity.PurchaseOderItems;
 import com.example.Entity.PurchaseOrders;
 import com.example.Entity.SalesDTO;
@@ -37,6 +38,8 @@ public class PurchaseOderItemsService implements IPurchaseOderItemsService {
 	@Autowired
 	private IPurchaseOrdersService purchaseOrdersService;
 	
+	@Autowired
+	private IProductService productService;
 	@Override
 	public List<PurchaseOderItems> getAllPurchaseOderItems() {
 		// TODO Auto-generated method stub
@@ -102,12 +105,20 @@ public class PurchaseOderItemsService implements IPurchaseOderItemsService {
 	}
 
 	@Override
-	public List<ImagesDTOOnlyID> getImages(int idvariant) {
-		Variant variant=variantService.getVariantByID(idvariant);
-		List<Images> list= variant.getImages();
+	public List<ImagesDTOOnlyID> getImages(int idproduct) {
+		Product product=productService.getProductByID(idproduct);
+		List<Images> list= product.getImagesMap();
 		List<ImagesDTOOnlyID> dtos = modelMapper.map(list, new TypeToken<List<ImagesDTOOnlyID>>() {
 		}.getType());
 		return dtos;
+	}
+
+	@Override
+	public PurchaseOderItems updatePurchaseOderItemsQuantity(PurchaseOderItemsForm form) {
+		PurchaseOderItems purchaseOderItems=getPurchaseOderItemsByID(form.getPurchase_order_items_id());
+		purchaseOderItems.setQuantity_real(form.getQuantity_real());
+		
+		return service.save(purchaseOderItems);
 	}
 
 }

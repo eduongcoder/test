@@ -13,6 +13,8 @@ public class PurchaseOderItemsDTO {
 
 	private Integer quantity;
 
+	private Integer quantity_real;
+
 	private Integer purchaseOrder;
 
 	private Integer variant;

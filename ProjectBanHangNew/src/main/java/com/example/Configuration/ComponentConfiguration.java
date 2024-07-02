@@ -53,6 +53,8 @@ import com.example.Service.ISaleService;
 import com.example.Service.ImageHandelService;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
+import net.bytebuddy.asm.MemberSubstitution.Source;
+
 @Configuration
 public class ComponentConfiguration {
 
@@ -104,7 +106,7 @@ public class ComponentConfiguration {
 		};
 		
 		Converter<PurchaseOderItems, List<ImagesDTOOnlyID>> imagesPurchaseConverter = context -> {
-			int idvariant = context.getSource().getVariant();
+			int idvariant = context.getSource().getProductVersion().getProduct().getProduct_id();
 			return purchaseOderItemsService.getImages(idvariant);
 		};
 		
@@ -148,8 +150,8 @@ public class ComponentConfiguration {
 		modelMapper.addMappings(new PropertyMap<Product, ProductShowDTO>() {
 			@Override
 			protected void configure() {
-				map().setType(source.getTypeofproduct_id().getTypeofproduct());
-				map().setGender(source.getTypeofproduct_id().getTypeofproductgender());
+				map().setType(source.getTypeOfProductNew().getTypeofproduct());
+				map().setGender(source.getTypeOfProductGender().getTypeOfProductGender());
 				
 //				map().setType(source.getTypeofproduct().getTypeofproduct());
 //				map().setGender(source.getTypeofproduct().getTypeofproductgender());
@@ -165,10 +167,17 @@ public class ComponentConfiguration {
 			}
 		});
 
-		modelMapper.addMappings(new PropertyMap<Sales, SalesDTO>() {
+//		modelMapper.addMappings(new PropertyMap<Sales, SalesDTO>() {
+//			@Override
+//			protected void configure() {
+//				map().setProductVersion(source.getProductVersion().getProductVersion_id());
+//			}
+//		});
+		modelMapper.addMappings(new PropertyMap<Images, ImagesDTO>() {
 			@Override
 			protected void configure() {
-//				map().setProductVersion(source.getProductVersion().getProductVersion_id());
+				map().setProductid(source.getProductid().getProduct_id());
+			
 			}
 		});
 		modelMapper.addMappings(new PropertyMap<Variant, VariantDTO>() {
@@ -221,7 +230,7 @@ public class ComponentConfiguration {
 		modelMapper.addMappings(new PropertyMap<PersonFix, PersonFixDTO>() {
 			@Override
 			protected void configure() {
-				map().setProduct_version_id(source.getProduct_version_id().getProductVersion_id());
+				map().setProduct_id(source.getProduct_id().getProduct_id());
 			}
 		});
 		modelMapper.addMappings(new PropertyMap<Category, CategoryDTO>() {
@@ -239,10 +248,10 @@ public class ComponentConfiguration {
 				map().setProductVersion(source.getProductVersion().getProductVersion_id());
 				map().setVersion_name(source.getProductVersion().getVersion_name());
 				map().setNameProduct(source.getProductVersion().getProduct().getName());
-				map().setGender(source.getProductVersion().getProduct().getTypeofproduct_id().getTypeofproductgender());
-				map().setTypeOfProductEnum(source.getProductVersion().getProduct().getTypeofproduct_id().getTypeofproduct());
+				map().setTypeOfProductEnum(source.getProductVersion().getProduct().getTypeOfProductNew().getTypeofproduct());
 				map().setProductID(source.getProductVersion().getProduct().getProduct_id());
-
+				map().setGender(source.getProductVersion().getProduct().getTypeOfProductGender().getTypeOfProductGender());
+				map().setQuantity_real(source.getQuantity_real());
 			}
 		});
 		

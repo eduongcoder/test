@@ -16,5 +16,6 @@ public class PersonFixDTO {
 	
 	private Integer account_id;
 
-	private Integer product_version_id;
+	private Integer product_id;
+;
 }

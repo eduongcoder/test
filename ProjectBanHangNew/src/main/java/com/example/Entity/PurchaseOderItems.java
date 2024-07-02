@@ -32,6 +32,9 @@ public class PurchaseOderItems implements Serializable {
 	@Column(name = "quantity", updatable = true)
 	private int quantity;
 
+	@Column(name = "quantity_real", updatable = true)
+	private int quantity_real;
+	
 	@Column(name = "variant")
 	private int variant;
 	

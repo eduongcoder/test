@@ -23,6 +23,7 @@ import com.example.From.PurchaseOderItemsForm;
 import com.example.From.PurchaseOrdersForm;
 import com.example.Service.IPurchaseOderItemsService;
 import com.example.Service.IPurchaseOrdersService;
+import com.example.Service.IVariantService;
 
 @RequestMapping("/api/puchase")
 @RestController
@@ -37,6 +38,8 @@ public class PuchaseController {
 	@Autowired
 	private IPurchaseOderItemsService purchaseOderItemsService;
 
+	@Autowired
+	private IVariantService variantService;
 	@GetMapping
 	public List<PurchaseOrdersDTO> getAllPurchaseOrders() {
 		List<PurchaseOrders> list = service.getAllPurchaseOrders();
@@ -71,9 +74,9 @@ public class PuchaseController {
 	
 
 	@PostMapping("/create")
-	public PurchaseOrdersDTO createPurchaseOrder(@RequestBody PurchaseOrdersForm form) {
+	public PurchaseOrdersDetailDTO createPurchaseOrder(@RequestBody PurchaseOrdersForm form) {
 		PurchaseOrders purchaseOrders = service.createPurchaseOrders(form);
-		PurchaseOrdersDTO dtos = modelMapper.map(purchaseOrders, PurchaseOrdersDTO.class);
+		PurchaseOrdersDetailDTO dtos = modelMapper.map(purchaseOrders, PurchaseOrdersDetailDTO.class);
 		return dtos;
 	}
 
@@ -91,25 +94,42 @@ public class PuchaseController {
 	}
 
 	@PutMapping("/update")
-	public PurchaseOrdersDTO updatePurchaseOrders(@RequestBody PurchaseOrdersForm form) {
+	public PurchaseOrdersDetailDTO updatePurchaseOrders(@RequestBody PurchaseOrdersForm form) {
 		PurchaseOrders purchaseOrders = service.updatePurchaseOrders(form);
-		PurchaseOrdersDTO dtos = modelMapper.map(purchaseOrders, PurchaseOrdersDTO.class);
+		PurchaseOrdersDetailDTO dtos = modelMapper.map(purchaseOrders, PurchaseOrdersDetailDTO.class);
 		return dtos;
 	}
 	
-	@PutMapping(value = "/compelete/{id}")
-	public PurchaseOrdersDTO updatePurchaseOrders(@PathVariable(name = "id") int id) {
-		PurchaseOrders purchaseOrders = service.shippingOrders(id);
-		PurchaseOrdersDTO dtos = modelMapper.map(purchaseOrders, PurchaseOrdersDTO.class);
+	@PutMapping("/compelete")
+	public PurchaseOrdersDetailDTO shippingPurchaseOrders(@RequestBody PurchaseOrdersForm form) {
+		PurchaseOrders purchaseOrders = service.updatePurchaseOrders(form);
+		PurchaseOrdersDetailDTO dtos = modelMapper.map(purchaseOrders, PurchaseOrdersDetailDTO.class);
 		return dtos;
 	} 
 	@PutMapping("/updatePuchaseItem")
 	public PurchaseOderItemsDetailDTO updatePurchaseOderItem(@RequestBody PurchaseOderItemsForm form) {
 		return modelMapper.map(purchaseOderItemsService.updatePurchaseOderItems(form), PurchaseOderItemsDetailDTO.class);
 	}
+	@PutMapping("/updatePuchaseItemQuantity")
+	public PurchaseOderItemsDetailDTO updatePuchaseItemQuantity(@RequestBody PurchaseOderItemsForm form) {
+		return modelMapper.map(purchaseOderItemsService.updatePurchaseOderItemsQuantity(form), PurchaseOderItemsDetailDTO.class);
+	}
+	
+	
+	@PutMapping(value = "/recevice/{id}")
+	public PurchaseOrdersDetailDTO recevicePurchaseOrders(@PathVariable(value = "id")int id) {
+		return modelMapper.map(service.receiveOrder(id), PurchaseOrdersDetailDTO.class);
+	}
+	
+	
 	@DeleteMapping(value = "/delete/{id}")
 	public int deletePuchaseOrderItem(@PathVariable(value = "id")int id) {
 		purchaseOderItemsService.deletePurchaseOderItems(id);
+		return id;
+	}
+	@DeleteMapping(value = "/deletevariant/{id}")
+	public int deleteVariant(@PathVariable(value = "id")int id) {
+		variantService.deleteVariant(id);
 		return id;
 	}
 }

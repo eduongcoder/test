@@ -6,9 +6,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.Entity.PurchaseOderItems;
 import com.example.Entity.PurchaseOrders;
+import com.example.Entity.Variant;
 import com.example.From.PurchaseOrdersForm;
 import com.example.Repository.IPurchaseOrdersRepositoty;
+import com.example.Repository.IVariantRepository;
 
 @Service
 public class PurchaseOrdersService implements IPurchaseOrdersService {
@@ -19,6 +22,14 @@ public class PurchaseOrdersService implements IPurchaseOrdersService {
 	@Autowired
 	private IPurchaseOrdersRepositoty service;
 
+	@Autowired
+	private IPurchaseOderItemsService purchaseOderItemsService;
+	
+	@Autowired
+	private IVariantService variantService;
+	
+	@Autowired
+	private IVariantRepository variantRepository;
 	@Override
 	public List<PurchaseOrders> getAllPurchaseOrders() {
 		// TODO Auto-generated method stub
@@ -40,8 +51,9 @@ public class PurchaseOrdersService implements IPurchaseOrdersService {
 
 	@Override
 	public PurchaseOrders updatePurchaseOrders(PurchaseOrdersForm form) {
-		PurchaseOrders purchaseOrders = modelMapper.map(form, PurchaseOrders.class);
-
+		PurchaseOrders purchaseOrders=getPurchaseOrdersByID(form.getPurchase_orders_id());
+		purchaseOrders.setTotal_amount(form.getTotal_amount());
+		purchaseOrders.setStatus("Shipping");
 		return service.save(purchaseOrders);
 	}
 
@@ -73,5 +85,18 @@ public class PurchaseOrdersService implements IPurchaseOrdersService {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public PurchaseOrders receiveOrder(int id) {
+		PurchaseOrders purchaseOrders=getPurchaseOrdersByID(id);
+		List<PurchaseOderItems> list=purchaseOrders.getPurchaseorderitem();
+		for (PurchaseOderItems purchaseOderItems : list) {
+			Variant variant=variantService.getVariantByID(purchaseOderItems.getVariant());
+			variant.setQuantity_in_stock(purchaseOderItems.getQuantity_real());
+			variantRepository.save(variant);
+		}
+		purchaseOrders.setStatus("Receive");
+		return service.save(purchaseOrders);
 	}
 }

@@ -3,7 +3,7 @@ package com.example.Entity;
 import java.sql.Date;
 
 import com.example.Enum.TypeOfProductEnum;
-import com.example.Enum.TypeOfProductGender;
+import com.example.Enum.TypeOfProductGenderEnum;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

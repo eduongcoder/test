@@ -5,7 +5,7 @@ import java.util.List;
 import com.example.Enum.Gender;
 import com.example.Enum.SizeEnum;
 import com.example.Enum.TypeOfProductEnum;
-import com.example.Enum.TypeOfProductGender;
+import com.example.Enum.TypeOfProductGenderEnum;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +19,9 @@ public class PurchaseOderItemsDetailDTO {
 
 	private Integer quantity;
 
+	private Integer quantity_real;
+
+	
 	private Integer purchaseOrder;
 
 	private Integer variant;
@@ -37,7 +40,7 @@ public class PurchaseOderItemsDetailDTO {
 	
 	private String nameProduct;
 	
-	private TypeOfProductGender gender;
+	private TypeOfProductGenderEnum gender;
 	
 	private TypeOfProductEnum typeOfProductEnum;
 	

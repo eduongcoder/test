@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.example.Entity.ProductDTO;
 import com.example.Enum.TypeOfProductEnum;
-import com.example.Enum.TypeOfProductGender;
+import com.example.Enum.TypeOfProductGenderEnum;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ public class TypeOfProductForm {
 	
 	private TypeOfProductEnum typeofproduct;
 
-	private TypeOfProductGender typeofproductgender;
+	private TypeOfProductGenderEnum typeofproductgender;
 
 	private List<ProductDTO> Product;
 }

@@ -14,5 +14,4 @@ public class SizeForm {
 	
 	private SizeEnum size_name;
 	
-	private List<VariantDTO> variants;
 }

@@ -29,5 +29,6 @@ public interface IPurchaseOderItemsService {
 
 	public List<ImagesDTOOnlyID> getImages(int idvariant);
 	
-	 
+	public PurchaseOderItems updatePurchaseOderItemsQuantity(PurchaseOderItemsForm form);
+ 
 }

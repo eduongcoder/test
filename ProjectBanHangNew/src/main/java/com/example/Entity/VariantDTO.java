@@ -23,5 +23,5 @@ public class VariantDTO {
 
 	private Integer productversion;
 
-	private List<ImagesDTO> images;
+	private List<SalesDTO> sales;
 }

@@ -1,10 +1,8 @@
 package com.example.Entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.sql.Date;
+
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,13 +30,19 @@ public class Sales implements Serializable{
 	@Column(name = "quantity",updatable = true)
 	private int quantity;
 	
-	@Column(name = "sale_price", precision = 10, scale = 2,updatable = true)
+	@Column(name = "sale_price",updatable = true)
     private int sale_price;
 	
-	@Column(name = "date_create",updatable = true)
+	@Column(name = "sale_base_price",updatable = true)
+	private int sale_base_price;
+	
+	@Column(name = "isdelete", columnDefinition = "BOOLEAN DEFAULT false")
+	private boolean isdelete;
+	
+	@Column(name = "date_create", updatable = false ,insertable = false,columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime date_create;
 	
-	@Column(name = "date_update",updatable = true)
+	@Column(name = "date_update", updatable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
 	private LocalDateTime date_update;
 	
 	@Column(name = "sale_date_start",updatable = true)
@@ -48,7 +52,7 @@ public class Sales implements Serializable{
 	private LocalDateTime sale_date_end;
 	
 	@ManyToOne
-	@JoinColumn(name ="category_id")
-	private Category category;
+	@JoinColumn(name ="variant_id")
+	private Variant variant_id;
 	
 }

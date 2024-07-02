@@ -33,6 +33,10 @@ public class Category implements Serializable {
 	
 	@Column(name = "date_create", updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime date_create;
+	
+	@Column(name = "isdelete", columnDefinition = "BOOLEAN DEFAULT false")
+	private boolean isdelete;
+	
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product catetoryProduct;
@@ -48,6 +52,5 @@ public class Category implements Serializable {
 	@OneToMany(mappedBy = "category")
 	private List<HistoryCategory> historyCategories;
 	
-	@OneToMany(mappedBy = "category")
-	private List<Sales> sales;
+
 }

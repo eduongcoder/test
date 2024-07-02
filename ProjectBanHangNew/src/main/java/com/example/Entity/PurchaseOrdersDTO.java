@@ -19,4 +19,7 @@ public class PurchaseOrdersDTO {
 	private String status;
 	
 	private List<PurchaseOderItemsDTO> purchaseorderitem;
+	
+	private List<HistoryPuchaseOrderDTO> historyPuchaseOrders;
+
 }

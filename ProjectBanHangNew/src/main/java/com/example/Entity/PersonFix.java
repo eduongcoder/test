@@ -37,7 +37,7 @@ public class PersonFix implements Serializable {
 	private Account account_id;
 
 	@ManyToOne
-	@JoinColumn(name = "product_version_id")
-	private ProductVersion product_version_id;
+	@JoinColumn(name = "product_id")
+	private Product product_id;
 
 }

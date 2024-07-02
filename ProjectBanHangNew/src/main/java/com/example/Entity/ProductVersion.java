@@ -48,9 +48,7 @@ public class ProductVersion implements Serializable {
 	@Column(name = "updated_at",updatable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
 	private LocalDateTime updated_at;
 	
-	@OneToMany(mappedBy = "product_version_id")
-	private List<PersonFix> personFixs;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;

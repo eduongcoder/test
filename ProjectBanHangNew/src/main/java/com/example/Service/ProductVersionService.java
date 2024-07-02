@@ -71,7 +71,12 @@ public class ProductVersionService implements IProductVersionService {
 
 	@Override
 	public ProductVersion getIdItemProductVersion(int idproduct) {
-		List<PurchaseOderItems> purchaseOderItems = purchaseOrdersService.checkPrepare().getPurchaseorderitem();
+		PurchaseOrders purchaseOrders=purchaseOrdersService.checkPrepare();
+		if (purchaseOrders==null) {
+			return null;
+		}
+		List<PurchaseOderItems> purchaseOderItems = purchaseOrders.getPurchaseorderitem();
+	
 		for (PurchaseOderItems item : purchaseOderItems) {
 			ProductVersion productVersion = item.getProductVersion();
 			if (productVersion.getProduct().getProduct_id() == idproduct) {

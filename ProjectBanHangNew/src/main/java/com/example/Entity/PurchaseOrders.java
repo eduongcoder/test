@@ -38,5 +38,7 @@ public class PurchaseOrders implements Serializable {
 
 	@OneToMany(mappedBy = "purchaseOrder")
 	private List<PurchaseOderItems> purchaseorderitem;
-	 
+	
+	@OneToMany(mappedBy = "puchase_order_id")
+	private List<HistoryPuchaseOrder> historyPuchaseOrders;
 }

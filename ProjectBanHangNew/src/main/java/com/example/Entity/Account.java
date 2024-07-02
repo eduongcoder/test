@@ -73,7 +73,8 @@ public class Account implements Serializable {
 	@OneToMany(mappedBy = "account_id")
 	private List<PersonFix> personFixs;
 	
-	
+	@OneToMany(mappedBy = "account_id")
+	private List<HistoryPuchaseOrder> historyPuchaseOrders;
 
 
 }

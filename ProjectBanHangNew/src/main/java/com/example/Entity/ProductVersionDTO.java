@@ -26,7 +26,6 @@ public class ProductVersionDTO {
 
 	private Integer product;
 
-	private List<PersonFixDTO> personFixs;
 
 	private List<VariantDTO> variants;
 

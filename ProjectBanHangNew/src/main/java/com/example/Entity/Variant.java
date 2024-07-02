@@ -33,8 +33,6 @@ public class Variant implements Serializable {
 	@Column(name = "isDelete")
 	private boolean isDelete;
 	
-
-	
 	@ManyToOne
 	@JoinColumn(name = "color_id")
 	private Color color;
@@ -50,6 +48,7 @@ public class Variant implements Serializable {
 	@OneToMany(mappedBy = "inventoryVariant")
 	private List<Inventories> inventories;
 
-	@OneToMany(mappedBy = "variant")
-	private List<Images> images;
+	@OneToMany(mappedBy = "variant_id")
+	private List<Sales> sales;
+
 }

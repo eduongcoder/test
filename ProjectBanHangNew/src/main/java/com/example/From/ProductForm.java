@@ -17,6 +17,10 @@ public class ProductForm {
 
 	private String materialProduct;
 
-	private Integer typeofproduct_id;
+	private Integer typeOfProductNew;
+	
+	private Integer typeOfProductGender;
+
+
 
 }

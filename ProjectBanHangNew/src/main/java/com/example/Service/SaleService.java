@@ -1,8 +1,7 @@
 package com.example.Service;
 
-import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -10,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.Entity.Category;
-import com.example.Entity.ProductVersion;
 import com.example.Entity.Sales;
+import com.example.Entity.Variant;
 import com.example.From.SaleForm;
 import com.example.Repository.ISaleRepository;
 
@@ -25,7 +24,7 @@ public class SaleService implements ISaleService {
 	private ISaleRepository service;
 
 	@Autowired
-	private ICategoryService categoryService;
+	private IVariantService variantService;
 
 	@Override
 	public List<Sales> getAllList() {
@@ -51,10 +50,29 @@ public class SaleService implements ISaleService {
 	}
 
 	@Override
-	public Sales createSize(SaleForm form) {
+	public Sales createSale(SaleForm form) {
+		Variant  variant=variantService.getVariantByID(form.getVariant());
+		Sales sales= new Sales();
+		
+		LocalDate start=LocalDate.parse(form.getSale_date_start());
+		LocalDate end=null;
+		if(form.getSale_date_end()!=null) {
+			 end=LocalDate.parse(form.getSale_date_end());
+		}
+		
+		
 		try {
-			Sales sales = modelMapper.map(form, Sales.class);
-
+			sales.setQuantity(form.getQuantity());
+			sales.setVariant_id(variant);
+			sales.setSale_price(form.getSale_price());
+			sales.setSale_base_price(form.getSale_base_price());
+			sales.setSale_date_start(start.atStartOfDay());
+			if (end!=null) {
+				sales.setSale_date_end(end.atTime(23,59,59));
+			}else {
+				sales.setSale_date_end(null);
+			}
+			
 			return service.save(sales);
 		} catch (Exception e) {
 			return null;
@@ -64,8 +82,8 @@ public class SaleService implements ISaleService {
 
 	@Override
 	public int getSalePrice(int idProductVersion) {
-		Category category = categoryService.findCategoryByID(idProductVersion);
-		List<Sales> listsSales = category.getSales();
+		Variant variant = variantService.getVariantByID(idProductVersion);
+		List<Sales> listsSales = variant.getSales();
 		
 		LocalDateTime now = LocalDateTime.now();
         LocalDateTime closestEndTime = null;

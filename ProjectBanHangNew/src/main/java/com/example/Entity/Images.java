@@ -2,14 +2,11 @@ package com.example.Entity;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.Base64;
-
-import com.example.Enum.ImageEnum;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,14 +31,14 @@ public class Images implements Serializable {
 	@Column(name = "image_url", updatable = true)
 	private byte[] imageByte;
 
-	@Column(name = "created_at", updatable = true)
-	private Date created_at;
+	@Column(name = "created_at", updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	private LocalDateTime created_at;
 
-	@Column(name = "updated_at", updatable = true)
-	private Date updated_at;
+	@Column(name = "updated_at", updatable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+	private LocalDateTime updated_at;
 
 	@ManyToOne
-	@JoinColumn(name = "variant_id")
-	private Variant variant;
+	@JoinColumn(name = "product_id")
+	private Product productid;
 
 }

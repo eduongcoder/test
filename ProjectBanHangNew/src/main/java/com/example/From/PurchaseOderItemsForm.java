@@ -10,6 +10,8 @@ public class PurchaseOderItemsForm {
 
 	private Integer purchase_price;
 
+	private Integer quantity_real;
+	
 	private Integer quantity;
 
 	private Integer purchaseOrder;

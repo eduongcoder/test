@@ -18,4 +18,6 @@ public class PurchaseOrdersDetailDTO {
 	private String status;
 	
 	private List<PurchaseOderItemsDetailDTO> purchaseorderitem;
+	
+	private List<HistoryPuchaseOrderDTO> historyPuchaseOrders;
 }

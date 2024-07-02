@@ -23,6 +23,8 @@ public class CategoryDTO {
 
 	private Integer catetorySize;
 
+	private Boolean isdelete;
+
 	private String color;
 
 	private SizeEnum sizeEnum;

@@ -14,6 +14,5 @@ public enum TypeOfProductEnum {
 	    Quần_thể_thao,
 	    Quần_lót,
 	    Quần_bơi
-
 }
 

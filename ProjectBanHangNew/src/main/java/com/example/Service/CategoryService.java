@@ -29,14 +29,13 @@ public class CategoryService implements ICategoryService{
 	@Autowired
 	private IProductService productService;
 	
-
-	
 	@Override
 	public Category updateCategory(CategoryForm form) {
 		Category category=modelMapper.map(form, Category.class);
 		category.setCatetoryColor(colorService.getColorByID(form.getCatetoryColor()));
 		category.setCatetorySize(sizeService.getSizeByID(form.getCatetorySize()));
 		category.setCatetoryProduct(productService.getProductByID(form.getCatetoryProduct()));
+		category.setIsdelete(form.getIsdelete());
 		return service.save(category);
 	}
 

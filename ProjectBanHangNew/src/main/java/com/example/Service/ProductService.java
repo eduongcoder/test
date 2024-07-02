@@ -23,6 +23,12 @@ public class ProductService implements IProductService {
 	@Autowired
 	private ModelMapper modelMapper;
 
+	@Autowired
+	private ITypeOfProductGenderService typeOfProductGenderService;
+	
+	@Autowired
+	private ITypeOfProductNewService typeOfProductNewService;
+	
 	@Override
 	public List<Product> getAllProducts() {
 		// TODO Auto-generated method stub
@@ -50,7 +56,8 @@ public class ProductService implements IProductService {
 	@Override
 	public Product createProduct(ProductForm form) {
 		Product product = modelMapper.map(form, Product.class);
-
+		product.setTypeOfProductGender(typeOfProductGenderService.getSizeByID(form.getTypeOfProductGender()));
+		product.setTypeOfProductNew(typeOfProductNewService.getSizeByID(form.getTypeOfProductNew()));
 		return service.save(product);
 	}
 
