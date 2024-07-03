@@ -39,6 +39,7 @@ public class AccountForm {
 	
 	private Gender gender;
 	
+	private Integer roleID;
 	private List<AddressesDTO> addresses;
 
 	private List<OrdersDTO> orders;

@@ -4,11 +4,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.Entity.Account;
 import com.example.Entity.AccountDTO;
+import com.example.Entity.RolePermission;
+import com.example.Entity.RolePermissionDTO;
+import com.example.Entity.SalesDTO;
 import com.example.From.AccountForm;
 import com.example.Repository.IAccountRepository;
 
@@ -20,6 +24,8 @@ public class AccountService implements IAccountService {
 	@Autowired
 	private ModelMapper modelMapper;
 
+	@Autowired
+	private IRoleService roleService;
 	@Override
 	public void deleteAccountByID(int id) {
 
@@ -35,7 +41,7 @@ public class AccountService implements IAccountService {
 	public Account createEmployee(AccountForm form) {
 		try {
 			Account account = modelMapper.map(form, Account.class);
-			
+			account.setRoleID(roleService.getRoleById(form.getRoleID()));
 			return service.save(account);
 		} catch (Exception e) {
 			return null;
@@ -72,6 +78,21 @@ public class AccountService implements IAccountService {
 		} catch (Exception e) {
 			return -1;
 		}
+	}
+
+	@Override
+	public List<RolePermissionDTO> getRolePermissionDTOs(int id) {
+		List<RolePermissionDTO> list=  modelMapper.map(findAccountByID(id).getRoleID().getRolePermissions(), new TypeToken<List<RolePermissionDTO>>() {
+		}.getType());
+		return list;
+	}
+
+	@Override
+	public Account grandRole(int idAccount, int idRole) {
+		Account account=findAccountByID(idAccount);
+		account.setRoleID(roleService.getRoleById(idRole));
+		
+		return service.save(account);
 	}
 
 }

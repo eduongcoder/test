@@ -38,6 +38,12 @@ public class Orders implements Serializable{
 	@Column(name = "addressorder",length = 100,updatable = true)
 	private String addressorder;
 	
+	@Column(name = "shipping_at")
+	private LocalDateTime shipping_at;
+	
+	@Column(name = "complete_at")
+	private LocalDateTime complete_at;
+	
 	@Column(name = "created_at", updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime created_at;
 

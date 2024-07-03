@@ -6,10 +6,13 @@ import java.util.List;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.example.Entity.Account;
+import com.example.Entity.AccountDTO;
 import com.example.Entity.Category;
 import com.example.Entity.CategoryDTO;
 import com.example.Entity.Images;
@@ -34,6 +37,8 @@ import com.example.Entity.ProductVersionShowDTO;
 import com.example.Entity.PurchaseOderItems;
 import com.example.Entity.PurchaseOderItemsDTO;
 import com.example.Entity.PurchaseOderItemsDetailDTO;
+import com.example.Entity.RolePermission;
+import com.example.Entity.RolePermissionDTO;
 import com.example.Entity.Sales;
 import com.example.Entity.SalesDTO;
 import com.example.Entity.Variant;
@@ -46,6 +51,7 @@ import com.example.From.OrdersForm;
 import com.example.From.PersonFixForm;
 import com.example.From.ProductVersionForm;
 import com.example.Repository.IProductRepository;
+import com.example.Service.IAccountService;
 import com.example.Service.IOrderItemService;
 import com.example.Service.IProductService;
 import com.example.Service.IPurchaseOderItemsService;
@@ -66,6 +72,9 @@ public class ComponentConfiguration {
 
 	@Autowired
 	private IOrderItemService orderItemService;
+	
+	@Autowired
+	private IAccountService accountService;
 
 	@Autowired
 	private IPurchaseOderItemsService purchaseOderItemsService;
@@ -80,6 +89,14 @@ public class ComponentConfiguration {
 			int imageID = context.getSource().getImages_id();
 			return service.getImageBase64String(imageID);
 		};
+		
+		Converter<Account, String> avatarConverter=context -> {
+			if (context.getSource().getAvatar()!=null) {
+				byte[] imageID = context.getSource().getAvatar();
+				return service.getImageBase64String(imageID);
+			}
+			return null;
+		};
 
 //		Converter<ProductVersion, Integer> priceConverter = context -> {
 //			int saleID = context.getSource().getProductVersion_id();
@@ -93,6 +110,11 @@ public class ComponentConfiguration {
 		Converter<OrderItem, String> colorConverter = context -> {
 			int idvariant = context.getSource().getTypeOfVariant();
 			return orderItemService.getColor(idvariant);
+		};
+		
+		Converter<Account, List<RolePermissionDTO>> roleAccountConverter = context -> {
+			int idAccount = context.getSource().getAccount_id();
+			return accountService.getRolePermissionDTOs(idAccount);
 		};
 		
 		Converter<PurchaseOderItems, SizeEnum> sizePurchaseConverter = context -> {
@@ -134,6 +156,9 @@ public class ComponentConfiguration {
 				using(colorConverter).map(source, destination.getColor());
 			}
 		});
+		
+
+		
 		modelMapper.addMappings(new PropertyMap<ProductVersion, ProductVersionShowDTO>() {
 			@Override
 			protected void configure() {
@@ -147,6 +172,15 @@ public class ComponentConfiguration {
 				map().setProduct(source.getProduct().getProduct_id());
 			}
 		});
+		
+		modelMapper.addMappings(new PropertyMap<RolePermission, RolePermissionDTO>() {
+			@Override
+			protected void configure() {
+				map().setPermission(source.getPermission().getPermission_name());
+				map().setRole(source.getRole().getRole());
+			}
+		});
+		
 		modelMapper.addMappings(new PropertyMap<Product, ProductShowDTO>() {
 			@Override
 			protected void configure() {
@@ -221,6 +255,16 @@ public class ComponentConfiguration {
 			}
 		});
 
+		modelMapper.addMappings(new PropertyMap<Account, AccountDTO>() {
+			@Override
+			protected void configure() {
+				map().setRoleID(source.getRoleID().getRole_id());
+				using(avatarConverter).map(source,destination.getAvatarString());
+				using(roleAccountConverter).map(source,destination.getRolePermission());
+				
+			}
+		});
+		
 		modelMapper.addMappings(new PropertyMap<OrderItem, OrderItemDTOShopCart>() {
 			@Override
 			protected void configure() {

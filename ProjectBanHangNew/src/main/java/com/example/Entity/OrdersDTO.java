@@ -5,7 +5,7 @@ import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
+import jakarta.persistence.Column;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +17,9 @@ public class OrdersDTO {
     private Integer total_amount;
 	
 	private String status;
+	private LocalDateTime shipping_at;
+	
+	private LocalDateTime complete_at;
 	
 	private LocalDateTime created_at;
 	

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.example.Entity.Account;
 import com.example.Entity.AccountDTO;
+import com.example.Entity.RolePermissionDTO;
 import com.example.From.AccountForm;
 
 public interface IAccountService {
@@ -18,4 +19,8 @@ public interface IAccountService {
 	public int createAccountOnlyEmail(AccountForm form);
 
 	public Account findAccountByID(int id);
+	
+	public List<RolePermissionDTO> getRolePermissionDTOs(int id);
+	
+	public Account grandRole(int idAccount, int idRole);
 }

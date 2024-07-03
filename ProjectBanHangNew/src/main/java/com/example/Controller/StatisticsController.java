@@ -23,35 +23,37 @@ import com.example.Service.IProductVersionService;
 @RequestMapping("/api/statistic")
 @RestController
 public class StatisticsController {
-	
+
 	@Autowired
 	private ModelMapper modelMapper;
-	
+
 	@Autowired
 	private IProductService productService;
-	
+
 	@Autowired
 	private IProductVersionService productVersionService;
-	
-	@GetMapping("/puchase")
-	private Map<String, Map<Integer, Integer>> getTotalProduct(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate){
-		Map<String, Map<Integer, Integer>> myMap = new TreeMap<>();
-		List<Product> products=productService.getAllProducts();
-		for (Product product : products) {
-			List<ProductVersion> productVersion=product.getProductVersion(); 
-			for (ProductVersion version : productVersion) {
-				if (version.getCreated_at().toLocalDate().isAfter(startDate)&& version.getCreated_at().toLocalDate().isBefore(endDate)) {
-					String date=version.getCreated_at().toLocalDate().toString();
-					myMap.computeIfAbsent(date, k -> new HashMap<>())
-                    .merge(product.getProduct_id(), version.getQuantity_in_stock(), Integer::sum);
-           };
 
+	@GetMapping("/puchase")
+	private Map<String, Map<Integer, Integer>> getTotalProduct(@RequestParam LocalDate startDate,
+			@RequestParam LocalDate endDate) {
+		Map<String, Map<Integer, Integer>> myMap = new TreeMap<>();
+		List<Product> products = productService.getAllProducts();
+		for (Product product : products) {
+			List<ProductVersion> productVersion = product.getProductVersion();
+			for (ProductVersion version : productVersion) {
+				if (version.getCreated_at().toLocalDate().isAfter(startDate)
+						&& version.getCreated_at().toLocalDate().isBefore(endDate)) {
+					String date = version.getCreated_at().toLocalDate().toString();
+					myMap.computeIfAbsent(date, k -> new HashMap<>()).merge(product.getProduct_id(),
+							version.getQuantity_in_stock(), Integer::sum);
 				}
+				;
 			}
-		
-		
-		
+		}
 		return myMap;
 
 	}
+//	
+////	@GetMapping("/stock")
+////	private Map<K, V>
 }

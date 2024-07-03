@@ -17,6 +17,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -54,6 +55,9 @@ public class Account implements Serializable {
 	@Column(name = "dayOfBirth", updatable = true)
 	private Date dayOfBirth;
 
+	@Column(name = "avatar", updatable = true)
+	private byte[] avatar;
+	
 	@Column(name = "created_at", updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime created_at;
 	
@@ -76,5 +80,7 @@ public class Account implements Serializable {
 	@OneToMany(mappedBy = "account_id")
 	private List<HistoryPuchaseOrder> historyPuchaseOrders;
 
-
+	@ManyToOne
+	@JoinColumn(name = "roleid")
+	private Role roleID;
 }

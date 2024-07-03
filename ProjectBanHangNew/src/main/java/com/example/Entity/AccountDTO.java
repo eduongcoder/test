@@ -24,6 +24,8 @@ public class AccountDTO {
 	private Short height;
 
 	private Short weight;
+	
+	private String avatarString;
 
 	private String phoneNumber;
 
@@ -38,5 +40,8 @@ public class AccountDTO {
 	private List<AddressesDTO> addresses;
 
 	private List<OrdersDTO> orders;
+	private Integer roleID;
+	private String role;
 
+	private List<RolePermissionDTO> rolePermission;
 }
