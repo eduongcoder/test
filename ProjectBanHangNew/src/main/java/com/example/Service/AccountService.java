@@ -26,6 +26,7 @@ public class AccountService implements IAccountService {
 
 	@Autowired
 	private IRoleService roleService;
+
 	@Override
 	public void deleteAccountByID(int id) {
 
@@ -82,17 +83,30 @@ public class AccountService implements IAccountService {
 
 	@Override
 	public List<RolePermissionDTO> getRolePermissionDTOs(int id) {
-		List<RolePermissionDTO> list=  modelMapper.map(findAccountByID(id).getRoleID().getRolePermissions(), new TypeToken<List<RolePermissionDTO>>() {
-		}.getType());
+		List<RolePermissionDTO> list = modelMapper.map(findAccountByID(id).getRoleID().getRolePermissions(),
+				new TypeToken<List<RolePermissionDTO>>() {
+				}.getType());
 		return list;
 	}
 
 	@Override
 	public Account grandRole(int idAccount, int idRole) {
-		Account account=findAccountByID(idAccount);
+		Account account = findAccountByID(idAccount);
 		account.setRoleID(roleService.getRoleById(idRole));
-		
+
 		return service.save(account);
+	}
+
+	@Override
+	public int updateLoginStatus(int id) {
+		Account account = findAccountByID(id);
+		account.setIslogin(true);
+		try {
+			service.save(account);
+			return id;
+		} catch (Exception e) {
+			return -1;
+		}
 	}
 
 }

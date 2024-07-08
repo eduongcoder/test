@@ -25,4 +25,6 @@ public interface IOrderService {
 	public boolean updateAdressOrder(int id,String address);
 	
 	public Map<LocalDate, Integer> totalOrderMoney();
+	
+	public Orders updateStatusOrders(int id, String status);
 }

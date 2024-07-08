@@ -4,6 +4,7 @@ package com.example.Entity;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.aspectj.weaver.ast.Or;
@@ -32,25 +33,20 @@ public class Inventories implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int inventory_id;
 	
-//	@Column(name = "version_product_id")
-//	private int version_product_id;
-	
 	@Column(name = "change_amount")
 	private int change_amount;
 	
 	@Column(name = "event_type",length = 50, updatable = true)
     private String event_type;
 	
+	@Column(name = "order_id")
+	private int order_id;
+	
+	@Column(name = "amount")
+	private int amount;
+	
 	@Column(name = "event_date",updatable = true)
-	private Date event_date;
-	
-	@ManyToOne
-	@JoinColumn(name = "order_id")
-	private Orders orders;
-	
-	@ManyToOne
-	@JoinColumn(name = "version_product_id")
-	private ProductVersion productVersion;
+	private LocalDateTime event_date;
 
 	@ManyToOne
 	@JoinColumn(name = "variant_id")

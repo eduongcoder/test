@@ -34,6 +34,7 @@ import com.example.Entity.Product;
 import com.example.Entity.ProductDTO;
 import com.example.Entity.ProductOnlyDTO;
 import com.example.Entity.ProductShowDTO;
+import com.example.Entity.ProductShowDTOVersion2;
 import com.example.Entity.Size;
 import com.example.Entity.SizeonlyDTO;
 import com.example.Entity.TypeOfProductGender;
@@ -126,6 +127,17 @@ public class ProductController implements WebMvcConfigurer {
 		return dtos;
 	}
 
+	// xuất ra những product với product version có variant còn hàng
+	@GetMapping("/productshowV3")
+	public List<ProductShowDTOVersion2> getAllProductShowV3() {
+		List<Product> list = service.getAllProducts();
+		List<ProductShowDTOVersion2> dtos = modelMapper.map(list, new TypeToken<List<ProductShowDTOVersion2>>() {
+		}.getType());
+
+		return dtos;
+	}
+
+	// xuất ra những category chưa bị xóa, trạng thái isdelete == false
 	@GetMapping("/productshowV2")
 	public List<ProductShowDTO> getAllProductShowV2() {
 //		List<Product> list = service.getAllProducts();
@@ -144,10 +156,8 @@ public class ProductController implements WebMvcConfigurer {
 			product2.setCategories(list);
 			temp.add(product2);
 		}
-
 		List<ProductShowDTO> dtos = modelMapper.map(temp, new TypeToken<List<ProductShowDTO>>() {
 		}.getType());
-
 		return dtos;
 	}
 

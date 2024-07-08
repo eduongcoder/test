@@ -56,7 +56,7 @@ public class VariantService  implements IVariantService{
 
 	@Override
 	public Variant updateVariant(VariantForm form) {
-		Variant variant=modelMapper.map(form, Variant.class);
+		Variant variant=getVariantByID(form.getVariants_id());
 		variant.setProductversion(productVersionService.getProductVersionByID(form.getProductversion()));
 		variant.setColor(colorService.getColorByID(form.getColorID()));
 		variant.setSize(sizeService.getSizeByID(form.getSizeID()));

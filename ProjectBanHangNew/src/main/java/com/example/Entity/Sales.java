@@ -3,6 +3,7 @@ package com.example.Entity;
 import java.io.Serializable;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,6 +12,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -51,8 +54,11 @@ public class Sales implements Serializable{
 	@Column(name = "sale_date_end",updatable = true)
 	private LocalDateTime sale_date_end;
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name ="variant_id")
 	private Variant variant_id;
+	
+	@OneToMany(mappedBy = "sales")
+	private List<SaleDiscount> saleDiscount;
 	
 }

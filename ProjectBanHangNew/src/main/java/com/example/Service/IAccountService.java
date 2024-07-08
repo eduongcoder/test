@@ -23,4 +23,6 @@ public interface IAccountService {
 	public List<RolePermissionDTO> getRolePermissionDTOs(int id);
 	
 	public Account grandRole(int idAccount, int idRole);
+	
+	public int updateLoginStatus(int id);
 }

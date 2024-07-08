@@ -1,6 +1,7 @@
 package com.example.Entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,7 +27,9 @@ public class SalesDTO {
 
 	private LocalDateTime sale_date_end;
 
-	private Integer variant_id;
+	private Integer variant_id; 
+	
+	private List<SaleDiscountDTO> saleDiscount;
 
 //	private Integer orderitem;
 }

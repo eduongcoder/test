@@ -45,7 +45,9 @@ public class Account implements Serializable {
 
 	@Column(name = "height", updatable = true)
 	private short height;
-
+	
+	@Column(name = "isLogin", columnDefinition = "BOOLEAN DEFAULT false")
+	private boolean islogin;
 	@Column(name = "weight", updatable = true)
 	private short weight;
 	
@@ -80,6 +82,9 @@ public class Account implements Serializable {
 	@OneToMany(mappedBy = "account_id")
 	private List<HistoryPuchaseOrder> historyPuchaseOrders;
 
+	@OneToMany(mappedBy = "id_account")
+	private List<HistoryLogin> historyLogins;
+	
 	@ManyToOne
 	@JoinColumn(name = "roleid")
 	private Role roleID;

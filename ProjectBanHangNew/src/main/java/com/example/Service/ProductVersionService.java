@@ -1,16 +1,21 @@
 package com.example.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.Entity.OrdersDTO;
 import com.example.Entity.Product;
 import com.example.Entity.ProductVersion;
 import com.example.Entity.PurchaseOderItems;
 import com.example.Entity.PurchaseOrders;
+import com.example.Entity.Variant;
+import com.example.Entity.VariantDTO;
 import com.example.From.ProductVersionForm;
 import com.example.Repository.IProductVersionRepository;
 
@@ -90,5 +95,21 @@ public class ProductVersionService implements IProductVersionService {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public List<VariantDTO> fillerStockVariant(int id) {
+		ProductVersion productVersion=getProductVersionByID(id);
+		List<Variant> variants=productVersion.getVariants(),tempList=new ArrayList<Variant>();
+		for (Variant variant : variants) {
+			if (!variant.getInventories().isEmpty() && variant.getInventories().get(variant.getInventories().size()-1).getChange_amount()==0) {
+				continue;
+			}else {
+				tempList.add(variant);
+			}
+		}
+		
+		return  modelMapper.map(tempList, new TypeToken<List<VariantDTO>>() {
+		}.getType()); 
 	}
 }

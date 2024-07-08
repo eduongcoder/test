@@ -39,5 +39,5 @@ public class OrderItemDTOVariant {
 //	private List<VariantDTO> variants;
 	
 	
-//	private Integer productVersion;
+	private Integer productVersion;
 }

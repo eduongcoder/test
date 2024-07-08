@@ -12,10 +12,12 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.Entity.Inventories;
 import com.example.Entity.OrderItem;
 import com.example.Entity.OrderItemDTO;
 import com.example.Entity.OrderItemDTOVariant;
 import com.example.Entity.Orders;
+import com.example.From.InventoriesForm;
 import com.example.From.OrdersForm;
 import com.example.Repository.IOrderRepository;
 
@@ -26,11 +28,14 @@ public class OrderService implements IOrderService {
 	private IOrderRepository service;
 
 	@Autowired
-	private IAccountService accountService;
+	private IVariantService variantService;
 
 	@Autowired
 	private ModelMapper modelMapper;
 
+	@Autowired
+	private IInventoryService inventoryService;
+	
 	@Override
 	public List<Orders> getallOrders() {
 		return service.findAll();
@@ -128,7 +133,7 @@ public class OrderService implements IOrderService {
 				
 				if (orders2.getOrders_id() == orders.getOrders_id()) {
 					continue;
-				} else if (date.equals( orders2.getCreated_at().toLocalDate())) {
+				} else if (date.equals( orders2.getCreated_at().toLocalDate()) && !orders2.getStatus().equals("Prepare") && !orders2.getStatus().equals("Cancel")) {
 					sum+=orders2.getTotal_amount() ;
 				}
 			}
@@ -136,6 +141,32 @@ public class OrderService implements IOrderService {
 		}
 
 		return myMap;
+	}
+
+	@Override
+	public Orders updateStatusOrders(int id, String status) {
+		Orders orders=getOrderByID(id);
+		if (status.equals("Shipping")) {
+			orders.setShipping_at(LocalDateTime.now());
+		}else if (status.equals("Completed")) {
+			orders.setComplete_at(LocalDateTime.now());
+		}else if (status.equals("Cancel")) {
+			List<OrderItem> orderItems=orders.getOrderItems();
+			for (OrderItem orderItem : orderItems) {
+				InventoriesForm form=new InventoriesForm();
+				
+				List<Inventories> list=variantService.getVariantByID(orderItem.getTypeOfVariant()).getInventories();
+				//chắc chắn phải có inventory của variant đó đầu tiên thì code mới ko lỗi
+				form.setChange_amount(list.get(list.size()-1).getChange_amount()+orderItem.getQuantity());
+				form.setInventoryVariant(orderItem.getTypeOfVariant());
+				form.setEvent_type("Trả_hàng");
+				form.setOrder_id(orders.getOrders_id());
+				form.setAmount(orderItem.getQuantity());
+				inventoryService.createInventory(form);
+			}
+		}
+		orders.setStatus(status);
+		return service.save(orders);
 	}
 
 }

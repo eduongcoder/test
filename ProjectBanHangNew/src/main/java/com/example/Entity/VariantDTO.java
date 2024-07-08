@@ -17,11 +17,15 @@ public class VariantDTO {
 
 	private boolean isDelete;
 	
+	private int price;
+	
 	private String color;
 
 	private SizeEnum size;
 
 	private Integer productversion;
 
-	private List<SalesDTO> sales;
+	private SalesDTO sales;
+	
+	private List<InventoriesDTO> inventories;
 }

@@ -10,14 +10,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.Entity.Color;
+import com.example.Entity.Inventories;
 import com.example.Entity.OrderItem;
-import com.example.Entity.Orders;
 import com.example.Entity.Variant;
 import com.example.Enum.SizeEnum;
+import com.example.From.InventoriesForm;
 import com.example.From.OrderitemForm;
 import com.example.Repository.IOrderItemRepository;
-import com.example.Repository.IOrderRepository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -47,6 +46,14 @@ public class OrderItemService implements IOrderItemService {
 	@Autowired
 	private IOrderService serviceOrder;
 
+	@Autowired
+	private IInventoryService inventoryService;
+	
+	@Autowired
+	private ISaleService saleService;
+	
+
+	
 	@Override
 	public List<OrderItem> getAllOrderItems() {
 
@@ -54,6 +61,7 @@ public class OrderItemService implements IOrderItemService {
 	}
 
 	@Override
+	@Transactional
 	public OrderItem createOrderItem(OrderitemForm form, int idOrder, int idProductVersion) {
 		try {
 
@@ -61,8 +69,21 @@ public class OrderItemService implements IOrderItemService {
 			orderItem.setUpdatedAt(LocalDateTime.now());
 			orderItem.setOrders(serviceOrder.getOrderByID(idOrder));
 			orderItem.setProductVersion(serviceProductVersionService.getProductVersionByID(idProductVersion));
-
-			return service.save(orderItem);
+			
+			InventoriesForm form2=new InventoriesForm();
+			//chắc chắn phải có inventory của variant đó đầu tiên thì code mới ko lỗi
+			Variant variant=variantService.getVariantByID(form.getTypeOfVariant());
+			List<Inventories> inventories=variant.getInventories();
+			form2.setChange_amount(inventories.get(inventories.size()-1).getChange_amount()-form.getQuantity());
+			form2.setEvent_type("Đặt_hàng");
+			form2.setInventoryVariant(form.getTypeOfVariant());
+			form2.setOrder_id(idOrder);
+			form2.setAmount(form.getQuantity());
+			inventoryService.createInventory(form2);
+			
+			OrderItem orderItem2=service.save(orderItem);
+			entityManager.refresh(orderItem2);
+			return orderItem2;
 		} catch (Exception e) {
 			return null;
 		}

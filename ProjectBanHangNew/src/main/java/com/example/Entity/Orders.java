@@ -54,8 +54,8 @@ public class Orders implements Serializable{
 	@JoinColumn(name = "account_id")
 	private Account account;
 	
-	@OneToMany(mappedBy = "orders")
-	private List<Inventories> inventories; 
+//	@OneToMany(mappedBy = "orders")
+//	private List<Inventories> inventories; 
 	
 	@OneToMany(mappedBy = "orders")
 	private List<OrderItem> orderItems;

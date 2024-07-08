@@ -24,7 +24,7 @@ import com.example.Entity.OrderItem;
 import com.example.Entity.OrderItemDTO;
 import com.example.Entity.OrderItemDTOVariant;
 import com.example.Entity.Orders;
-
+import com.example.Entity.SaleDiscount;
 import com.example.Entity.Variant;
 import com.example.Entity.VariantDTO;
 import com.example.Entity.VariantNoAccountDTO;
@@ -36,6 +36,8 @@ import com.example.Service.IAccountService;
 import com.example.Service.IImageService;
 import com.example.Service.IOrderItemService;
 import com.example.Service.IOrderService;
+import com.example.Service.ISaleDiscountService;
+import com.example.Service.ISaleService;
 import com.example.Service.IVariantService;
 import com.example.Service.ImageHandelService;
 
@@ -70,6 +72,12 @@ public class VariantController {
 	@Autowired
 	private ImageHandelService handelService;
 
+	@Autowired
+	private ISaleDiscountService saleDiscountService;
+
+	@Autowired
+	private ISaleService saleService;
+
 	@PostMapping("/upload")
 	public String handleFileUpload(@RequestParam("file") MultipartFile file) {
 
@@ -83,12 +91,12 @@ public class VariantController {
 	}
 
 	@PostMapping("/creatImage")
-	public int creatImage(@RequestParam("file") MultipartFile file,@RequestParam("idproduct") int idproduct) {
-		ImageForm form=new ImageForm();
+	public int creatImage(@RequestParam("file") MultipartFile file, @RequestParam("idproduct") int idproduct) {
+		ImageForm form = new ImageForm();
 		try {
 			form.setImageByte(file.getBytes());
 			form.setProductid(idproduct);
-			Images images=imageService.createImage(form);
+			Images images = imageService.createImage(form);
 			return images.getImages_id();
 		} catch (IOException e) {
 			return -1;
@@ -99,7 +107,7 @@ public class VariantController {
 //			// TODO Auto-generated catch block
 //			return "";
 //		}
-				
+
 	}
 
 	@GetMapping
@@ -183,6 +191,23 @@ public class VariantController {
 			form.setTypeOfVariant(idVariant);
 			OrderItem orderItem = serviceIOrderItem.createOrderItem(form, form.getOrders(), form.getProductVersion());
 
+			Variant variant = service.getVariantByID(orderItem.getTypeOfVariant());
+			List<SaleDiscount> saleDiscounts = variant.getSales().getSaleDiscount();
+			if (!saleDiscounts.isEmpty() && saleDiscounts != null) {
+				for (SaleDiscount saleDiscount : saleDiscounts) {
+					LocalDateTime starTime = saleDiscount.getDiscount().getDate_start(),
+							endTime = saleDiscount.getDiscount().getDate_end();
+					LocalDateTime time = orderItem.getCreatedAt();
+					if (time.isAfter(starTime) && time.isBefore(endTime)) {
+						saleDiscountService.updateSaleDiscount(saleDiscount.getSales().getId(),
+								saleDiscount.getDiscount().getDiscount_id(), orderItem.getQuantity());
+					}
+				}
+			} else {
+				saleService.updateQuantitySales(variant.getSales().getId(), orderItem.getQuantity());
+
+			}
+
 			return orderItem.getOrder_items_id();
 		} else {
 			Account account = serviceAccount.findAccountByID(idAccount);
@@ -199,6 +224,24 @@ public class VariantController {
 			form.setOrders(orderscreateOrders.getOrders_id());
 			form.setTypeOfVariant(idVariant);
 			OrderItem orderItem = serviceIOrderItem.createOrderItem(form, form.getOrders(), form.getProductVersion());
+
+			Variant variant = service.getVariantByID(orderItem.getTypeOfVariant());
+			List<SaleDiscount> saleDiscounts = variant.getSales().getSaleDiscount();
+			if (!saleDiscounts.isEmpty() && saleDiscounts != null) {
+				for (SaleDiscount saleDiscount : saleDiscounts) {
+					LocalDateTime starTime = saleDiscount.getDiscount().getDate_start(),
+							endTime = saleDiscount.getDiscount().getDate_end();
+					LocalDateTime time = orderItem.getCreatedAt();
+					if (time.isAfter(starTime) && time.isBefore(endTime)) {
+						saleDiscountService.updateSaleDiscount(saleDiscount.getSales().getId(),
+								saleDiscount.getDiscount().getDiscount_id(), orderItem.getQuantity());
+
+					}
+				}
+
+			} else {
+				saleService.updateQuantitySales(variant.getSales().getId(), orderItem.getQuantity());
+			}
 
 			return orderItem.getOrder_items_id();
 		}

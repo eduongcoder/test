@@ -25,6 +25,8 @@ public class AccountDTO {
 
 	private Short weight;
 	
+	private boolean islogin;
+
 	private String avatarString;
 
 	private String phoneNumber;
@@ -42,6 +44,8 @@ public class AccountDTO {
 	private List<OrdersDTO> orders;
 	private Integer roleID;
 	private String role;
+
+	private List<HistoryLoginDTO> historyLogins;
 
 	private List<RolePermissionDTO> rolePermission;
 }

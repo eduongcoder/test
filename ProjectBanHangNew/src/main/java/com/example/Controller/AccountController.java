@@ -189,7 +189,7 @@ public class AccountController {
 			}
 
 		}
-		return 0;
+		return -1;
 	}
 	@GetMapping("/Verification/pass")
 	private int verificationPass(@RequestParam String email, @RequestParam String pass) {
@@ -228,7 +228,32 @@ public class AccountController {
 		}
 		return -1;
 	}
-	
+	@GetMapping(value = "/checkPermission/{id}")
+	private AccountDTO checkPermission(@PathVariable(name = "id") int id) {
+		List<RolePermission> role=service.findAccountByID(id).getRoleID().getRolePermissions();
+		for (RolePermission rolePermission : role) {
+			if (rolePermission.getPermission().getPermission_name().equals("Đăng nhập trang admin")) {
+				
+				if (service.updateLoginStatus(id)==id) {
+					Account account=service.findAccountByID(id);
+					return modelMapper.map(account, AccountDTO.class);
+				}
+				
+			}
+		}
+		return null;
+	}
+	@GetMapping(value = "/checkPermissionAll/{id}")
+	private boolean checkPermissionAll(@PathVariable(name = "id") int id,@RequestParam int idPermisson) {
+		List<RolePermission> role=service.findAccountByID(id).getRoleID().getRolePermissions();
+		for (RolePermission rolePermission : role) {
+			if (rolePermission.getPermission().getPermissions_id()==idPermisson) {
+				Account account=service.findAccountByID(id);
+				return true;
+			}
+		}
+		return false;
+	}
 	@PostMapping("/createRole")
 	private int createRole(@RequestBody RoleForm form) {
 		return roleService.createRole(form).getRole_id();
@@ -237,6 +262,7 @@ public class AccountController {
 	private int updateRole(@RequestBody RoleForm form) {
 		return roleService.updateRole(form).getRole_id();
 	}
+	//truyền các quyền vào trong role đó, các quyền có sẵn nhưng ko có trong list thì sẽ bị xóa
 	@PostMapping(value = "/grandManyPermission/{id}")
 	public int postMethodName(@PathVariable(name = "id")int id, @RequestBody RolePermissionListDTO list) {
 		List<RolePermission> role=roleService.getRoleById(id).getRolePermissions();

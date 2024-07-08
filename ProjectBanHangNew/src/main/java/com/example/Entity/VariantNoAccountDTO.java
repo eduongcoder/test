@@ -33,7 +33,7 @@ public class VariantNoAccountDTO {
 
 	private List<ImagesDTO> images;
 
-	private List<SalesDTO> sales;
+	private SalesDTO sales;
 
 	
 	private LocalDateTime createTime;

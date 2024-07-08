@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SaleForm {
 
+	private Integer id_sale;
+	
 	private Integer quantity;
 
 	private Integer sale_price;

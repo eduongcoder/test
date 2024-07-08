@@ -1,6 +1,7 @@
 package com.example.Controller;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -20,9 +21,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.example.Entity.OrderItem;
 import com.example.Entity.OrderItemDTOShopCart;
+import com.example.Entity.OrderItemStatisticDTO;
 import com.example.Entity.Orders;
 import com.example.Entity.OrdersDTO;
 import com.example.Entity.OrdersDTOShopCart;
+import com.example.Entity.OrdersStatisticsDTO;
 import com.example.From.OrderAddressForm;
 import com.example.From.OrdersForm;
 import com.example.Service.IAccountService;
@@ -68,6 +71,12 @@ public class OrderController implements WebMvcConfigurer {
 		return modelMapper.map(service.updateAdressOrder(id, address.getAddreString()), OrdersDTO.class);
 	}
 
+	@PutMapping(value = "/updateStatusOrder/{id}")
+	private OrdersDTO updateStatusOrder(@PathVariable(name = "id")int id, @RequestParam String status) {
+		
+		return modelMapper.map(service.updateStatusOrders(id,status), OrdersDTO.class);
+	}
+	
 	@GetMapping
 	private List<OrdersDTO> getAllOrder() {
 		List<Orders> list = service.getallOrders();
@@ -127,21 +136,30 @@ public class OrderController implements WebMvcConfigurer {
 	}
 
 	@GetMapping("/getrevenuebydate")
-	public Map<String, List<Integer>> getRevenue(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
-		Map<String, List<Integer>> myMap = new LinkedHashMap<>();
+	public Map<String, List<OrdersStatisticsDTO>> getRevenue(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
+		Map<String, List<OrdersStatisticsDTO>> myMap = new LinkedHashMap<>();
 		List<Orders> list = service.getallOrders();
-		for (Orders order : list) {
-
-			if (order.getCreated_at().toLocalDate().isAfter(startDate) && order.getCreated_at().toLocalDate().isBefore(endDate)) {
-				String date = order.getCreated_at().toLocalDate().toString();
-				myMap.computeIfAbsent(date, k -> new ArrayList<>()).add(order.getTotal_amount());
+		for (Orders item : list) {
+			
+			if (item.getCreated_at().toLocalDate().isAfter(startDate) && item.getCreated_at().toLocalDate().isBefore(endDate)
+					&& !item.getStatus().equals("Prepare")&& !item.getStatus().equals("Cancel")
+					) { 
+				OrdersStatisticsDTO dto=new OrdersStatisticsDTO();
+				int idAccount=item.getAccount().getAccount_id();
+				int idOrder=item.getOrders_id(),totalMoney=item.getTotal_amount();
+				String date = item.getCreated_at().toLocalDate().toString();
+				dto.setIdAccount(idAccount);
+				dto.setIdOrder(idOrder);
+				dto.setTotalMoney(totalMoney);
+				
+			
+				myMap.computeIfAbsent(date, k -> new ArrayList<>()).add(dto);
 			}
-
+		
 		}
-//		for (Orders orders : list) {
 
-//		}
 		return myMap;
 
 	}
+	
 }
