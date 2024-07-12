@@ -37,7 +37,7 @@ public class AccountForm {
 	
 	private LocalDateTime updated_at;
 	
-	private Gender gender;
+	private String gender;
 	
 	private Integer roleID;
 	private List<AddressesDTO> addresses;

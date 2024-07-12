@@ -12,7 +12,8 @@ public interface ISaleService {
 	public Sales getSaleByID(int id);
 	public boolean deleteSales(int id);
 	public Sales createSale(SaleForm form);
-	public int getSalePrice(int idProductVersion);
+	public int getSalePrice(int idVariant);
 	public Sales updateQuantitySales(int id, int quantity);
 	public SaleDiscount getSaleDiscount(int idSale,int idDiscount);
+	public int getSaleBasePrice(int idVariant);
 }

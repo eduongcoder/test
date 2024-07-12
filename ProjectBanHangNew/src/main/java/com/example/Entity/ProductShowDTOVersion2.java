@@ -37,4 +37,7 @@ public class ProductShowDTOVersion2 {
 	private List<PersonFixDTO> personFixs;
 	
 	private List<ImagesDTO> imagesMap;
+	
+	private List<OrderItemDTOVariant> orderItems;
+
 }

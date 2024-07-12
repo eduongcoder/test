@@ -59,7 +59,6 @@ public class ProductVersion implements Serializable {
 	@OneToMany(mappedBy = "productVersion")
 	private List<PurchaseOderItems> purchaseOderItems;
 	
-	@OneToMany(mappedBy = "productVersion")
-	private List<OrderItem> orderItems;
+
 
 }

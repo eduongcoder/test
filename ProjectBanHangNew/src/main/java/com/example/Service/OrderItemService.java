@@ -10,8 +10,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.Entity.Color;
 import com.example.Entity.Inventories;
 import com.example.Entity.OrderItem;
+import com.example.Entity.Orders;
+import com.example.Entity.Product;
+import com.example.Entity.Size;
 import com.example.Entity.Variant;
 import com.example.Enum.SizeEnum;
 import com.example.From.InventoriesForm;
@@ -47,12 +51,19 @@ public class OrderItemService implements IOrderItemService {
 	private IOrderService serviceOrder;
 
 	@Autowired
+	private IColorService colorService;
+	
+	@Autowired
+	private IProductService productService;
+	
+	@Autowired
 	private IInventoryService inventoryService;
 	
 	@Autowired
 	private ISaleService saleService;
 	
-
+	@Autowired
+	private IOrderService orderService;
 	
 	@Override
 	public List<OrderItem> getAllOrderItems() {
@@ -62,28 +73,23 @@ public class OrderItemService implements IOrderItemService {
 
 	@Override
 	@Transactional
-	public OrderItem createOrderItem(OrderitemForm form, int idOrder, int idProductVersion) {
+	public OrderItem createOrderItem(OrderitemForm form,int idOrder) {
 		try {
-
+			Orders orders=orderService.getOrderByID(idOrder);
+			Color color=colorService.getColorByID(form.getColorID());
+			Product product=productService.getProductByID(form.getProductID());
+			Size size=sizeService.getSizeByID(form.getSizeID());
 			OrderItem orderItem = modelMapper.map(form, OrderItem.class);
-			orderItem.setUpdatedAt(LocalDateTime.now());
-			orderItem.setOrders(serviceOrder.getOrderByID(idOrder));
-			orderItem.setProductVersion(serviceProductVersionService.getProductVersionByID(idProductVersion));
-			
-			InventoriesForm form2=new InventoriesForm();
-			//chắc chắn phải có inventory của variant đó đầu tiên thì code mới ko lỗi
-			Variant variant=variantService.getVariantByID(form.getTypeOfVariant());
-			List<Inventories> inventories=variant.getInventories();
-			form2.setChange_amount(inventories.get(inventories.size()-1).getChange_amount()-form.getQuantity());
-			form2.setEvent_type("Đặt_hàng");
-			form2.setInventoryVariant(form.getTypeOfVariant());
-			form2.setOrder_id(idOrder);
-			form2.setAmount(form.getQuantity());
-			inventoryService.createInventory(form2);
-			
+			orderItem.setColor(color);
+			orderItem.setSize(size);
+			orderItem.setOrders(orders);
+			orderItem.setBase_price(form.getPrice_base());
+			orderItem.setCreatedAt(form.getCreateAt());
+			orderItem.setProduct(product);
 			OrderItem orderItem2=service.save(orderItem);
-			entityManager.refresh(orderItem2);
+//			entityManager.refresh(orderItem2);
 			return orderItem2;
+//			return orderItem;
 		} catch (Exception e) {
 			return null;
 		}
@@ -110,11 +116,15 @@ public class OrderItemService implements IOrderItemService {
 
 	@Override
 	public OrderItem updateOrderItem(OrderitemForm form) {
+		OrderItem orderItem0=findbyID(form.getOrder_items_id());
+		orderItem0.setProduct_price(form.getProduct_price());
+		orderItem0.setBase_price(form.getPrice_base());
+		orderItem0.setQuantity(form.getQuantity());
+		orderItem0.setUpdatedAt(LocalDateTime.now());
+		orderItem0.setCreatedAt(LocalDateTime.now());
 
-		OrderItem orderItem = modelMapper.map(form, OrderItem.class);
-
-		service.save(orderItem);
-		return null;
+		
+		return service.save(orderItem0);
 	}
 
 	@Override

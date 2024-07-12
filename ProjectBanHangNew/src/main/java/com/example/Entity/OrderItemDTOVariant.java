@@ -14,30 +14,34 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderItemDTOVariant {
 	private Integer order_items_id;
-	
+
 	private String product_name;
-	
-    private Integer product_price;
-	
+
+	private Integer product_price;
+
+	private Integer price_base;
+
 	private Integer quantity;
-	
+
 	private LocalDateTime createdAt;
-	
+
 	private LocalDateTime updatedAt;
-	
-//	private List<SalesDTO> sales;
+
+	private Integer productID;
 
 	private Integer orders_id;
-	
-	private Integer typeOfVariant;
+
+//	private Integer typeOfVariant;
 
 	private SizeEnum size;
-	
+
 	private String color;
-	
-	
+
+	private Integer sizeID;
+
+	private Integer colorID;
+
 //	private List<VariantDTO> variants;
-	
-	
-	private Integer productVersion;
+
+//	private Integer productVersion;
 }

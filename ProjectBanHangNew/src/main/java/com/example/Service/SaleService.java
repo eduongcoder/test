@@ -89,8 +89,8 @@ public class SaleService implements ISaleService {
 	}
 
 	@Override
-	public int getSalePrice(int idProductVersion) {
-		Variant variant = variantService.getVariantByID(idProductVersion);
+	public int getSalePrice(int idVariant) {
+		Variant variant = variantService.getVariantByID(idVariant);
 		// Kiểm tra variant không null
 		if (variant != null) {
 			Sales sales = variant.getSales();
@@ -169,6 +169,66 @@ public class SaleService implements ISaleService {
 		}
 		
 		return null;
+	}
+
+	@Override
+	public int getSaleBasePrice(int idVariant) {
+		Variant variant = variantService.getVariantByID(idVariant);
+		// Kiểm tra variant không null
+		if (variant != null) {
+			Sales sales = variant.getSales();
+
+			// Kiểm tra sales không null
+			if (sales != null) {
+				List<SaleDiscount> listsSales = sales.getSaleDiscount();
+
+				// Kiểm tra listsSales không null và không rỗng
+				if (listsSales != null && !listsSales.isEmpty()) {
+					LocalDateTime now = LocalDateTime.now();
+					LocalDateTime closestEndTime = null;
+					int idSale = 0, idDiscount = 0;
+
+					// Lặp qua danh sách SaleDiscount
+					for (SaleDiscount sale : listsSales) {
+						LocalDateTime saleStart = sale.getDiscount().getDate_start();
+						LocalDateTime saleEnd = sale.getDiscount().getDate_end();
+
+						// Kiểm tra ngày hiện tại nằm trong khoảng saleStart và saleEnd
+						if (saleEnd != null && now.isAfter(saleStart) && now.isBefore(saleEnd)) {
+							if (closestEndTime == null || saleEnd.isBefore(closestEndTime)) {
+								closestEndTime = saleEnd;
+								idSale = sale.getSales().getId();
+								idDiscount = sale.getDiscount().getDiscount_id();
+							}
+						}
+					}
+
+					// Kiểm tra có idSale khác 0
+					if (idSale != 0) {
+						SaleDiscountId saleDiscount = new SaleDiscountId();
+						saleDiscount.setDiscount(idDiscount);
+						saleDiscount.setSales(idSale);
+
+						// Lấy giá trị sale_base_price từ Sales và tính toán giảm giá
+						BigDecimal salebase = BigDecimal.valueOf(sales.getSale_base_price());
+						BigDecimal percent = saleDiscountService.getSaleDiscountById(saleDiscount).getDiscount()
+								.getPercent();
+						BigDecimal result = salebase.multiply(percent);
+
+						// Trả về kết quả là một số nguyên
+						return result.intValue();
+					}
+					return sales.getSale_base_price();
+
+				} else {
+					return sales.getSale_base_price();
+				}
+			} else {
+				return -5;
+			}
+		} else {
+			return -10;
+		}
 	}
 
 }

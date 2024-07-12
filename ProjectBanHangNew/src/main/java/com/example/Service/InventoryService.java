@@ -46,8 +46,15 @@ public class InventoryService implements IInventoryService {
 
 	@Override
 	public int updateInventory(InventoriesForm form) {
-		// TODO Auto-generated method stub
-		return 0;
+		Inventories inventories=getInventoriesById(form.getInventory_id());
+		inventories.setAmount(form.getAmount());
+		inventories.setChange_amount(form.getChange_amount());
+		inventories.setEvent_date(LocalDateTime.now());
+		inventories.setEvent_type(form.getEvent_type());
+		inventories.setOrder_id(form.getOrder_id());
+		inventories.setInventoryVariant(variantService.getVariantByID(form.getInventoryVariant()));
+		
+		return service.save(inventories).getInventory_id();
 	}
 
 	@Override

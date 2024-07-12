@@ -40,4 +40,7 @@ public class Size implements Serializable {
 	@OneToMany(mappedBy = "catetorySize")
 	private List<Category> categories;
 
+	@OneToMany(mappedBy = "size")
+	private List<OrderItem> orderitems;
+	
 }

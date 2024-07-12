@@ -1,11 +1,13 @@
 package com.example.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.Entity.Account;
 import com.example.Entity.Addresses;
 import com.example.From.AddressesForm;
 import com.example.Repository.IAddressesRepository;
@@ -15,6 +17,8 @@ public class AddressesService implements IAddressesService {
 
 	@Autowired
 	private IAddressesRepository service;
+	@Autowired
+	private IAccountService accountService;
 
 	@Autowired
 	private ModelMapper modelMapper;
@@ -47,7 +51,9 @@ public class AddressesService implements IAddressesService {
 
 		try {
 			Addresses addresses = modelMapper.map(form, Addresses.class);
-			
+			Account account=accountService.findAccountByID(form.getAccount_id());
+			addresses.setAccount_id(account);
+			addresses.setUpdated_at(LocalDateTime.now());
 			return service.save(addresses);
 		} catch (Exception e) {
 			return null;

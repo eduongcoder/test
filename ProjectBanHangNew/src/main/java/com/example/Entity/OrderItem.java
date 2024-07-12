@@ -29,29 +29,35 @@ public class OrderItem implements Serializable {
 	@Column(name = "product_name", length = 255, updatable = true)
 	private String product_name;
 
-	@Column(name = "product_price", precision = 10, scale = 2, updatable = true)
+	@Column(name = "product_price", updatable = true)
 	private int product_price;
 
+	@Column(name = "base_price", updatable = true)
+	private int base_price;
+	
 	@Column(name = "quantity", updatable = true)
 	private int quantity;
 
-	@Column(name = "created_at", updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	@Column(name = "created_at")
 	private LocalDateTime createdAt;
 
 	@Column(name = "updated_at", updatable = true, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
 	private LocalDateTime updatedAt;
 
-	@Column(name = "variant",updatable = true)
-	private int typeOfVariant;
-	
-//	@OneToMany(mappedBy = "orderitem")
-//	private List<Sales> sales;
+	@ManyToOne
+	@JoinColumn(name  = "product_id")
+	private Product product;
 
 	@ManyToOne
 	@JoinColumn(name = "order_id")
 	private Orders orders;
+	
+	@ManyToOne
+	@JoinColumn(name = "color_id")
+	private Color color;
 
 	@ManyToOne
-	@JoinColumn(name = "version_product_id")
-	private ProductVersion productVersion;
+	@JoinColumn(name = "size_id")
+	private Size size;
+
 }

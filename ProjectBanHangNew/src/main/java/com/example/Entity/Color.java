@@ -33,4 +33,7 @@ public class Color implements Serializable {
 	
 	@OneToMany(mappedBy = "catetoryColor")
 	private List<Category> categories;
+	
+	@OneToMany(mappedBy = "color")
+	private List<OrderItem> orderItems;
 }

@@ -66,7 +66,7 @@ import com.example.Service.ImageHandelService;
 public class ProductController implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**").allowedOrigins("http://26.229.166.254:5173", "http://localhost:5173") // URL của ứng
+		registry.addMapping("/**").allowedOrigins("http://26.229.166.254:5173", "http://localhost:5173","http://localhost:5174") // URL của ứng
 																											// dụng
 																											// React
 				.allowedMethods("GET", "POST", "PUT", "DELETE").allowedHeaders("*").allowCredentials(true);
@@ -131,7 +131,21 @@ public class ProductController implements WebMvcConfigurer {
 	@GetMapping("/productshowV3")
 	public List<ProductShowDTOVersion2> getAllProductShowV3() {
 		List<Product> list = service.getAllProducts();
-		List<ProductShowDTOVersion2> dtos = modelMapper.map(list, new TypeToken<List<ProductShowDTOVersion2>>() {
+		
+		List<Product> temp = new ArrayList<>();
+		for (Product product2 : list) {
+			List<Category> categories = product2.getCategories();
+			Iterator<Category> iterator = categories.iterator();
+			while (iterator.hasNext()) {
+				Category category = iterator.next();
+				if (category.isIsdelete() == true) {
+					iterator.remove();
+				}
+			}
+			product2.setCategories(categories);
+			temp.add(product2);
+		}
+		List<ProductShowDTOVersion2> dtos = modelMapper.map(temp, new TypeToken<List<ProductShowDTOVersion2>>() {
 		}.getType());
 
 		return dtos;

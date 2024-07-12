@@ -1,21 +1,8 @@
 package com.example.From;
 
-import java.math.BigDecimal;
-import java.sql.Date;
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
-import java.util.List;
 
-import com.example.Entity.Orders;
-import com.example.Entity.ProductVersion;
-import com.example.Entity.Sales;
-import com.example.Entity.SalesDTO;
-import com.example.Entity.Variant;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 @Data
@@ -25,20 +12,20 @@ public class OrderitemForm {
 	
 	private String product_name;
 	
-    private BigDecimal product_price;
+    private Integer product_price;
     
-	private Integer productVersion;
+    private Integer price_base;
 
-	private int quantity;
+	private Integer quantity;
 	
-	private LocalDateTime created_at;
+	private Integer productID;
 	
-	private LocalDateTime updated_at;
+	private Integer sizeID;
 	
-	private List<Sales> sales;
+	private Integer colorID;
+
+	private LocalDateTime createAt;
 	
-	private Integer orders;
-	
-	private Integer typeOfVariant;
+
 	
 }

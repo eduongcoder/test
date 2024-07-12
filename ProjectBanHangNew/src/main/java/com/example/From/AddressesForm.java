@@ -1,6 +1,5 @@
 package com.example.From;
 
-import java.time.LocalDateTime;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class AddressesForm {
-	private int id;
+	private Integer id;
 
 	private Integer account_id;
 
@@ -22,7 +21,4 @@ public class AddressesForm {
 
 	private String phonenumer;
 
-	private LocalDateTime created_at;
-
-	private LocalDateTime updated_at;
 }

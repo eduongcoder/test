@@ -19,25 +19,33 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.Entity.Account;
+import com.example.Entity.Color;
 import com.example.Entity.Images;
+import com.example.Entity.Inventories;
 import com.example.Entity.OrderItem;
 import com.example.Entity.OrderItemDTO;
 import com.example.Entity.OrderItemDTOVariant;
 import com.example.Entity.Orders;
 import com.example.Entity.SaleDiscount;
+import com.example.Entity.Size;
 import com.example.Entity.Variant;
 import com.example.Entity.VariantDTO;
 import com.example.Entity.VariantNoAccountDTO;
+import com.example.From.AccountAvatarForm;
+import com.example.From.AccountForm;
 import com.example.From.ImageForm;
 import com.example.From.OrderitemForm;
 import com.example.From.OrdersForm;
 import com.example.From.VariantForm;
+import com.example.Repository.IAccountRepository;
 import com.example.Service.IAccountService;
+import com.example.Service.IColorService;
 import com.example.Service.IImageService;
 import com.example.Service.IOrderItemService;
 import com.example.Service.IOrderService;
 import com.example.Service.ISaleDiscountService;
 import com.example.Service.ISaleService;
+import com.example.Service.ISizeService;
 import com.example.Service.IVariantService;
 import com.example.Service.ImageHandelService;
 
@@ -54,6 +62,11 @@ public class VariantController {
 	@Autowired
 	private IVariantService service;
 
+	@Autowired
+	private IColorService colorService;
+
+	@Autowired
+	private ISizeService sizeService;
 	@Autowired
 	private IOrderService serviceOrder;
 
@@ -78,6 +91,8 @@ public class VariantController {
 	@Autowired
 	private ISaleService saleService;
 
+	
+	
 	@PostMapping("/upload")
 	public String handleFileUpload(@RequestParam("file") MultipartFile file) {
 
@@ -101,12 +116,6 @@ public class VariantController {
 		} catch (IOException e) {
 			return -1;
 		}
-//		try {
-//			return  handelService.getImageBase64String(file.getBytes()) ;
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			return "";
-//		}
 
 	}
 
@@ -166,8 +175,8 @@ public class VariantController {
 			OrderItem item = serviceIOrderItem.findbyID(idOrderItem);
 			OrderItemDTO dto = modelMapper.map(item, OrderItemDTO.class);
 			VariantDTO variantDTO = modelMapper.map(service.getVariantByID(idVariant), VariantDTO.class);
-			dto.setVariants(variantDTO);
-			dto.setIdvariant(idVariant);
+//			dto.setVariants(variantDTO);
+//			dto.setIdvariant(idVariant);
 			return dto;
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -182,33 +191,31 @@ public class VariantController {
 	}
 
 	@PostMapping("/createorderitem")
-	private int postMethodName(@RequestBody OrderitemForm form, @RequestParam int idAccount,
-			@RequestParam int idVariant) {
-
+	private OrderItemDTOVariant postMethodName(@RequestBody OrderitemForm form, @RequestParam int idAccount) {
+	
 		Orders orders = serviceOrder.getOrderPrepare(idAccount);
 		if (orders != null) {
-			form.setOrders(orders.getOrders_id());
-			form.setTypeOfVariant(idVariant);
-			OrderItem orderItem = serviceIOrderItem.createOrderItem(form, form.getOrders(), form.getProductVersion());
+			OrderItem orderItem = serviceIOrderItem.createOrderItem(form,orders.getOrders_id());
+			
+//			List<Variant> variants=service.getAllVariants();
+//			for (Variant variant : variants) {
+//				int idProduct=variant.getProductversion().getProduct().getProduct_id();
+//				int idColor=variant.getColor().getColor_id();
+//				int idSize=variant.getSize().getSize_id();
+//				if (idProduct==orderItem.getProduct().getProduct_id()
+//						&& idColor==orderItem.getColor().getColor_id()
+//						&& idSize==orderItem.getSize().getSize_id()) {
+//					List<Inventories> inventories=variant.getInventories();
+//					int index=inventories.size()-1;
+//					if (inventories.get(index).getChange_amount()>0) {
+//						OrderitemForm itemformForm=new OrderitemForm();
+//						itemformForm.setProduct_price(saleService.getSalePrice(variant.getVariants_id()));
+//					}
+//				}
+//			}
+//			return orderItem.getOrder_items_id();
 
-			Variant variant = service.getVariantByID(orderItem.getTypeOfVariant());
-			List<SaleDiscount> saleDiscounts = variant.getSales().getSaleDiscount();
-			if (!saleDiscounts.isEmpty() && saleDiscounts != null) {
-				for (SaleDiscount saleDiscount : saleDiscounts) {
-					LocalDateTime starTime = saleDiscount.getDiscount().getDate_start(),
-							endTime = saleDiscount.getDiscount().getDate_end();
-					LocalDateTime time = orderItem.getCreatedAt();
-					if (time.isAfter(starTime) && time.isBefore(endTime)) {
-						saleDiscountService.updateSaleDiscount(saleDiscount.getSales().getId(),
-								saleDiscount.getDiscount().getDiscount_id(), orderItem.getQuantity());
-					}
-				}
-			} else {
-				saleService.updateQuantitySales(variant.getSales().getId(), orderItem.getQuantity());
-
-			}
-
-			return orderItem.getOrder_items_id();
+			return modelMapper.map(orderItem, OrderItemDTOVariant.class);
 		} else {
 			Account account = serviceAccount.findAccountByID(idAccount);
 
@@ -221,29 +228,13 @@ public class VariantController {
 
 			Orders orderscreateOrders = serviceOrder.createOrder(ordersForm);
 
-			form.setOrders(orderscreateOrders.getOrders_id());
-			form.setTypeOfVariant(idVariant);
-			OrderItem orderItem = serviceIOrderItem.createOrderItem(form, form.getOrders(), form.getProductVersion());
+//			form.setOrders(orderscreateOrders.getOrders_id());
+//			form.setTypeOfVariant(idVariant);
+			OrderItem orderItem = serviceIOrderItem.createOrderItem(form, orderscreateOrders.getOrders_id());
 
-			Variant variant = service.getVariantByID(orderItem.getTypeOfVariant());
-			List<SaleDiscount> saleDiscounts = variant.getSales().getSaleDiscount();
-			if (!saleDiscounts.isEmpty() && saleDiscounts != null) {
-				for (SaleDiscount saleDiscount : saleDiscounts) {
-					LocalDateTime starTime = saleDiscount.getDiscount().getDate_start(),
-							endTime = saleDiscount.getDiscount().getDate_end();
-					LocalDateTime time = orderItem.getCreatedAt();
-					if (time.isAfter(starTime) && time.isBefore(endTime)) {
-						saleDiscountService.updateSaleDiscount(saleDiscount.getSales().getId(),
-								saleDiscount.getDiscount().getDiscount_id(), orderItem.getQuantity());
 
-					}
-				}
-
-			} else {
-				saleService.updateQuantitySales(variant.getSales().getId(), orderItem.getQuantity());
-			}
-
-			return orderItem.getOrder_items_id();
+			return modelMapper.map(orderItem, OrderItemDTOVariant.class);
+//			return orderItem.getOrder_items_id();
 		}
 	}
 

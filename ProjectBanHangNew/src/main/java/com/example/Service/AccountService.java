@@ -13,6 +13,7 @@ import com.example.Entity.AccountDTO;
 import com.example.Entity.RolePermission;
 import com.example.Entity.RolePermissionDTO;
 import com.example.Entity.SalesDTO;
+import com.example.Enum.Gender;
 import com.example.From.AccountForm;
 import com.example.Repository.IAccountRepository;
 
@@ -57,13 +58,25 @@ public class AccountService implements IAccountService {
 
 	@Override
 	public AccountDTO updateAccountByID(AccountForm form) {
-		AccountDTO accountDTO = modelMapper.map(findAccountByID(form.getAccount_id()), AccountDTO.class);
-
-		form.setAddresses(accountDTO.getAddresses());
-		form.setOrders(accountDTO.getOrders());
-		form.setCreated_at(accountDTO.getCreated_at());
-		form.setUpdated_at(LocalDateTime.now());
-		Account account = modelMapper.map(form, Account.class);
+//		AccountDTO accountDTO = modelMapper.map(findAccountByID(form.getAccount_id()), AccountDTO.class);
+	
+//		form.setAddresses(accountDTO.getAddresses());
+//		form.setOrders(accountDTO.getOrders());
+//		form.setCreated_at(accountDTO.getCreated_at());
+//		form.setUpdated_at(LocalDateTime.now());
+		Account account=findAccountByID(form.getAccount_id());
+//		Account accountTemp = modelMapper.map(form, Account.class);
+		account.setHeight(form.getHeight());
+		account.setWeight(form.getWeight());
+		account.setPhoneNumber(form.getPhoneNumber());
+		account.setDayOfBirth(form.getDayOfBirth());
+		if (form.getGender().equals("Nữ")) {
+			account.setGender(Gender.Nữ);
+		}else if (form.getGender().equals("Nam")) {
+			account.setGender(Gender.Nam);
+		}else {
+			account.setGender(Gender.Khác);
+		}
 		service.save(account);
 		AccountDTO dto = modelMapper.map(account, AccountDTO.class);
 		return dto;

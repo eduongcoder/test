@@ -15,6 +15,8 @@ public class CategoryDTO {
 
 	private Integer price_base;
 
+	private Integer price_sale;
+	
 	private LocalDateTime date_create;
 
 	private Integer catetoryProduct;

@@ -72,7 +72,8 @@ public class StatisticsController {
 		}
 		return myMap;
 	}
-	//api thống kê thời gian chi tiết kho hàng theo chi tiết 
+
+	// api thống kê thời gian chi tiết kho hàng theo chi tiết
 	@GetMapping("/inventory")
 	private Map<String, Map<String, List<InventoriesReasonDTO>>> getStock() {
 		Map<String, Map<String, List<InventoriesReasonDTO>>> myMap = new TreeMap<>();
@@ -134,7 +135,8 @@ public class StatisticsController {
 		}
 		return myMap;
 	}
-	//api thống kê số lượng và tổng tiền hàng hóa bán ra trong ngày
+
+	// api thống kê số lượng và tổng tiền hàng hóa bán ra trong ngày
 	@GetMapping("/selling")
 	private Map<String, Map<String, List<OrderItemStatisticDTO>>> getSelling() {
 		Map<String, Map<String, List<OrderItemStatisticDTO>>> myMap = new TreeMap<>();
@@ -144,10 +146,10 @@ public class StatisticsController {
 
 			for (OrderItem item : oderItems) {
 				String date = item.getCreatedAt().toLocalDate().toString();
-				Variant variant = variantService.getVariantByID(item.getTypeOfVariant());
-				String sizeColor = variant.getSize().getSize_name() + "/" + variant.getColor().getColor_name();
-				String productName = item.getProductVersion().getProduct().getName();
-				int amount = item.getProduct_price(), quantity = item.getQuantity(),baseMoney=variant.getSales().getSale_price();
+//				Variant variant = variantService.getVariantByID(item.getTypeOfVariant());
+				String sizeColor = item.getSize().getSize_name() + "/" + item.getColor().getColor_name();
+				String productName = item.getProduct().getName();
+				int amount = item.getProduct_price(), quantity = item.getQuantity(), baseMoney = item.getBase_price();
 				OrderItemStatisticDTO orderItem = new OrderItemStatisticDTO();
 //				orderItem.setIdOrderItem(item.getOrder_items_id());
 				orderItem.setSizeColor(sizeColor);
@@ -180,76 +182,83 @@ public class StatisticsController {
 		}
 		return myMap;
 	}
-	//api thống kê số lượng và tổng tiền hàng hóa bán ra trong ngày theo giới tinh sản phẩm
+
+	// api thống kê số lượng và tổng tiền hàng hóa bán ra trong ngày theo giới tinh
+	// sản phẩm
 	@GetMapping("/getrevenuebyTypeGender")
 	public Map<String, Map<String, TotalnAmount>> getrevenuebyTypeGender() {
 
 		Map<String, Map<String, TotalnAmount>> myMap = new TreeMap<>();
 		List<Orders> orders = orderService.getallOrders();
 		for (Orders order : orders) {
-			List<OrderItem> oderItems = order.getOrderItems();
+			if (order.getStatus().equals("Completed")) {
+				List<OrderItem> oderItems = order.getOrderItems();
 
-			for (OrderItem item : oderItems) {
-				String date = item.getCreatedAt().toLocalDate().toString();
-				String gender = item.getProductVersion().getProduct().getTypeOfProductGender().getTypeOfProductGender()
-						.toString();
-				int amount = item.getProduct_price() * item.getQuantity();
-				int quantity = item.getQuantity();
+				for (OrderItem item : oderItems) {
+					String date = item.getCreatedAt().toLocalDate().toString();
+					String gender = item.getProduct().getTypeOfProductGender().getTypeOfProductGender().toString();
+					int amount = item.getProduct_price() * item.getQuantity();
+					int quantity = item.getQuantity();
 
-				// Lấy map của ngày hiện tại
-				Map<String, TotalnAmount> genderMap = myMap.computeIfAbsent(date, k -> new HashMap<>());
+					// Lấy map của ngày hiện tại
+					Map<String, TotalnAmount> genderMap = myMap.computeIfAbsent(date, k -> new HashMap<>());
 
-				// Lấy TotalnAmount hiện tại cho gender
-				TotalnAmount totalnAmount = genderMap.get(gender);
+					// Lấy TotalnAmount hiện tại cho gender
+					TotalnAmount totalnAmount = genderMap.get(gender);
 
-				// Nếu chưa có, tạo mới
-				if (totalnAmount == null) {
-					totalnAmount = new TotalnAmount();
-					totalnAmount.setTotalMoney(0);
-					totalnAmount.setTotalQuantity(0);
-					genderMap.put(gender, totalnAmount);
+					// Nếu chưa có, tạo mới
+					if (totalnAmount == null) {
+						totalnAmount = new TotalnAmount();
+						totalnAmount.setTotalMoney(0);
+						totalnAmount.setTotalQuantity(0);
+						genderMap.put(gender, totalnAmount);
+					}
+
+					// Cộng dồn giá trị
+					totalnAmount.setTotalMoney(totalnAmount.getTotalMoney() + amount);
+					totalnAmount.setTotalQuantity(totalnAmount.getTotalQuantity() + quantity);
 				}
-
-				// Cộng dồn giá trị
-				totalnAmount.setTotalMoney(totalnAmount.getTotalMoney() + amount);
-				totalnAmount.setTotalQuantity(totalnAmount.getTotalQuantity() + quantity);
 			}
+
 		}
 		return myMap;
 	}
-	//api thống kê số lượng và tổng tiền hàng hóa bán ra trong ngày theo loại sản phẩm
+
+	// api thống kê số lượng và tổng tiền hàng hóa bán ra trong ngày theo loại sản
+	// phẩm
 	@GetMapping("/getrevenuebyTypeProduct")
 	public Map<String, Map<String, TotalnAmount>> getrevenuebyTypeProduct() {
 
 		Map<String, Map<String, TotalnAmount>> myMap = new TreeMap<>();
 		List<Orders> orders = orderService.getallOrders();
 		for (Orders order : orders) {
-			List<OrderItem> oderItems = order.getOrderItems();
+			if (order.getStatus().equals("Completed")) {
+				List<OrderItem> oderItems = order.getOrderItems();
 
-			for (OrderItem item : oderItems) {
-				String date = item.getCreatedAt().toLocalDate().toString();
-				String typeProduct = item.getProductVersion().getProduct().getTypeOfProductNew().getTypeofproduct()
-						.toString();
-				int amount = item.getProduct_price() * item.getQuantity();
-				int quantity = item.getQuantity();
+				for (OrderItem item : oderItems) {
+					String date = item.getCreatedAt().toLocalDate().toString();
+					String typeProduct = item.getProduct().getTypeOfProductNew().getTypeofproduct().toString();
+					int amount = item.getProduct_price() * item.getQuantity();
+					int quantity = item.getQuantity();
 
-				// Lấy map của ngày hiện tại
-				Map<String, TotalnAmount> productMap = myMap.computeIfAbsent(date, k -> new HashMap<>());
+					// Lấy map của ngày hiện tại
+					Map<String, TotalnAmount> productMap = myMap.computeIfAbsent(date, k -> new HashMap<>());
 
-				// Lấy TotalnAmount hiện tại cho gender
-				TotalnAmount totalnAmount = productMap.get(typeProduct);
+					// Lấy TotalnAmount hiện tại cho gender
+					TotalnAmount totalnAmount = productMap.get(typeProduct);
 
-				// Nếu chưa có, tạo mới
-				if (totalnAmount == null) {
-					totalnAmount = new TotalnAmount();
-					totalnAmount.setTotalMoney(0);
-					totalnAmount.setTotalQuantity(0);
-					productMap.put(typeProduct, totalnAmount);
+					// Nếu chưa có, tạo mới
+					if (totalnAmount == null) {
+						totalnAmount = new TotalnAmount();
+						totalnAmount.setTotalMoney(0);
+						totalnAmount.setTotalQuantity(0);
+						productMap.put(typeProduct, totalnAmount);
+					}
+
+					// Cộng dồn giá trị
+					totalnAmount.setTotalMoney(totalnAmount.getTotalMoney() + amount);
+					totalnAmount.setTotalQuantity(totalnAmount.getTotalQuantity() + quantity);
 				}
-
-				// Cộng dồn giá trị
-				totalnAmount.setTotalMoney(totalnAmount.getTotalMoney() + amount);
-				totalnAmount.setTotalQuantity(totalnAmount.getTotalQuantity() + quantity);
 			}
 		}
 		return myMap;

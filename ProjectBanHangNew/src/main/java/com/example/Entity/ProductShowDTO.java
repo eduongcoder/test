@@ -38,5 +38,7 @@ public class ProductShowDTO {
 	
 	private List<ImagesDTO> imagesMap;
 
+	private List<OrderItem> orderItems;
+
 
 }

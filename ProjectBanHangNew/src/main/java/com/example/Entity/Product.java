@@ -66,7 +66,8 @@ public class Product implements Serializable {
 	@OneToMany(mappedBy = "productid")
 	private List<Images> imagesMap;
 
-
+	@OneToMany(mappedBy = "product")
+	private List<OrderItem> orderItems;
 	
 	@OneToMany(mappedBy = "product_id")
 	private List<PersonFix> personFixs;

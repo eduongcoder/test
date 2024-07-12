@@ -17,9 +17,11 @@ public class OrderItemDTO {
 
 	private Integer product_price;
 
+	private Integer base_price;
+	
 	private Integer quantity;
 	
-	private Integer productVersion;
+//	private Integer productVersion;
 	
 	private LocalDateTime createdAt;
 
@@ -29,8 +31,8 @@ public class OrderItemDTO {
 
 	private Integer orders;
 
-	private Integer idvariant;
+//	private Integer idvariant;
 
-	private VariantDTO variants;
+//	private VariantDTO variants;
 
 }

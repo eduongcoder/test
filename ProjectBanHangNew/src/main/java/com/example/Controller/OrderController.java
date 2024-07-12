@@ -41,7 +41,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class OrderController implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**").allowedOrigins("http://26.229.166.254:5173", "http://localhost:5173") // URL của ứng
+		registry.addMapping("/**").allowedOrigins("http://26.229.166.254:5173", "http://localhost:5173","http://localhost:5174") // URL của ứng
 																											// dụng
 																											// React
 				.allowedMethods("GET", "POST", "PUT", "DELETE").allowedHeaders("*").allowCredentials(true);
@@ -71,6 +71,13 @@ public class OrderController implements WebMvcConfigurer {
 		return modelMapper.map(service.updateAdressOrder(id, address.getAddreString()), OrdersDTO.class);
 	}
 
+	@PutMapping(value = "/updateOrderTotalMoney/{id}")
+	private OrdersDTO updateOrderTotalMoney(@PathVariable(name = "id") int id) {
+
+//		return modelMapper.map(service.updateAdressOrder(id, address.getAddreString()), OrdersDTO.class);
+		return null;
+	}
+	
 	@PutMapping(value = "/updateStatusOrder/{id}")
 	private OrdersDTO updateStatusOrder(@PathVariable(name = "id")int id, @RequestParam String status) {
 		

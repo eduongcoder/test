@@ -11,6 +11,7 @@ public class InventoriesForm {
 	private int inventory_id;
 
 	private int change_amount;
+	
 	private int amount;
 	
 	private String event_type;

@@ -9,7 +9,7 @@ import com.example.From.OrderitemForm;
 public interface IOrderItemService {
 	public List<OrderItem> getAllOrderItems();
 
-	public OrderItem createOrderItem(OrderitemForm form, int idOrder, int idProductVersion);
+	public OrderItem createOrderItem(OrderitemForm form,int idOrder);
 
 	public List<OrderItem> findbyIDOrdersItem(int id);
 

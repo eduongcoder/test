@@ -8,12 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.Entity.Images;
-import com.example.Entity.ImagesDTO;
 import com.example.Entity.ImagesDTOOnlyID;
 import com.example.Entity.Product;
 import com.example.Entity.PurchaseOderItems;
 import com.example.Entity.PurchaseOrders;
-import com.example.Entity.SalesDTO;
 import com.example.Entity.Variant;
 import com.example.Enum.SizeEnum;
 import com.example.From.PurchaseOderItemsForm;

@@ -1,9 +1,8 @@
 package com.example.Entity;
 
-import java.math.BigDecimal;
-import java.sql.Date;
+
 import java.time.LocalDateTime;
-import java.util.List;
+
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +15,8 @@ public class OrderItemDTOShopCart {
 	private String product_name;
 
 	private Integer product_price;
+	
+	private Integer base_price;
 
 	private Integer quantity;
 
@@ -23,8 +24,7 @@ public class OrderItemDTOShopCart {
 
 	private LocalDateTime updatedAt;
 
-//	private Integer orders;
 
-	private Integer productVersion;
+//	private Integer productVersion;
 //	private List<VariantDTO> variant;
 }

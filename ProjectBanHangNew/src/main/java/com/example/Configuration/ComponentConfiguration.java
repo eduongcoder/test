@@ -1,12 +1,10 @@
 package com.example.Configuration;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,8 +32,8 @@ import com.example.Entity.OrdersDTOShopCart;
 import com.example.Entity.PersonFix;
 import com.example.Entity.PersonFixDTO;
 import com.example.Entity.Product;
-import com.example.Entity.ProductDTO;
 import com.example.Entity.ProductShowDTO;
+import com.example.Entity.ProductShowDTOVersion2;
 import com.example.Entity.ProductShowDTOVersion3;
 import com.example.Entity.ProductVersion;
 import com.example.Entity.ProductVersionDTO;
@@ -48,30 +46,24 @@ import com.example.Entity.RolePermission;
 import com.example.Entity.RolePermissionDTO;
 import com.example.Entity.SaleDiscount;
 import com.example.Entity.SaleDiscountDTO;
-import com.example.Entity.Sales;
-import com.example.Entity.SalesDTO;
+
 import com.example.Entity.Variant;
 import com.example.Entity.VariantDTO;
 import com.example.Entity.VariantNoAccountDTO;
 import com.example.Enum.SizeEnum;
-import com.example.From.AccountForm;
-import com.example.From.OrderitemForm;
+
 import com.example.From.OrdersForm;
-import com.example.From.PersonFixForm;
-import com.example.From.ProductVersionForm;
-import com.example.Repository.IProductRepository;
+
 import com.example.Service.IAccountService;
+import com.example.Service.ICategoryService;
 import com.example.Service.IDiscountService;
 import com.example.Service.IOrderItemService;
-import com.example.Service.IProductService;
 import com.example.Service.IProductVersionService;
 import com.example.Service.IPurchaseOderItemsService;
 import com.example.Service.ISaleDiscountService;
 import com.example.Service.ISaleService;
 import com.example.Service.ImageHandelService;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
-import net.bytebuddy.asm.MemberSubstitution.Source;
 
 @Configuration
 public class ComponentConfiguration {
@@ -96,6 +88,9 @@ public class ComponentConfiguration {
 
 	@Autowired
 	private ISaleDiscountService saleDiscountService;
+	
+	@Autowired
+	private ICategoryService categoryService;
 	
 	@Autowired
 	private IDiscountService discountService;
@@ -123,21 +118,26 @@ public class ComponentConfiguration {
 			int saleID = context.getSource().getVariants_id();
 			return saleService.getSalePrice(saleID);
 		};
+		
+		Converter<Category, Integer> priceSaleConverter = context -> {
+			int categoryID = context.getSource().getCategory_id();
+			return categoryService.getSalePrice(categoryID);
+		};
 
 		Converter<ProductVersion, List<VariantDTO>> fillerStockVariant = context -> {
 			int productVerionId = context.getSource().getProductVersion_id();
 			return productVersionService.fillerStockVariant(productVerionId);
 		};
 
-		Converter<OrderItem, SizeEnum> sizeConverter = context -> {
-			int idvariant = context.getSource().getTypeOfVariant();
-			return orderItemService.getSizeEnum(idvariant);
-		};
-
-		Converter<OrderItem, String> colorConverter = context -> {
-			int idvariant = context.getSource().getTypeOfVariant();
-			return orderItemService.getColor(idvariant);
-		};
+//		Converter<OrderItem, SizeEnum> sizeConverter = context -> {
+//			int idvariant = context.getSource().getTypeOfVariant();
+//			return orderItemService.getSizeEnum(idvariant);
+//		};
+//
+//		Converter<OrderItem, String> colorConverter = context -> {
+//			int idvariant = context.getSource().getTypeOfVariant();
+//			return orderItemService.getColor(idvariant);
+//		};
 
 		Converter<SaleDiscount, Integer> saleDiscountConverter = context -> {
 			int idSale = context.getSource().getSales().getId();
@@ -191,6 +191,14 @@ public class ComponentConfiguration {
 			}
 		});
 		
+//		modelMapper.addMappings(new PropertyMap<Sales, SalesDTO>() {
+//			@Override
+//			protected void configure() {
+//				map().setSale_base_price( source.getSale_base_price());
+//				map().setSale_price(source.getSale_price());
+//			}
+//		});
+		
 		modelMapper.addMappings(new PropertyMap<SaleDiscount, SaleDiscountDTO>() {
 			@Override
 			protected void configure() {
@@ -217,12 +225,21 @@ public class ComponentConfiguration {
 				using(imagesPurchaseConverter).map(source, destination.getUrlImage());
 			}
 		});
+		
+		
+		
+		
 		modelMapper.addMappings(new PropertyMap<OrderItem, OrderItemDTOVariant>() {
 			@Override
 			protected void configure() {
-				using(sizeConverter).map(source, destination.getSize());
-				using(colorConverter).map(source, destination.getColor());
-				map().setProductVersion(source.getProductVersion().getProductVersion_id());
+				map().setSize(source.getSize().getSize_name());
+				map().setSizeID(source.getSize().getSize_id());
+				map().setColorID(source.getColor().getColor_id());
+				map().setColor(source.getColor().getColor_name());
+				map().setProductID(source.getProduct().getProduct_id());
+				map().setPrice_base(source.getBase_price());
+				map().setCreatedAt(source.getCreatedAt());
+				map().setUpdatedAt(source.getUpdatedAt());
 			}
 		});
 
@@ -232,6 +249,13 @@ public class ComponentConfiguration {
 				map().setProduct(source.getProduct().getProduct_id());
 			}
 		});
+		
+//		modelMapper.addMappings(new PropertyMap<Product, ProductShowDTOVersion3>() {
+//			@Override
+//			protected void configure() {
+//				map().setType(source.getTypeOfProductNew().getTypeofproduct());
+//			}
+//		});
 
 		modelMapper.addMappings(new PropertyMap<ProductVersion, ProductVersionDTOOnlyStock>() {
 			@Override
@@ -298,15 +322,22 @@ public class ComponentConfiguration {
 			protected void configure() {
 				map().setType(source.getTypeOfProductNew().getTypeofproduct());
 				map().setGender(source.getTypeOfProductGender().getTypeOfProductGender());
-
+			}
+		});
+		
+		modelMapper.addMappings(new PropertyMap<Product, ProductShowDTOVersion2>() {
+			@Override
+			protected void configure() {
+				map().setType(source.getTypeOfProductNew().getTypeofproduct());
+				map().setGender(source.getTypeOfProductGender().getTypeOfProductGender());
 			}
 		});
 
 		modelMapper.addMappings(new PropertyMap<OrderItem, OrderItemDTO>() {
 			@Override
 			protected void configure() {
-				map().setProductVersion(source.getProductVersion().getProductVersion_id());
-				map().setVariants(null);
+//				map().setProductVersion(source.getProductVersion().getProductVersion_id());
+//				map().setIdvariant(source.getTypeOfVariant());
 			}
 		});
 
@@ -365,7 +396,7 @@ public class ComponentConfiguration {
 		modelMapper.addMappings(new PropertyMap<OrderItem, OrderItemDTOShopCart>() {
 			@Override
 			protected void configure() {
-				map().setProductVersion(source.getProductVersion().getProductVersion_id());
+//				map().setProductVersion(source.getProductVersion().getProductVersion_id());
 			}
 		});
 		modelMapper.addMappings(new PropertyMap<PersonFix, PersonFixDTO>() {
@@ -381,6 +412,7 @@ public class ComponentConfiguration {
 				map().setCatetoryColor(source.getCatetoryColor().getColor_id());
 				map().setColor(source.getCatetoryColor().getColor_name());
 				map().setSizeEnum(source.getCatetorySize().getSize_name());
+				using(priceSaleConverter).map(source,destination.getPrice_sale());
 			}
 		});
 		modelMapper.addMappings(new PropertyMap<PurchaseOderItems, PurchaseOderItemsDetailDTO>() {

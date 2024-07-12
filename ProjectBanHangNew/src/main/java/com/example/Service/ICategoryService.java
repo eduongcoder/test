@@ -17,4 +17,6 @@ public interface ICategoryService {
 	public Category createCategory(CategoryForm form);
 
 	public Category findCategoryByID(int id);
+	
+	public int getSalePrice(int id);
 }
