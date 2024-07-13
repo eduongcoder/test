@@ -45,22 +45,10 @@ public class OrderItemService implements IOrderItemService {
 	private ModelMapper modelMapper;
 
 	@Autowired
-	private IProductVersionService serviceProductVersionService;
-
-	@Autowired
-	private IOrderService serviceOrder;
-
-	@Autowired
 	private IColorService colorService;
 	
 	@Autowired
 	private IProductService productService;
-	
-	@Autowired
-	private IInventoryService inventoryService;
-	
-	@Autowired
-	private ISaleService saleService;
 	
 	@Autowired
 	private IOrderService orderService;
@@ -84,7 +72,12 @@ public class OrderItemService implements IOrderItemService {
 			orderItem.setSize(size);
 			orderItem.setOrders(orders);
 			orderItem.setBase_price(form.getPrice_base());
-			orderItem.setCreatedAt(form.getCreateAt());
+			if (form.getCreateAt()!=null) {
+				orderItem.setCreatedAt(form.getCreateAt());
+			}else {
+				orderItem.setCreatedAt(LocalDateTime.now());
+			}
+			
 			orderItem.setProduct(product);
 			OrderItem orderItem2=service.save(orderItem);
 //			entityManager.refresh(orderItem2);
@@ -182,5 +175,16 @@ public class OrderItemService implements IOrderItemService {
 		Variant variant=variantService.getVariantByID(idVariant);
 		String color=variant.getColor().getColor_name();
 		return color;
+	}
+
+	@Override
+	public OrderItem updateOrderItemSizeColor(OrderitemForm form) {
+		OrderItem orderItem=findbyID(form.getOrder_items_id());
+		Size size=sizeService.getSizeByID(form.getSizeID());
+		Color color=colorService.getColorByID(form.getColorID());
+		orderItem.setSize(size);
+		orderItem.setColor(color);
+		orderItem.setCreatedAt(LocalDateTime.now());
+		return service.save(orderItem);
 	}
 }

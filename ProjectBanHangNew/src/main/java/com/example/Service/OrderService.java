@@ -12,6 +12,7 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.Entity.Account;
 import com.example.Entity.Category;
 import com.example.Entity.Inventories;
 import com.example.Entity.OrderItem;
@@ -37,6 +38,8 @@ public class OrderService implements IOrderService {
 	@Autowired
 	private ModelMapper modelMapper;
 
+	@Autowired
+	private AccountService accountService;
 	@Autowired
 	private IInventoryService inventoryService;
 	
@@ -67,16 +70,21 @@ public class OrderService implements IOrderService {
 	}
 
 	@Override
-	public Orders updateOrder(int id) {
-		Orders orders = getOrderByID(id);
-		orders.setStatus("Pending");
+	public Orders updateOrder(int idAccount,OrdersForm form) {
+		
 
-		try {
-			
+//		try {
+			Orders orders = getOrderByID(form.getOrders_id());
+			orders.setAddressorder(form.getAddressorder());
+			orders.setTotal_amount(form.getTotal_amount());
+			Account account=accountService.findAccountByID(idAccount);
+			orders.setAccount(account);
+			orders.setStatus("Pending");
+			orders.setUpdated_at(LocalDateTime.now());
 			return service.save(orders);
-		} catch (Exception e) {
-			return null;
-		}
+//		} catch (Exception e) {
+//			return null;
+//		}
 
 	}
 

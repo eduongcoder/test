@@ -108,10 +108,14 @@ public class AccountController {
 		return modelMapper.map(serviceAddress.createAddresses(form), AddressesDTO.class);
 	}
 
-	@PostMapping("/createEmail")
+	@PostMapping("/checkEmail")
 	private int createAccountOnlyEmail(@RequestBody AccountForm form) {
-
-		return service.createAccountOnlyEmail(form);
+		Account account0= service.getAccountByEmail(form.getEmail());
+		if (account0!=null) {
+			return account0.getAccount_id();
+		}
+		Account account= service.createAccountOnlyEmail(form);
+		return account.getAccount_id();
 
 	}
 

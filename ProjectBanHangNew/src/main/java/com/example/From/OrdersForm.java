@@ -18,7 +18,7 @@ public class OrdersForm {
 
 	private int orders_id;
 
-	private BigDecimal total_amount;
+	private int total_amount;
 
 	private String status;
 

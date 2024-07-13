@@ -1,7 +1,6 @@
 package com.example.Controller;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,25 +18,20 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.Entity.Account;
-import com.example.Entity.Color;
 import com.example.Entity.Images;
-import com.example.Entity.Inventories;
 import com.example.Entity.OrderItem;
 import com.example.Entity.OrderItemDTO;
 import com.example.Entity.OrderItemDTOVariant;
 import com.example.Entity.Orders;
-import com.example.Entity.SaleDiscount;
-import com.example.Entity.Size;
+
 import com.example.Entity.Variant;
 import com.example.Entity.VariantDTO;
 import com.example.Entity.VariantNoAccountDTO;
-import com.example.From.AccountAvatarForm;
-import com.example.From.AccountForm;
+
 import com.example.From.ImageForm;
 import com.example.From.OrderitemForm;
 import com.example.From.OrdersForm;
 import com.example.From.VariantForm;
-import com.example.Repository.IAccountRepository;
 import com.example.Service.IAccountService;
 import com.example.Service.IColorService;
 import com.example.Service.IImageService;
@@ -221,7 +215,7 @@ public class VariantController {
 
 			OrdersForm ordersForm = new OrdersForm();
 
-			ordersForm.setTotal_amount(BigDecimal.valueOf(0.00));
+			ordersForm.setTotal_amount(0);
 			ordersForm.setOrderItems(null);
 			ordersForm.setStatus("Prepare");
 			ordersForm.setAccount(account);

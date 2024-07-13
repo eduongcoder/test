@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.Entity.Account;
 import com.example.Entity.AccountDTO;
+import com.example.Entity.Role;
 import com.example.Entity.RolePermission;
 import com.example.Entity.RolePermissionDTO;
 import com.example.Entity.SalesDTO;
@@ -58,25 +59,34 @@ public class AccountService implements IAccountService {
 
 	@Override
 	public AccountDTO updateAccountByID(AccountForm form) {
-//		AccountDTO accountDTO = modelMapper.map(findAccountByID(form.getAccount_id()), AccountDTO.class);
-	
-//		form.setAddresses(accountDTO.getAddresses());
-//		form.setOrders(accountDTO.getOrders());
-//		form.setCreated_at(accountDTO.getCreated_at());
-//		form.setUpdated_at(LocalDateTime.now());
+
 		Account account=findAccountByID(form.getAccount_id());
-//		Account accountTemp = modelMapper.map(form, Account.class);
-		account.setHeight(form.getHeight());
-		account.setWeight(form.getWeight());
+		if (form.getHeight()==null) {
+			account.setHeight(Short.parseShort("0"));
+			
+		}else {
+			account.setHeight(form.getHeight());
+		}
+		if (form.getWeight()==null) {
+			account.setHeight(Short.parseShort("0"));
+		}else {
+			account.setWeight(form.getWeight());
+		}
+	
+		account.setPassword(form.getPassword());
 		account.setPhoneNumber(form.getPhoneNumber());
 		account.setDayOfBirth(form.getDayOfBirth());
-		if (form.getGender().equals("Nữ")) {
-			account.setGender(Gender.Nữ);
-		}else if (form.getGender().equals("Nam")) {
-			account.setGender(Gender.Nam);
-		}else {
-			account.setGender(Gender.Khác);
-		}
+		String gender=form.getGender();
+		if (gender!=null) {
+			if (form.getGender().equals("Nữ")) {
+				account.setGender(Gender.Nữ);
+			}else if (form.getGender().equals("Nam")) {
+				account.setGender(Gender.Nam);
+			}else {
+				account.setGender(Gender.Khác);
+			}
+		} 
+		
 		service.save(account);
 		AccountDTO dto = modelMapper.map(account, AccountDTO.class);
 		return dto;
@@ -84,13 +94,14 @@ public class AccountService implements IAccountService {
 	}
 
 	@Override
-	public int createAccountOnlyEmail(AccountForm form) {
+	public Account createAccountOnlyEmail(AccountForm form) {
 		try {
 			Account account = modelMapper.map(form, Account.class);
-
-			return service.save(account).getAccount_id();
+			Role role=roleService.getRoleById(2);
+			account.setRoleID(role);
+			return service.save(account);
 		} catch (Exception e) {
-			return -1;
+			return null;
 		}
 	}
 
@@ -120,6 +131,17 @@ public class AccountService implements IAccountService {
 		} catch (Exception e) {
 			return -1;
 		}
+	}
+
+	@Override
+	public Account getAccountByEmail(String email) {
+		List<Account> accounts=getAllAccount();
+		for (Account account : accounts) {
+			if (account.getEmail().equals(email)) {
+				return account;
+			}
+		}
+		return null;
 	}
 
 }

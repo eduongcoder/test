@@ -17,6 +17,9 @@ public interface IOrderItemService {
 
 	public OrderItem updateOrderItem(OrderitemForm form);
 
+	public OrderItem updateOrderItemSizeColor(OrderitemForm form);
+
+	
 	public boolean updateOrderItemQuantity(int id, int quantity);
 
 	public boolean deleteOrderItem(int id);

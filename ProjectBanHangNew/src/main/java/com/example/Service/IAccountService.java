@@ -16,11 +16,13 @@ public interface IAccountService {
 
 	public Account createEmployee(AccountForm form);
 
-	public int createAccountOnlyEmail(AccountForm form);
+	public Account createAccountOnlyEmail(AccountForm form);
 
 	public Account findAccountByID(int id);
 	
 	public List<RolePermissionDTO> getRolePermissionDTOs(int id);
+	
+	public Account getAccountByEmail(String email);
 	
 	public Account grandRole(int idAccount, int idRole);
 	

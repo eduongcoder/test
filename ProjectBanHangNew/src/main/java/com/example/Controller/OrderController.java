@@ -59,8 +59,8 @@ public class OrderController implements WebMvcConfigurer {
 	@Autowired
 	private ModelMapper modelMapper;
 
-	@PostMapping("/createOrder/{accountid}")
-	private int createOrder(@RequestBody OrdersForm form, @PathVariable int accountid) {
+	@PostMapping(value  = "/createOrder/{accountid}")
+	private int createOrder(@RequestBody OrdersForm form, @PathVariable(name = "accountid") int accountid) {
 		form.setAccount(accountService.findAccountByID(accountid));
 		return service.createOrderPending(form);
 	}
@@ -84,6 +84,12 @@ public class OrderController implements WebMvcConfigurer {
 		return modelMapper.map(service.updateStatusOrders(id,status), OrdersDTO.class);
 	}
 	
+	@PutMapping(value = "/updateOrder/{id}")
+	private OrdersDTO updateOrder(@PathVariable(name = "id")int id, @RequestBody OrdersForm form) {
+		
+		return modelMapper.map(service.updateOrder(id,form), OrdersDTO.class);
+	}
+	
 	@GetMapping
 	private List<OrdersDTO> getAllOrder() {
 		List<Orders> list = service.getallOrders();
@@ -103,7 +109,7 @@ public class OrderController implements WebMvcConfigurer {
 			List<OrderItemDTOShopCart> dtos = modelMapper.map(list, new TypeToken<List<OrderItemDTOShopCart>>() {
 			}.getType());
 
-			dto.setOrderItems(dtos);
+//			dto.setOrderItems(dtos);
 			dto.setIdvariant(idVariant);
 			return dto;
 		}
@@ -113,7 +119,8 @@ public class OrderController implements WebMvcConfigurer {
 	@PutMapping(value = "/{id}")
 	private OrdersDTO completeShopCart(@PathVariable(name = "id") int id) {
 
-		return modelMapper.map(service.updateOrder(id), OrdersDTO.class);
+//		return modelMapper.map(service.updateOrder(id), OrdersDTO.class);
+		return null;
 	}
 
 	@GetMapping("/countOrder")

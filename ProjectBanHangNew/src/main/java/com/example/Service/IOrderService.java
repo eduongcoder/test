@@ -20,7 +20,7 @@ public interface IOrderService {
 	
 	public void deleteOrder(int id);
 
-	public Orders updateOrder(int id);
+	public Orders updateOrder(int idAccount,OrdersForm form);
 	
 	public boolean updateAdressOrder(int id,String address);
 	

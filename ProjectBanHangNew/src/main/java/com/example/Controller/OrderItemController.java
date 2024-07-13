@@ -39,41 +39,12 @@ public class OrderItemController {
 
 	@Autowired
 	private IOrderItemService service;
-
-	@Autowired
-	private IProductVersionService serviceProductVersion;
-
-	@Autowired
-	private ISaleService saleService;
 	
-	@Autowired
-	private IVariantService variantService;
-	
-	@Autowired
-	private ISaleDiscountService saleDiscountService;
-	
-	@PostMapping("/createorderitem")
-	public OrderItemDTOVariant createOrderItem(@RequestBody OrderitemForm form) {
-//		OrderItem orderItem= service.createOrderItem(form, form.getOrders(), form.getProductVersion());
+	@PostMapping(value = "/createorderitem/{idOrder}")
+	public OrderItemDTOVariant createOrderItem(@RequestBody OrderitemForm form,@PathVariable(name = "idOrder")int idOrder) {
+		OrderItem orderItem=service.createOrderItem(form, idOrder);
 		
-//		Variant variant=variantService.getVariantByID(orderItem.getTypeOfVariant());
-//		List<SaleDiscount> saleDiscounts=variant.getSales().getSaleDiscount();
-//		if (!saleDiscounts.isEmpty() && saleDiscounts!=null) {
-//			for (SaleDiscount saleDiscount : saleDiscounts) {
-//				LocalDateTime starTime=saleDiscount.getDiscount().getDate_start(),endTime=saleDiscount.getDiscount().getDate_end();
-//				LocalDateTime time=service.findbyID(orderItem.getOrder_items_id()).getCreatedAt();
-//				
-//				if (time.isAfter(starTime)&& time.isBefore(endTime)) {
-//					saleDiscountService.updateSaleDiscount(saleDiscount.getSales().getId(), saleDiscount.getDiscount().getDiscount_id(), orderItem.getQuantity());
-//
-//				}
-//			}
-//		}else {
-//			saleService.updateQuantitySales(orderItem.getTypeOfVariant(), orderItem.getQuantity());
-//		}
-		
-//		return modelMapper.map(orderItem, OrderItemDTOVariant.class);
-		return null;
+		return modelMapper.map(orderItem, OrderItemDTOVariant.class);
 	}
 	
 	@PostMapping("/createorderitemform")
@@ -95,20 +66,13 @@ public class OrderItemController {
 		return modelMapper.map(service.updateOrderItem(form), OrderItemDTOVariant.class) ;
 	}
 
-	@PutMapping(value = "/updateorderitem/{id}")
-	public VariantDTO updatOrderItemDTO(@PathVariable(name = "id") int id, @RequestParam int idvariant) {
+	@PutMapping( "/updateorderitem")
+	public OrderItemDTOVariant updatOrderItemDTO(@RequestBody OrderitemForm form) {
 
-		OrderItem orderItem = service.findbyID(id);
+		OrderItem orderItem = service.updateOrderItemSizeColor(form);
 
-//		ProductVersionShowDTO productVersionShowDTO = modelMapper.map(
-//				serviceProductVersion.getProductVersionByID(orderItem.getProductVersion().getProductVersion_id()),
-//				ProductVersionShowDTO.class);
-//		for (VariantDTO variantdto : productVersionShowDTO.getVariants()) {
-//			if (variantdto.getVariants_id() == idvariant) {
-//				return variantdto;
-//			}
-//		}
-		return null;
+
+		return modelMapper.map(orderItem, OrderItemDTOVariant.class);
 	}
 
 
