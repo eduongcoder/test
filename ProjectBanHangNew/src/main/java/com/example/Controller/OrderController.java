@@ -41,7 +41,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class OrderController implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**").allowedOrigins("http://26.229.166.254:5173", "http://localhost:5173","http://localhost:5174") // URL của ứng
+		registry.addMapping("/**").allowedOrigins("http://26.229.166.254:5173", "http://localhost:5173","http://localhost:5174","http://localhost:3000") // URL của ứng
 																											// dụng
 																											// React
 				.allowedMethods("GET", "POST", "PUT", "DELETE").allowedHeaders("*").allowCredentials(true);
@@ -63,6 +63,12 @@ public class OrderController implements WebMvcConfigurer {
 	private int createOrder(@RequestBody OrdersForm form, @PathVariable(name = "accountid") int accountid) {
 		form.setAccount(accountService.findAccountByID(accountid));
 		return service.createOrderPending(form);
+	}
+	
+	@PostMapping(value =  "/createOrderPrepare/{accountid}")
+	private OrdersDTO createOrderPrepare(@RequestBody OrdersForm form, @PathVariable(name = "accountid") int accountid) {
+		Orders orders=service.createOrder(form,accountid);
+		return modelMapper.map(orders, OrdersDTO.class);
 	}
 
 	@PutMapping(value = "/updateOrderAddress/{id}")
@@ -96,6 +102,12 @@ public class OrderController implements WebMvcConfigurer {
 		List<OrdersDTO> dtos = modelMapper.map(list, new TypeToken<List<OrdersDTO>>() {
 		}.getType());
 		return dtos;
+	}
+	
+	@GetMapping(path = "/{id}")
+	private OrdersDTO getOrderById(@PathVariable (name = "id")int id) {
+		Orders orders= service.getOrderByID(id);
+		return modelMapper.map(orders, OrdersDTO.class) ;
 	}
 
 	@GetMapping("/orderaccount")

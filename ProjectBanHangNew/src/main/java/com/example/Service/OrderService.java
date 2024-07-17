@@ -26,9 +26,16 @@ import com.example.From.InventoriesForm;
 import com.example.From.OrdersForm;
 import com.example.Repository.IOrderRepository;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
+
 @Service
 public class OrderService implements IOrderService {
 
+	@PersistenceContext
+	private EntityManager entityManager;
+	
 	@Autowired
 	private IOrderRepository service;
 
@@ -50,13 +57,15 @@ public class OrderService implements IOrderService {
 		return service.findAll();
 	}
 
+	@Transactional
 	@Override
-	public Orders createOrder(OrdersForm form) {
+	public Orders createOrder(OrdersForm form,int id) {
 		try {
-//			form.setAccount(accountService.findAccountByID(form.getAccountId()));
+			form.setAccount(accountService.findAccountByID(id));
 			Orders orders = modelMapper.map(form, Orders.class);
-			
-			return service.save(orders);
+			Orders orders2=service.save(orders);
+			entityManager.refresh(orders2);
+			return orders2;
 		} catch (Exception e) {
 			return null;
 		}
