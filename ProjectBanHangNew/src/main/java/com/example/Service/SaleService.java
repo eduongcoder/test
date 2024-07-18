@@ -130,7 +130,7 @@ public class SaleService implements ISaleService {
 						BigDecimal salebase = BigDecimal.valueOf(sales.getSale_base_price());
 						BigDecimal percent = saleDiscountService.getSaleDiscountById(saleDiscount).getDiscount()
 								.getPercent();
-						BigDecimal result = salebase.multiply(percent);
+						BigDecimal result = salebase.subtract(salebase.multiply(percent));
 
 						// Trả về kết quả là một số nguyên
 						return result.intValue();
@@ -213,8 +213,7 @@ public class SaleService implements ISaleService {
 						BigDecimal salebase = BigDecimal.valueOf(sales.getSale_base_price());
 						BigDecimal percent = saleDiscountService.getSaleDiscountById(saleDiscount).getDiscount()
 								.getPercent();
-						BigDecimal result = salebase.multiply(percent);
-
+						BigDecimal result = salebase.subtract(salebase.multiply(percent));
 						// Trả về kết quả là một số nguyên
 						return result.intValue();
 					}

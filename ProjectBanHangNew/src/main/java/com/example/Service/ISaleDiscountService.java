@@ -16,4 +16,8 @@ public interface ISaleDiscountService {
 	public int getTotalRevenue(int saleid, int discountid);
 	public SaleDiscount updateSaleDiscount(int saleid, int discountid,int quantity);
 	public DiscountOnlyDTO getDiscountOnlyDTO(int idDiscount);
+	public SaleDiscountId getSaleDiscountId(int idSale);
+	
+	public SaleDiscount updateSaleDiscountAll(int saleid, int discountid,int quantity,int money);
+
 }

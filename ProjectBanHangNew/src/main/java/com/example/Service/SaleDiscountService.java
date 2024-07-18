@@ -1,6 +1,8 @@
 package com.example.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -13,6 +15,7 @@ import com.example.Entity.Product;
 import com.example.Entity.ProductShowDTOVersion3;
 import com.example.Entity.SaleDiscount;
 import com.example.Entity.SaleDiscountId;
+import com.example.Entity.Sales;
 import com.example.From.SaleDiscountForm;
 import com.example.Repository.ISaleDiscountRepository;
 
@@ -50,7 +53,7 @@ public class SaleDiscountService implements ISaleDiscountService {
 		// TODO Auto-generated method stub
 		return service.findById(SaleDiscountId).get();
 	}
-
+	
 	@Override
 	public ProductShowDTOVersion3 getProductShowDTOVersion3(int id) {
 		Product product = saleService.getSaleByID(id).getVariant_id().getProductversion().getProduct();
@@ -86,5 +89,33 @@ public class SaleDiscountService implements ISaleDiscountService {
 		Discount discount=discountService.getDiscountByID(idDiscount);
 		DiscountOnlyDTO dto=modelMapper.map(discount, DiscountOnlyDTO.class);
 		return dto;
+	}
+
+	@Override
+	public SaleDiscountId getSaleDiscountId(int idSale) {
+		SaleDiscountId saleDiscountId=new SaleDiscountId();
+		Sales sales=saleService.getSaleByID(idSale);
+		List<SaleDiscount> list=sales.getSaleDiscount();
+		LocalDateTime time=LocalDateTime.now();
+		for (SaleDiscount saleDiscount : list) {
+			if (saleDiscount.getDiscount().getDate_start().isBefore(time)&&saleDiscount.getDiscount().getDate_end().isAfter(time)) {
+				saleDiscountId.setDiscount(saleDiscount.getDiscount().getDiscount_id());
+				saleDiscountId.setSales(saleDiscount.getSales().getId());
+				return saleDiscountId;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public SaleDiscount updateSaleDiscountAll(int saleid, int discountid, int quantity, int money) {
+		SaleDiscountId saleDiscountId=new SaleDiscountId();
+		saleDiscountId.setDiscount(discountid);
+		saleDiscountId.setSales(saleid);
+		SaleDiscount saleDiscount = getSaleDiscountById(saleDiscountId);
+		saleDiscount.setQuantitySaleDiscount(quantity+saleDiscount.getQuantitySaleDiscount());
+	
+		saleDiscount.setTotalMoney(money+saleDiscount.getTotalMoney());
+		return service.save(saleDiscount);
 	}
 }

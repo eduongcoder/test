@@ -10,6 +10,7 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean;
 
+import com.example.Handler.OrderWebSocketHandler;
 import com.example.Handler.TestWebSocketHandler;
 
 @Configuration
@@ -17,16 +18,19 @@ import com.example.Handler.TestWebSocketHandler;
 public class WebSocketConfig implements WebSocketConfigurer {
 
 	private final TestWebSocketHandler testWebSocketHandler;
+	private final OrderWebSocketHandler orderWebSocketHandler;
 
-	public WebSocketConfig(TestWebSocketHandler testWebSocketHandler) {
+	
+	public WebSocketConfig(TestWebSocketHandler testWebSocketHandler,OrderWebSocketHandler orderWebSocketHandler) {
 		this.testWebSocketHandler = testWebSocketHandler;
+		this.orderWebSocketHandler=orderWebSocketHandler;
 	}
 
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		registry.addHandler(testWebSocketHandler, "/ws/test").setAllowedOrigins("*");
 		registry.addHandler(testWebSocketHandler, "/ws/product").setAllowedOrigins("*");
-
+		registry.addHandler(orderWebSocketHandler, "/ws/order").setAllowedOrigins("*");	
 	}
 
 

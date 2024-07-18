@@ -1,21 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="com.example.Service.ISaleService"/>
-    <fullyQualifiedTypeName name="com.example.Service.ICategoryService"/>
-    <fullyQualifiedTypeName name="com.example.Entity.ProductShowDTOVersion3"/>
-    <fullyQualifiedTypeName name="net.bytebuddy.asm.MemberSubstitution.Source"/>
-    <fullyQualifiedTypeName name="com.example.Entity.ProductShowDTOVersion2"/>
-    <fullyQualifiedTypeName name="jakarta.persistence.OneToMany"/>
-    <fullyQualifiedTypeName name="jakarta.persistence.ManyToOne"/>
-    <fullyQualifiedTypeName name="jakarta.persistence.JoinColumn"/>
-    <fullyQualifiedTypeName name="com.example.Entity.Category"/>
-    <fullyQualifiedTypeName name="com.example.Entity.OrderItemDTO"/>
-    <fullyQualifiedTypeName name="com.example.Service.ISizeService"/>
-    <fullyQualifiedTypeName name="com.example.Service.IColorService"/>
-    <fullyQualifiedTypeName name="com.example.Service.IOrderService"/>
-    <fullyQualifiedTypeName name="com.example.Entity.Product"/>
-    <fullyQualifiedTypeName name="com.example.Service.IProductService"/>
-    <fullyQualifiedTypeName name="com.example.Entity.ProductVersion"/>
     <fullyQualifiedTypeName name="com.example.Entity.Variant"/>
     <fullyQualifiedTypeName name="com.example.From.InventoriesForm"/>
     <fullyQualifiedTypeName name="com.example.Entity.Inventories"/>
@@ -27,7 +11,6 @@
     <fullyQualifiedTypeName name="com.example.Entity.Color"/>
     <fullyQualifiedTypeName name="com.example.Entity.OrderItem"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestBody"/>
-    <fullyQualifiedTypeName name="java.time.LocalDateTime"/>
     <fullyQualifiedTypeName name="com.example.Entity.OrderItemDTOVariant"/>
     <fullyQualifiedTypeName name="java.lang.Short"/>
     <fullyQualifiedTypeName name="com.example.Entity.Account"/>
@@ -41,16 +24,10 @@
     <fullyQualifiedTypeName name="jakarta.persistence.Column"/>
     <fullyQualifiedTypeName name="org.springframework.data.jpa.repository.JpaRepository"/>
     <fullyQualifiedTypeName name="java.lang.Integer"/>
-    <fullyQualifiedTypeName name="java.util.List"/>
-    <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
     <fullyQualifiedTypeName name="com.example.Repository.TestRepository"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestParam"/>
     <fullyQualifiedTypeName name="com.example.Entity.Test"/>
     <fullyQualifiedTypeName name="org.springframework.web.socket.config.annotation.WebSocketConfigurer"/>
-    <fullyQualifiedTypeName name="org.springframework.web.socket.handler.TextWebSocketHandler"/>
-    <fullyQualifiedTypeName name="com.example.Handler.TestWebSocketHandler"/>
-    <fullyQualifiedTypeName name="org.springframework.stereotype.Component"/>
-    <fullyQualifiedTypeName name="org.springframework.context.annotation.Configuration"/>
     <fullyQualifiedTypeName name="org.springframework.context.annotation.EnableAspectJAutoProxy"/>
     <fullyQualifiedTypeName name="lombok.NoArgsConstructor"/>
     <fullyQualifiedTypeName name="lombok.Data"/>
@@ -60,4 +37,27 @@
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.GetMapping"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PathVariable"/>
     <fullyQualifiedTypeName name="com.example.Entity.Orders"/>
+    <fullyQualifiedTypeName name="org.springframework.context.annotation.Bean"/>
+    <fullyQualifiedTypeName name="springfox.documentation.spring.web.plugins.Docket"/>
+    <fullyQualifiedTypeName name="springfox.documentation.spi.DocumentationType"/>
+    <fullyQualifiedTypeName name="org.springframework.web.context.support.RequestHandledEvent"/>
+    <fullyQualifiedTypeName name="springfox.documentation.builders.RequestHandlerSelectors"/>
+    <fullyQualifiedTypeName name="springfox.documentation.service.ApiInfo"/>
+    <fullyQualifiedTypeName name="springfox.documentation.builders.ApiInfoBuilder"/>
+    <fullyQualifiedTypeName name="org.springframework.context.annotation.Configuration"/>
+    <fullyQualifiedTypeName name="springfox.documentation.swagger2.annotations.EnableSwagger2"/>
+    <fullyQualifiedTypeName name="com.example.Service.ISaleDiscountService"/>
+    <fullyQualifiedTypeName name="com.example.Entity.Sales"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="com.example.Entity.SaleDiscount"/>
+    <fullyQualifiedTypeName name="java.time.LocalDateTime"/>
+    <fullyQualifiedTypeName name="com.example.Repository.ISaleDiscountRepository"/>
+    <fullyQualifiedTypeName name="com.example.Entity.SaleDiscountId"/>
+    <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
+    <fullyQualifiedTypeName name="com.example.Service.ISaleService"/>
+    <fullyQualifiedTypeName name="com.example.Handler.TestWebSocketHandler"/>
+    <fullyQualifiedTypeName name="org.springframework.stereotype.Component"/>
+    <fullyQualifiedTypeName name="org.springframework.web.socket.handler.TextWebSocketHandler"/>
+    <fullyQualifiedTypeName name="org.springframework.web.socket.TextMessage"/>
+    <fullyQualifiedTypeName name="org.springframework.http.HttpMethod"/>
 </qualifiedTypeNameHistroy>
