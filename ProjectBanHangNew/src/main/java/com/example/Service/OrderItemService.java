@@ -11,14 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.Entity.Color;
-import com.example.Entity.Inventories;
 import com.example.Entity.OrderItem;
 import com.example.Entity.Orders;
 import com.example.Entity.Product;
 import com.example.Entity.Size;
 import com.example.Entity.Variant;
 import com.example.Enum.SizeEnum;
-import com.example.From.InventoriesForm;
 import com.example.From.OrderitemForm;
 import com.example.Repository.IOrderItemRepository;
 

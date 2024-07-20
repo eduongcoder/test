@@ -4,8 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Entity.Test;
-import com.example.EntityToMap.ProductMessage;
 import com.example.Handler.TestWebSocketHandler;
 import com.example.Repository.TestRepository;
 
@@ -42,10 +40,5 @@ public class TestController {
 		return newText;
 	}
 	
-	@MessageMapping("/sendProduct")
-    @SendTo("/topic/products")
-    public ProductMessage sendProduct(ProductMessage message) throws Exception {
-        // Xử lý message tại đây
-        return message;
-    }
+
 }

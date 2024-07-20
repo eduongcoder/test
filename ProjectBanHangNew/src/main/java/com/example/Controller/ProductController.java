@@ -268,6 +268,23 @@ public class ProductController implements WebMvcConfigurer {
 		return dto;
 	}
 
+	// Chỉ có category không bị xóa
+	@GetMapping(value = "/productshowV3/{id}")
+	public ProductShowDTOVersion2 getProductShowV3DTO(@PathVariable(name = "id") int id) {
+		Product product = service.getProductByID(id);
+		List<Category> list = product.getCategories();
+		Iterator<Category> iterator = list.iterator();
+		while (iterator.hasNext()) {
+			Category category = iterator.next();
+			if (category.isIsdelete() == true) {
+				iterator.remove();
+			}
+		}
+		product.setCategories(list);
+		ProductShowDTOVersion2 dto = modelMapper.map(product, ProductShowDTOVersion2.class);
+		return dto;
+	}
+	
 	@PostMapping("/createproduct")
 	public ProductDTO creatProduct(@RequestBody ProductForm form) {
 		Product product = service.createProduct(form);

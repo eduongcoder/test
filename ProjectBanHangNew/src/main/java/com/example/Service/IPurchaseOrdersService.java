@@ -13,6 +13,8 @@ public interface IPurchaseOrdersService {
 	public PurchaseOrders createPurchaseOrders(PurchaseOrdersForm form);
 
 	public PurchaseOrders updatePurchaseOrders(PurchaseOrdersForm form);
+	
+	public PurchaseOrders cancelPurchaseOrders(int id);
 
 	public PurchaseOrders deletePurchaseOrders(int id);
 

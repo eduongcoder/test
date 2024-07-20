@@ -320,7 +320,7 @@ public class OrderService implements IOrderService {
 
 			}
 		} else if (status.equals("Cancel")) {
-			if (orders.getStatus().equals("Shipping") || orders.getStatus().equals("Pending")) {
+			if (orders.getStatus().equals("Shipping")) {
 				List<OrderItem> orderItems = orders.getOrderItems();
 				for (OrderItem orderItem : orderItems) {
 
@@ -341,7 +341,7 @@ public class OrderService implements IOrderService {
 										InventoriesForm form = new InventoriesForm();
 										List<Inventories> inventories = var.getInventories();
 										int index = inventories.size() - 1;
-										form.setChange_amount(inventories.get(index).getChange_amount());
+										form.setChange_amount(inventories.get(index).getChange_amount()+ orderItem.getQuantity());
 										form.setInventoryVariant(var.getVariants_id());
 										form.setEvent_type("Trả_hàng");
 										form.setOrder_id(orders.getOrders_id());
@@ -387,7 +387,7 @@ public class OrderService implements IOrderService {
 										List<Inventories> inventories = var.getInventories();
 										int index = inventories.size() - 1;
 										form.setChange_amount(
-												inventories.get(index).getChange_amount() + orderItem.getQuantity());
+												inventories.get(index).getChange_amount());
 										form.setInventoryVariant(var.getVariants_id());
 										form.setEvent_type("Trả_hàng");
 										form.setOrder_id(orders.getOrders_id());

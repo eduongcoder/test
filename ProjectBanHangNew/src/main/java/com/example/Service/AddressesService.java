@@ -6,11 +6,15 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.Entity.Account;
 import com.example.Entity.Addresses;
 import com.example.From.AddressesForm;
 import com.example.Repository.IAddressesRepository;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 @Service
 public class AddressesService implements IAddressesService {
@@ -23,6 +27,10 @@ public class AddressesService implements IAddressesService {
 	@Autowired
 	private ModelMapper modelMapper;
 
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	
 	@Override
 	public List<Addresses> getAddresses() {
 		// TODO Auto-generated method stub
@@ -60,13 +68,17 @@ public class AddressesService implements IAddressesService {
 		}
 
 	}
-
+	
+	
 	@Override
+	@Transactional
 	public Addresses createAddresses(AddressesForm form) {
 		try {
 			Addresses addresses=modelMapper.map(form, Addresses.class);
 			
-			return service.save(addresses);
+			Addresses addresses2=service.save(addresses);
+			entityManager.refresh(addresses2);
+			return addresses2;
 		} catch (Exception e) {
 			return null;
 		}

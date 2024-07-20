@@ -13,6 +13,8 @@ public class PurchaseOrdersDetailDTO {
 	
 	private LocalDateTime order_date;
 	
+	private LocalDateTime order_update_date;
+	
     private Integer total_amount;
     
 	private String status;

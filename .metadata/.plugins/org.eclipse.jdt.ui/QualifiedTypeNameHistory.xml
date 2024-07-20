@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="com.example.Entity.Variant"/>
-    <fullyQualifiedTypeName name="com.example.From.InventoriesForm"/>
     <fullyQualifiedTypeName name="com.example.Entity.Inventories"/>
     <fullyQualifiedTypeName name="com.example.Entity.Role"/>
     <fullyQualifiedTypeName name="com.example.From.OrdersForm"/>
@@ -56,8 +54,10 @@
     <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
     <fullyQualifiedTypeName name="com.example.Service.ISaleService"/>
     <fullyQualifiedTypeName name="com.example.Handler.TestWebSocketHandler"/>
-    <fullyQualifiedTypeName name="org.springframework.stereotype.Component"/>
-    <fullyQualifiedTypeName name="org.springframework.web.socket.handler.TextWebSocketHandler"/>
     <fullyQualifiedTypeName name="org.springframework.web.socket.TextMessage"/>
     <fullyQualifiedTypeName name="org.springframework.http.HttpMethod"/>
+    <fullyQualifiedTypeName name="com.example.Configuration.WebSocketConfig"/>
+    <fullyQualifiedTypeName name="org.springframework.web.socket.handler.TextWebSocketHandler"/>
+    <fullyQualifiedTypeName name="com.example.Handler.ProductWebSocketHandler"/>
+    <fullyQualifiedTypeName name="org.springframework.stereotype.Component"/>
 </qualifiedTypeNameHistroy>

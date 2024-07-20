@@ -100,6 +100,8 @@ public class PuchaseController {
 		return dtos;
 	}
 	
+	
+	
 	@PutMapping("/compelete")
 	public PurchaseOrdersDetailDTO shippingPurchaseOrders(@RequestBody PurchaseOrdersForm form) {
 		PurchaseOrders purchaseOrders = service.updatePurchaseOrders(form);
@@ -121,6 +123,15 @@ public class PuchaseController {
 		return modelMapper.map(service.receiveOrder(id), PurchaseOrdersDetailDTO.class);
 	}
 	
+	@PutMapping(value = "/cancel/{id}")
+	public PurchaseOrdersDetailDTO cancelPurchaseOrders(@PathVariable(value = "id")int id) {
+		PurchaseOrders purchaseOrders = service.cancelPurchaseOrders(id);
+		if (purchaseOrders!=null) {
+			PurchaseOrdersDetailDTO dtos = modelMapper.map(purchaseOrders, PurchaseOrdersDetailDTO.class);
+			return dtos;
+		}
+		return null;
+	}
 	
 	@DeleteMapping(value = "/delete/{id}")
 	public int deletePuchaseOrderItem(@PathVariable(value = "id")int id) {

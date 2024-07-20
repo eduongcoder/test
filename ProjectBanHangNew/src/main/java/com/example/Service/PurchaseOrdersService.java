@@ -99,4 +99,15 @@ public class PurchaseOrdersService implements IPurchaseOrdersService {
 		purchaseOrders.setStatus("Receive");
 		return service.save(purchaseOrders);
 	}
+
+	@Override
+	public PurchaseOrders cancelPurchaseOrders(int id) {
+		PurchaseOrders purchaseOrders=getPurchaseOrdersByID(id);
+		if (!purchaseOrders.getStatus().equals("Receive")) {
+			purchaseOrders.setStatus("Cancel");
+			return service.save(purchaseOrders);
+		}
+		return null;
+		
+	}
 }

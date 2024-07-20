@@ -30,6 +30,9 @@ public class PurchaseOrders implements Serializable {
 	@Column(name = "order_date", updatable = false ,insertable = false,columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime order_date;
 	
+	@Column(name = "order_update_date", updatable = false ,insertable = false,columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+	private LocalDateTime order_update_date;
+	
 	@Column(name = "total_amount",updatable = true)
     private int total_amount;
     

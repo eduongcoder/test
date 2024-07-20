@@ -29,7 +29,7 @@ public class OrderWebSocketHandler extends TextWebSocketHandler{
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		sessions.add(session);
-        System.out.println("New WebSocket connection established: " + session.getId());
+//        System.out.println("New WebSocket connection established: " + session.getId());
 	}
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -95,7 +95,7 @@ public class OrderWebSocketHandler extends TextWebSocketHandler{
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		sessions.remove(session);
-        System.out.println("WebSocket connection closed: " + session.getId());
+//        System.out.println("WebSocket connection closed: " + session.getId());
 
 	}
 

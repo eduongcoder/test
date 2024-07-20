@@ -1,10 +1,7 @@
 package com.example.Entity;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.time.LocalDateTime;
-
-import com.example.Enum.Gender;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
