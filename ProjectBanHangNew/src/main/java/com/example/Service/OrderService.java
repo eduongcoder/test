@@ -176,238 +176,479 @@ public class OrderService implements IOrderService {
 		return myMap;
 	}
 
-	@Override
+//	@Override
+//	public Orders updateStatusOrders(int id, String status) {
+//		Orders orders = getOrderByID(id);
+////		System.out.println("hehe");
+//
+//		if (status.equals("Shipping")) {
+//			orders.setShipping_at(LocalDateTime.now());
+//			
+//			List<OrderItem> orderItems = orders.getOrderItems();
+//			for (OrderItem orderItem : orderItems) {
+//
+//				List<Product> product = productService.getAllProducts();
+//				for (Product pro : product) {
+//					List<Category> categories = pro.getCategories();
+//					for (Category cate : categories) {
+//						String colorCate = cate.getCatetoryColor().getColor_name(),
+//								colorItem = orderItem.getColor().getColor_name();
+//						String sizeCate = cate.getCatetorySize().getSize_name().toString(),
+//								sizeItem = orderItem.getSize().getSize_name().toString();
+//						if (colorCate.equals(colorItem) && sizeCate.equals(sizeItem)) {
+//							List<Variant> variants = cate.getCatetoryColor().getVariants();
+//							for (Variant var : variants) {
+//								String colorVar = var.getColor().getColor_name();
+//								String sizeVar = var.getSize().getSize_name().toString();
+//								int idProduct = var.getProductversion().getProduct().getProduct_id();
+//								if (colorItem.equals(colorVar) && sizeItem.equals(sizeVar)
+//										&& idProduct == orderItem.getProduct().getProduct_id()) {
+//									System.out.println("varhahaha"+ var.getVariants_id());
+//									List<Inventories> inventories = var.getInventories();
+//									System.out.println("hehe"+inventories.size());
+//									int index = inventories.size() - 1;
+//									if (inventories.get(index).getChange_amount() > 0) {
+//										
+//										InventoriesForm form = new InventoriesForm();
+//										int amountleft = inventories.get(index).getChange_amount()
+//												- orderItem.getQuantity();
+//										form.setChange_amount(amountleft);
+//										form.setInventoryVariant(var.getVariants_id());
+//										form.setEvent_type("Đang_giao_hàng");
+//										form.setOrder_id(orders.getOrders_id());
+//										form.setAmount(orderItem.getQuantity());
+//										Inventories iven = inventoryService.createInventory(form);
+//
+//										var.getInventories().add(iven);
+//
+//										SaleDiscountId saleDiscountId = saleDiscountService
+//												.getSaleDiscountId(var.getSales().getId());
+//										if (saleDiscountId!=null) {
+//											int saleID=saleDiscountId.getSales(),discountID=saleDiscountId.getDiscount();
+//											if (saleID!=0 &&discountID!=0) {
+//												saleDiscountService.updateSaleDiscountAll(saleID,
+//														discountID, orderItem.getQuantity(),saleService.getSalePrice(var.getVariants_id()));
+//											}
+//										}
+//										
+//										
+////										saleDiscountRepository.save(null)
+//										if (iven.getChange_amount() < 10) {
+//											List<ProductVersion> productVersions = pro.getProductVersion();
+//											for (ProductVersion pVersion : productVersions) {
+//												List<Variant> vList = pVersion.getVariants();
+//												for (Variant variant : vList) {
+//													int indextemp = variant.getInventories().size() - 1;
+//													List<Inventories> iList = variant.getInventories();
+//													int invenId = iList.get(indextemp).getInventory_id();
+//													int idProductVariant = variant.getProductversion().getProduct()
+//															.getProduct_id();
+//													String variantColor = variant.getColor().getColor_name(),
+//															variantSize = variant.getSize().getSize_name().toString();
+//													System.out.println("invenId"+ invenId);
+//													System.out.println("iven"+iven);
+//													if (invenId != iven.getInventory_id()
+//															&& variantColor.equals(colorItem)
+//															&& variantSize.equals(sizeItem)
+//															&& idProductVariant == idProduct) {
+//														InventoriesForm inventoriesForm = new InventoriesForm();
+//														inventoriesForm.setInventory_id(invenId);
+//														inventoriesForm.setAmount(amountleft);
+//														inventoriesForm.setChange_amount(
+//																iList.get(indextemp).getChange_amount() + amountleft);
+//														inventoriesForm.setEvent_type("Cộng hàng thêm từ inventory id: "
+//																+ iven.getInventory_id());
+//														inventoriesForm.setOrder_id(0);
+//														inventoryService.updateInventory(form);
+//													}
+//													
+//													
+//
+//												}
+//											}
+//										}
+//
+//									}
+//
+//								}
+//							}
+//						}
+//					}
+//				}
+//
+//			}
+//			orders.setStatus(status);
+//			return service.save(orders);
+//			
+//			
+//		} else if (status.equals("Completed")) {
+//			orders.setComplete_at(LocalDateTime.now());
+//			
+//			List<OrderItem> orderItems = orders.getOrderItems();
+//			for (OrderItem orderItem : orderItems) {
+//
+//				List<Product> product = productService.getAllProducts();
+//				for (Product pro : product) {
+//					List<Category> categories = pro.getCategories();
+//					for (Category cate : categories) {
+//						String colorCate = cate.getCatetoryColor().getColor_name(),
+//								colorItem = orderItem.getColor().getColor_name();
+//						String sizeCate = cate.getCatetorySize().getSize_name().toString(),
+//								sizeItem = orderItem.getSize().getSize_name().toString();
+//						if (colorCate.equals(colorItem) && sizeCate.equals(sizeItem)) {
+//							List<Variant> variants = cate.getCatetoryColor().getVariants();
+//							for (Variant var : variants) {
+//								String colorVar = var.getColor().getColor_name();
+//								String sizeVar = var.getSize().getSize_name().toString();
+//								int idProduct = var.getProductversion().getProduct().getProduct_id();
+//								if (colorItem.equals(colorVar) && sizeItem.equals(sizeVar)
+//										&& idProduct == orderItem.getProduct().getProduct_id()) {
+//									List<Inventories> inventories = var.getInventories();
+//									int index = inventories.size() - 1;
+//									if (inventories.get(index).getChange_amount() > 0) {
+//										InventoriesForm form = new InventoriesForm();
+//										int amountleft = inventories.get(index).getChange_amount();
+//										form.setChange_amount(amountleft);
+//										form.setInventoryVariant(var.getVariants_id());
+//										form.setEvent_type("Giao hàng thành công");
+//										form.setOrder_id(orders.getOrders_id());
+//										form.setAmount(orderItem.getQuantity());
+//										Inventories iven = inventoryService.createInventory(form);
+//
+//										var.getInventories().add(iven);														
+//									}
+//
+//
+//								}
+//							}
+//						}
+//					}
+//				}
+//
+//			}
+//		} else if (status.equals("Cancel")) {
+//			if (orders.getStatus().equals("Shipping")) {
+//				List<OrderItem> orderItems = orders.getOrderItems();
+//				for (OrderItem orderItem : orderItems) {
+//
+//					List<Product> product = productService.getAllProducts();
+//					for (Product pro : product) {
+//						List<Category> categories = pro.getCategories();
+//						for (Category cate : categories) {
+//							String colorCate = cate.getCatetoryColor().getColor_name(),
+//									colorItem = orderItem.getColor().getColor_name();
+//							String sizeCate = cate.getCatetorySize().getSize_name().toString(),
+//									sizeItem = orderItem.getSize().getSize_name().toString();
+//							if (colorCate.equals(colorItem) && sizeCate.equals(sizeItem)) {
+//								List<Variant> variants = cate.getCatetoryColor().getVariants();
+//								for (Variant var : variants) {
+//									String colorVar = var.getColor().getColor_name();
+//									String sizeVar = var.getSize().getSize_name().toString();
+//									if (colorItem.equals(colorVar) && sizeItem.equals(sizeVar)) {
+//										InventoriesForm form = new InventoriesForm();
+//										List<Inventories> inventories = var.getInventories();
+//										int index = inventories.size() - 1;
+//										form.setChange_amount(inventories.get(index).getChange_amount()+ orderItem.getQuantity());
+//										form.setInventoryVariant(var.getVariants_id());
+//										form.setEvent_type("Trả_hàng");
+//										form.setOrder_id(orders.getOrders_id());
+//										form.setAmount(orderItem.getQuantity());
+//										inventoryService.createInventory(form);
+//										orders.setStatus(status);
+//										return service.save(orders);
+//									}
+//									SaleDiscountId saleDiscountId = saleDiscountService
+//											.getSaleDiscountId(var.getSales().getId());
+//									if (saleDiscountId!=null) {
+//										int saleID=saleDiscountId.getSales(),discountID=saleDiscountId.getDiscount();
+//										if (saleID!=0 &&discountID!=0) {
+//											saleDiscountService.updateSaleDiscountAll(saleID,
+//													discountID, -orderItem.getQuantity(),-saleService.getSalePrice(var.getVariants_id()));
+//										}
+//									}
+//								}
+//							}
+//						}
+//					}
+//
+//				}
+//			} else {
+//				List<OrderItem> orderItems = orders.getOrderItems();
+//				for (OrderItem orderItem : orderItems) {
+//
+//					List<Product> product = productService.getAllProducts();
+//					for (Product pro : product) {
+//						List<Category> categories = pro.getCategories();
+//						for (Category cate : categories) {
+//							String colorCate = cate.getCatetoryColor().getColor_name(),
+//									colorItem = orderItem.getColor().getColor_name();
+//							String sizeCate = cate.getCatetorySize().getSize_name().toString(),
+//									sizeItem = orderItem.getSize().getSize_name().toString();
+//							if (colorCate.equals(colorItem) && sizeCate.equals(sizeItem)) {
+//								List<Variant> variants = cate.getCatetoryColor().getVariants();
+//								for (Variant var : variants) {
+//									String colorVar = var.getColor().getColor_name();
+//									String sizeVar = var.getSize().getSize_name().toString();
+//									if (colorItem.equals(colorVar) && sizeItem.equals(sizeVar)) {
+//										InventoriesForm form = new InventoriesForm();
+//										List<Inventories> inventories = var.getInventories();
+//										int index = inventories.size() - 1;
+//										form.setChange_amount(
+//												inventories.get(index).getChange_amount());
+//										form.setInventoryVariant(var.getVariants_id());
+//										form.setEvent_type("Trả_hàng");
+//										form.setOrder_id(orders.getOrders_id());
+//										form.setAmount(orderItem.getQuantity());
+//										inventoryService.createInventory(form);
+//										orders.setStatus(status);
+//										return service.save(orders);
+//									}
+//								}
+//							}
+//						}
+//					}
+//				}
+//
+//			}
+//		}
+//		orders.setStatus(status);
+//		return service.save(orders);
+//	}
+
 	public Orders updateStatusOrders(int id, String status) {
-		Orders orders = getOrderByID(id);
-		if (status.equals("Shipping")) {
-			orders.setShipping_at(LocalDateTime.now());
-			
-			List<OrderItem> orderItems = orders.getOrderItems();
-			for (OrderItem orderItem : orderItems) {
+	    Orders orders = getOrderByID(id);
 
-				List<Product> product = productService.getAllProducts();
-				for (Product pro : product) {
-					List<Category> categories = pro.getCategories();
-					for (Category cate : categories) {
-						String colorCate = cate.getCatetoryColor().getColor_name(),
-								colorItem = orderItem.getColor().getColor_name();
-						String sizeCate = cate.getCatetorySize().getSize_name().toString(),
-								sizeItem = orderItem.getSize().getSize_name().toString();
-						if (colorCate.equals(colorItem) && sizeCate.equals(sizeItem)) {
-							List<Variant> variants = cate.getCatetoryColor().getVariants();
-							for (Variant var : variants) {
-								String colorVar = var.getColor().getColor_name();
-								String sizeVar = var.getSize().getSize_name().toString();
-								int idProduct = var.getProductversion().getProduct().getProduct_id();
-								if (colorItem.equals(colorVar) && sizeItem.equals(sizeVar)
-										&& idProduct == orderItem.getProduct().getProduct_id()) {
-									List<Inventories> inventories = var.getInventories();
-									int index = inventories.size() - 1;
-									if (inventories.get(index).getChange_amount() > 0) {
-										InventoriesForm form = new InventoriesForm();
-										int amountleft = inventories.get(index).getChange_amount()
-												- orderItem.getQuantity();
-										form.setChange_amount(amountleft);
-										form.setInventoryVariant(var.getVariants_id());
-										form.setEvent_type("Đang_giao_hàng");
-										form.setOrder_id(orders.getOrders_id());
-										form.setAmount(orderItem.getQuantity());
-										Inventories iven = inventoryService.createInventory(form);
+	    if (status.equals("Shipping")) {
+	        orders.setShipping_at(LocalDateTime.now());
 
-										var.getInventories().add(iven);
+	        List<OrderItem> orderItems = orders.getOrderItems();
+	        for (OrderItem orderItem : orderItems) {
 
-										SaleDiscountId saleDiscountId = saleDiscountService
-												.getSaleDiscountId(var.getSales().getId());
-										if (saleDiscountId!=null) {
-											int saleID=saleDiscountId.getSales(),discountID=saleDiscountId.getDiscount();
-											if (saleID!=0 &&discountID!=0) {
-												saleDiscountService.updateSaleDiscountAll(saleID,
-														discountID, orderItem.getQuantity(),saleService.getSalePrice(var.getVariants_id()));
-											}
-										}
-										
-										
-//										saleDiscountRepository.save(null)
-										if (iven.getChange_amount() < 10) {
-											List<ProductVersion> productVersions = pro.getProductVersion();
-											for (ProductVersion pVersion : productVersions) {
-												List<Variant> vList = pVersion.getVariants();
-												for (Variant variant : vList) {
-													int indextemp = variant.getInventories().size() - 1;
-													List<Inventories> iList = variant.getInventories();
-													int invenId = iList.get(indextemp).getInventory_id();
-													int idProductVariant = variant.getProductversion().getProduct()
-															.getProduct_id();
-													String variantColor = variant.getColor().getColor_name(),
-															variantSize = variant.getSize().getSize_name().toString();
+	            List<Product> product = productService.getAllProducts();
+	            for (Product pro : product) {
+	                List<Category> categories = pro.getCategories();
+	                for (Category cate : categories) {
+	                    String colorCate = cate.getCatetoryColor().getColor_name(),
+	                            colorItem = orderItem.getColor().getColor_name();
+	                    String sizeCate = cate.getCatetorySize().getSize_name().toString(),
+	                            sizeItem = orderItem.getSize().getSize_name().toString();
+	                    if (colorCate.equals(colorItem) && sizeCate.equals(sizeItem)) {
+	                        List<Variant> variants = cate.getCatetoryColor().getVariants();
+	                        for (Variant var : variants) {
+	                            String colorVar = var.getColor().getColor_name();
+	                            String sizeVar = var.getSize().getSize_name().toString();
+	                            int idProduct = var.getProductversion().getProduct().getProduct_id();
+	                            if (colorItem.equals(colorVar) && sizeItem.equals(sizeVar)
+	                                    && idProduct == orderItem.getProduct().getProduct_id()) {
+	                                List<Inventories> inventories = var.getInventories();
+	                                if (!inventories.isEmpty()) {
+	                                    int index = inventories.size() - 1;
+	                                    if (inventories.get(index).getChange_amount() > 0) {
 
-													if (invenId != iven.getInventory_id()
-															&& variantColor.equals(colorItem)
-															&& variantSize.equals(sizeItem)
-															&& idProductVariant == idProduct) {
-														InventoriesForm inventoriesForm = new InventoriesForm();
-														inventoriesForm.setAmount(amountleft);
-														inventoriesForm.setChange_amount(
-																iList.get(indextemp).getChange_amount() + amountleft);
-														inventoriesForm.setEvent_type("Cộng hàng thêm từ inventory id: "
-																+ iven.getInventory_id());
-														inventoriesForm.setOrder_id(0);
-														inventoryService.updateInventory(form);
-													}
-													
-													
+	                                        InventoriesForm form = new InventoriesForm();
+	                                        int amountleft = inventories.get(index).getChange_amount()
+	                                                - orderItem.getQuantity();
+	                                        form.setChange_amount(amountleft);
+	                                        form.setInventoryVariant(var.getVariants_id());
+	                                        form.setEvent_type("Đang_giao_hàng");
+	                                        form.setOrder_id(orders.getOrders_id());
+	                                        form.setAmount(orderItem.getQuantity());
+	                                        Inventories iven = inventoryService.createInventory(form);
 
-												}
-											}
-										}
+	                                        var.getInventories().add(iven);
 
-									}
+	                                        SaleDiscountId saleDiscountId = saleDiscountService
+	                                                .getSaleDiscountId(var.getSales().getId());
+	                                        if (saleDiscountId != null) {
+	                                            int saleID = saleDiscountId.getSales(), discountID = saleDiscountId.getDiscount();
+	                                            if (saleID != 0 && discountID != 0) {
+	                                                saleDiscountService.updateSaleDiscountAll(saleID,
+	                                                        discountID, orderItem.getQuantity(), saleService.getSalePrice(var.getVariants_id()));
+	                                            }
+	                                        }
 
-								}
-							}
-						}
-					}
-				}
+	                                        if (iven.getChange_amount() < 10) {
+	                                            List<ProductVersion> productVersions = pro.getProductVersion();
+	                                            for (ProductVersion pVersion : productVersions) {
+	                                                List<Variant> vList = pVersion.getVariants();
+	                                                for (Variant variant : vList) {
+	                                                    int indextemp = variant.getInventories().size() - 1;
+	                                                    List<Inventories> iList = variant.getInventories();
+	                                                    if (!iList.isEmpty()) {
+	                                                        int invenId = iList.get(indextemp).getInventory_id();
+	                                                        int idProductVariant = variant.getProductversion().getProduct()
+	                                                                .getProduct_id();
+	                                                        String variantColor = variant.getColor().getColor_name(),
+	                                                                variantSize = variant.getSize().getSize_name().toString();
+	                                                        if (invenId != iven.getInventory_id()
+	                                                                && variantColor.equals(colorItem)
+	                                                                && variantSize.equals(sizeItem)
+	                                                                && idProductVariant == idProduct) {
+	                                                            InventoriesForm inventoriesForm = new InventoriesForm();
+	                                                            inventoriesForm.setInventory_id(invenId);
+	                                                            inventoriesForm.setAmount(amountleft);
+	                                                            inventoriesForm.setChange_amount(
+	                                                                    iList.get(indextemp).getChange_amount() + amountleft);
+	                                                            inventoriesForm.setEvent_type("Cộng hàng thêm từ inventory id: "
+	                                                                    + iven.getInventory_id());
+	                                                            inventoriesForm.setOrder_id(0);
+	                                                            inventoryService.updateInventory(form);
+	                                                        }
+	                                                    }
+	                                                }
+	                                            }
+	                                        }
 
-			}
-			orders.setStatus(status);
-			return service.save(orders);
-			
-			
-		} else if (status.equals("Completed")) {
-			orders.setComplete_at(LocalDateTime.now());
-			
-			List<OrderItem> orderItems = orders.getOrderItems();
-			for (OrderItem orderItem : orderItems) {
+	                                    }
+	                                }
+	                            }
+	                        }
+	                    }
+	                }
+	            }
 
-				List<Product> product = productService.getAllProducts();
-				for (Product pro : product) {
-					List<Category> categories = pro.getCategories();
-					for (Category cate : categories) {
-						String colorCate = cate.getCatetoryColor().getColor_name(),
-								colorItem = orderItem.getColor().getColor_name();
-						String sizeCate = cate.getCatetorySize().getSize_name().toString(),
-								sizeItem = orderItem.getSize().getSize_name().toString();
-						if (colorCate.equals(colorItem) && sizeCate.equals(sizeItem)) {
-							List<Variant> variants = cate.getCatetoryColor().getVariants();
-							for (Variant var : variants) {
-								String colorVar = var.getColor().getColor_name();
-								String sizeVar = var.getSize().getSize_name().toString();
-								int idProduct = var.getProductversion().getProduct().getProduct_id();
-								if (colorItem.equals(colorVar) && sizeItem.equals(sizeVar)
-										&& idProduct == orderItem.getProduct().getProduct_id()) {
-									List<Inventories> inventories = var.getInventories();
-									int index = inventories.size() - 1;
-									if (inventories.get(index).getChange_amount() > 0) {
-										InventoriesForm form = new InventoriesForm();
-										int amountleft = inventories.get(index).getChange_amount();
-										form.setChange_amount(amountleft);
-										form.setInventoryVariant(var.getVariants_id());
-										form.setEvent_type("Giao hàng thành công");
-										form.setOrder_id(orders.getOrders_id());
-										form.setAmount(orderItem.getQuantity());
-										Inventories iven = inventoryService.createInventory(form);
+	        }
+	        orders.setStatus(status);
+	        return service.save(orders);
 
-										var.getInventories().add(iven);														
-									}
+	    } else if (status.equals("Completed")) {
+	        orders.setComplete_at(LocalDateTime.now());
 
+	        List<OrderItem> orderItems = orders.getOrderItems();
+	        for (OrderItem orderItem : orderItems) {
 
-								}
-							}
-						}
-					}
-				}
+	            List<Product> product = productService.getAllProducts();
+	            for (Product pro : product) {
+	                List<Category> categories = pro.getCategories();
+	                for (Category cate : categories) {
+	                    String colorCate = cate.getCatetoryColor().getColor_name(),
+	                            colorItem = orderItem.getColor().getColor_name();
+	                    String sizeCate = cate.getCatetorySize().getSize_name().toString(),
+	                            sizeItem = orderItem.getSize().getSize_name().toString();
+	                    if (colorCate.equals(colorItem) && sizeCate.equals(sizeItem)) {
+	                        List<Variant> variants = cate.getCatetoryColor().getVariants();
+	                        for (Variant var : variants) {
+	                            String colorVar = var.getColor().getColor_name();
+	                            String sizeVar = var.getSize().getSize_name().toString();
+	                            int idProduct = var.getProductversion().getProduct().getProduct_id();
+	                            if (colorItem.equals(colorVar) && sizeItem.equals(sizeVar)
+	                                    && idProduct == orderItem.getProduct().getProduct_id()) {
+	                                List<Inventories> inventories = var.getInventories();
+	                                if (!inventories.isEmpty()) {
+	                                    int index = inventories.size() - 1;
+	                                    if (inventories.get(index).getChange_amount() > 0) {
+	                                        InventoriesForm form = new InventoriesForm();
+	                                        int amountleft = inventories.get(index).getChange_amount();
+	                                        form.setChange_amount(amountleft);
+	                                        form.setInventoryVariant(var.getVariants_id());
+	                                        form.setEvent_type("Giao hàng thành công");
+	                                        form.setOrder_id(orders.getOrders_id());
+	                                        form.setAmount(orderItem.getQuantity());
+	                                        Inventories iven = inventoryService.createInventory(form);
 
-			}
-		} else if (status.equals("Cancel")) {
-			if (orders.getStatus().equals("Shipping")) {
-				List<OrderItem> orderItems = orders.getOrderItems();
-				for (OrderItem orderItem : orderItems) {
+	                                        var.getInventories().add(iven);
+	                                    }
+	                                }
+	                            }
+	                        }
+	                    }
+	                }
+	            }
 
-					List<Product> product = productService.getAllProducts();
-					for (Product pro : product) {
-						List<Category> categories = pro.getCategories();
-						for (Category cate : categories) {
-							String colorCate = cate.getCatetoryColor().getColor_name(),
-									colorItem = orderItem.getColor().getColor_name();
-							String sizeCate = cate.getCatetorySize().getSize_name().toString(),
-									sizeItem = orderItem.getSize().getSize_name().toString();
-							if (colorCate.equals(colorItem) && sizeCate.equals(sizeItem)) {
-								List<Variant> variants = cate.getCatetoryColor().getVariants();
-								for (Variant var : variants) {
-									String colorVar = var.getColor().getColor_name();
-									String sizeVar = var.getSize().getSize_name().toString();
-									if (colorItem.equals(colorVar) && sizeItem.equals(sizeVar)) {
-										InventoriesForm form = new InventoriesForm();
-										List<Inventories> inventories = var.getInventories();
-										int index = inventories.size() - 1;
-										form.setChange_amount(inventories.get(index).getChange_amount()+ orderItem.getQuantity());
-										form.setInventoryVariant(var.getVariants_id());
-										form.setEvent_type("Trả_hàng");
-										form.setOrder_id(orders.getOrders_id());
-										form.setAmount(orderItem.getQuantity());
-										inventoryService.createInventory(form);
-										orders.setStatus(status);
-										return service.save(orders);
-									}
-									SaleDiscountId saleDiscountId = saleDiscountService
-											.getSaleDiscountId(var.getSales().getId());
-									if (saleDiscountId!=null) {
-										int saleID=saleDiscountId.getSales(),discountID=saleDiscountId.getDiscount();
-										if (saleID!=0 &&discountID!=0) {
-											saleDiscountService.updateSaleDiscountAll(saleID,
-													discountID, -orderItem.getQuantity(),-saleService.getSalePrice(var.getVariants_id()));
-										}
-									}
-								}
-							}
-						}
-					}
+	        }
+	    } else if (status.equals("Cancel")) {
+	        if (orders.getStatus().equals("Shipping")) {
+	            List<OrderItem> orderItems = orders.getOrderItems();
+	            for (OrderItem orderItem : orderItems) {
 
-				}
-			} else {
-				List<OrderItem> orderItems = orders.getOrderItems();
-				for (OrderItem orderItem : orderItems) {
+	                List<Product> product = productService.getAllProducts();
+	                for (Product pro : product) {
+	                    List<Category> categories = pro.getCategories();
+	                    for (Category cate : categories) {
+	                        String colorCate = cate.getCatetoryColor().getColor_name(),
+	                                colorItem = orderItem.getColor().getColor_name();
+	                        String sizeCate = cate.getCatetorySize().getSize_name().toString(),
+	                                sizeItem = orderItem.getSize().getSize_name().toString();
+	                        if (colorCate.equals(colorItem) && sizeCate.equals(sizeItem)) {
+	                            List<Variant> variants = cate.getCatetoryColor().getVariants();
+	                            for (Variant var : variants) {
+	                                String colorVar = var.getColor().getColor_name();
+	                                String sizeVar = var.getSize().getSize_name().toString();
+	                                if (colorItem.equals(colorVar) && sizeItem.equals(sizeVar)) {
+	                                    List<Inventories> inventories = var.getInventories();
+	                                    if (!inventories.isEmpty()) {
+	                                        int index = inventories.size() - 1;
+	                                        InventoriesForm form = new InventoriesForm();
+	                                        form.setChange_amount(inventories.get(index).getChange_amount() + orderItem.getQuantity());
+	                                        form.setInventoryVariant(var.getVariants_id());
+	                                        form.setEvent_type("Trả_hàng");
+	                                        form.setOrder_id(orders.getOrders_id());
+	                                        form.setAmount(orderItem.getQuantity());
+	                                        inventoryService.createInventory(form);
+	                                        orders.setStatus(status);
+	                                        return service.save(orders);
+	                                    }
+	                                    SaleDiscountId saleDiscountId = saleDiscountService
+	                                            .getSaleDiscountId(var.getSales().getId());
+	                                    if (saleDiscountId != null) {
+	                                        int saleID = saleDiscountId.getSales(), discountID = saleDiscountId.getDiscount();
+	                                        if (saleID != 0 && discountID != 0) {
+	                                            saleDiscountService.updateSaleDiscountAll(saleID,
+	                                                    discountID, -orderItem.getQuantity(), -saleService.getSalePrice(var.getVariants_id()));
+	                                        }
+	                                    }
+	                                }
+	                            }
+	                        }
+	                    }
+	                }
 
-					List<Product> product = productService.getAllProducts();
-					for (Product pro : product) {
-						List<Category> categories = pro.getCategories();
-						for (Category cate : categories) {
-							String colorCate = cate.getCatetoryColor().getColor_name(),
-									colorItem = orderItem.getColor().getColor_name();
-							String sizeCate = cate.getCatetorySize().getSize_name().toString(),
-									sizeItem = orderItem.getSize().getSize_name().toString();
-							if (colorCate.equals(colorItem) && sizeCate.equals(sizeItem)) {
-								List<Variant> variants = cate.getCatetoryColor().getVariants();
-								for (Variant var : variants) {
-									String colorVar = var.getColor().getColor_name();
-									String sizeVar = var.getSize().getSize_name().toString();
-									if (colorItem.equals(colorVar) && sizeItem.equals(sizeVar)) {
-										InventoriesForm form = new InventoriesForm();
-										List<Inventories> inventories = var.getInventories();
-										int index = inventories.size() - 1;
-										form.setChange_amount(
-												inventories.get(index).getChange_amount());
-										form.setInventoryVariant(var.getVariants_id());
-										form.setEvent_type("Trả_hàng");
-										form.setOrder_id(orders.getOrders_id());
-										form.setAmount(orderItem.getQuantity());
-										inventoryService.createInventory(form);
-										orders.setStatus(status);
-										return service.save(orders);
-									}
-								}
-							}
-						}
-					}
-				}
+	            }
+	        } else {
+	            List<OrderItem> orderItems = orders.getOrderItems();
+	            for (OrderItem orderItem : orderItems) {
 
-			}
-		}
-		orders.setStatus(status);
-		return service.save(orders);
+	                List<Product> product = productService.getAllProducts();
+	                for (Product pro : product) {
+	                    List<Category> categories = pro.getCategories();
+	                    for (Category cate : categories) {
+	                        String colorCate = cate.getCatetoryColor().getColor_name(),
+	                                colorItem = orderItem.getColor().getColor_name();
+	                        String sizeCate = cate.getCatetorySize().getSize_name().toString(),
+	                                sizeItem = orderItem.getSize().getSize_name().toString();
+	                        if (colorCate.equals(colorItem) && sizeCate.equals(sizeItem)) {
+	                            List<Variant> variants = cate.getCatetoryColor().getVariants();
+	                            for (Variant var : variants) {
+	                                String colorVar = var.getColor().getColor_name();
+	                                String sizeVar = var.getSize().getSize_name().toString();
+	                                if (colorItem.equals(colorVar) && sizeItem.equals(sizeVar)) {
+	                                    List<Inventories> inventories = var.getInventories();
+	                                    if (!inventories.isEmpty()) {
+	                                        int index = inventories.size() - 1;
+	                                        InventoriesForm form = new InventoriesForm();
+	                                        form.setChange_amount(inventories.get(index).getChange_amount());
+	                                        form.setInventoryVariant(var.getVariants_id());
+	                                        form.setEvent_type("Trả_hàng");
+	                                        form.setOrder_id(orders.getOrders_id());
+	                                        form.setAmount(orderItem.getQuantity());
+	                                        inventoryService.createInventory(form);
+	                                        orders.setStatus(status);
+	                                        return service.save(orders);
+	                                    }
+	                                }
+	                            }
+	                        }
+	                    }
+	                }
+
+	            }
+	        }
+	    }
+	    orders.setStatus(status);
+	    return service.save(orders);
 	}
 
+	
 	@Override
 	public Orders updateMoneyOrders(int id) {
 		Orders orders = getOrderByID(id);

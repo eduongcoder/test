@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="restTemplate"/>
+		<item key="selection" value="varhahaha"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="varhahaha"/>
+			<item value="hehe"/>
+			<item value="iven"/>
+			<item value="invenId"/>
+			<item value="invenID"/>
+			<item value="iList"/>
+			<item value="indextemp"/>
+			<item value="updateInventory"/>
+			<item value="getInventoriesById"/>
+			<item value="var"/>
+			<item value="vả"/>
+			<item value="haha"/>
+			<item value="ha"/>
+			<item value="hahahaha"/>
 			<item value="restTemplate"/>
-			<item value="RESPONTE"/>
-			<item value="url"/>
-			<item value="type"/>
-			<item value="saleDiscountConverter"/>
-			<item value="listProShowV3"/>
-			<item value="priceConverter"/>
-			<item value="Đây nè nhìn đi"/>
-			<item value="Đây nè nhìn dùm cái đi"/>
-			<item value="OrderItemDTOVariant"/>
-			<item value="getaccount"/>
-			<item value="sizeConverter"/>
-			<item value="getlogin"/>
-			<item value="getIdItemProductVersion"/>
-			<item value="productshow"/>
 		</list>
 		<list key="replacehistory">
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="1350"/>
-		<item key="DIALOG_Y_ORIGIN" value="197"/>
+		<item key="DIALOG_X_ORIGIN" value="1430"/>
+		<item key="DIALOG_Y_ORIGIN" value="188"/>
 		<item key="DIALOG_WIDTH" value="414"/>
 		<item key="DIALOG_HEIGHT" value="454"/>
 		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>

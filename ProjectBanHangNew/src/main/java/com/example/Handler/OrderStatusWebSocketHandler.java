@@ -34,6 +34,7 @@ public class OrderStatusWebSocketHandler extends TextWebSocketHandler{
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 	    String payload = message.getPayload();
 	    String idAccount = session.getUri().getQuery().split("=")[1];
+	
         System.out.println("Received payload: " + payload);
 
         try {

@@ -26,6 +26,9 @@ public interface IPurchaseOderItemsService {
 	public SizeEnum getSizeVariant(int id);
 
 	public String getColorVariant(int id);
+	
+	public int getPriceSale(int idVariant);
+
 
 	public List<ImagesDTOOnlyID> getImages(int idvariant);
 	

@@ -21,7 +21,8 @@ public class PurchaseOderItemsDetailDTO {
 
 	private Integer quantity_real;
 
-	
+	private Integer purchase_price_sale;
+
 	private Integer purchaseOrder;
 
 	private Integer variant;

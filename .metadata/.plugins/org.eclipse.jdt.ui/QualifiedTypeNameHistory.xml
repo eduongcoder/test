@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="com.example.Entity.Inventories"/>
-    <fullyQualifiedTypeName name="com.example.Entity.Role"/>
-    <fullyQualifiedTypeName name="com.example.From.OrdersForm"/>
-    <fullyQualifiedTypeName name="com.example.Service.AccountService"/>
     <fullyQualifiedTypeName name="com.example.From.OrderitemForm"/>
     <fullyQualifiedTypeName name="com.example.Entity.Size"/>
     <fullyQualifiedTypeName name="com.example.Entity.Color"/>
@@ -21,7 +17,6 @@
     <fullyQualifiedTypeName name="jakarta.persistence.Table"/>
     <fullyQualifiedTypeName name="jakarta.persistence.Column"/>
     <fullyQualifiedTypeName name="org.springframework.data.jpa.repository.JpaRepository"/>
-    <fullyQualifiedTypeName name="java.lang.Integer"/>
     <fullyQualifiedTypeName name="com.example.Repository.TestRepository"/>
     <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestParam"/>
     <fullyQualifiedTypeName name="com.example.Entity.Test"/>
@@ -57,7 +52,12 @@
     <fullyQualifiedTypeName name="org.springframework.web.socket.TextMessage"/>
     <fullyQualifiedTypeName name="org.springframework.http.HttpMethod"/>
     <fullyQualifiedTypeName name="com.example.Configuration.WebSocketConfig"/>
-    <fullyQualifiedTypeName name="org.springframework.web.socket.handler.TextWebSocketHandler"/>
     <fullyQualifiedTypeName name="com.example.Handler.ProductWebSocketHandler"/>
+    <fullyQualifiedTypeName name="com.example.Entity.Addresses"/>
+    <fullyQualifiedTypeName name="com.example.Handler.OrderStatusWebSocketHandler"/>
+    <fullyQualifiedTypeName name="org.springframework.web.socket.handler.TextWebSocketHandler"/>
     <fullyQualifiedTypeName name="org.springframework.stereotype.Component"/>
+    <fullyQualifiedTypeName name="java.lang.Integer"/>
+    <fullyQualifiedTypeName name="com.example.Entity.Variant"/>
+    <fullyQualifiedTypeName name="com.example.Entity.PurchaseOderItems"/>
 </qualifiedTypeNameHistroy>

@@ -119,4 +119,11 @@ public class PurchaseOderItemsService implements IPurchaseOderItemsService {
 		return service.save(purchaseOderItems);
 	}
 
+	@Override
+	public int getPriceSale(int idVariant) {
+		Variant variant=variantService.getVariantByID(idVariant);
+		int price=variant.getSales().getSale_price();
+		return price;
+	}
+
 }

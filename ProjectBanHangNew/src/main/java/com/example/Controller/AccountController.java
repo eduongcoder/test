@@ -287,12 +287,10 @@ public class AccountController {
 		List<RolePermission> role = service.findAccountByID(id).getRoleID().getRolePermissions();
 		for (RolePermission rolePermission : role) {
 			if (rolePermission.getPermission().getPermission_name().equals("Đăng nhập trang admin")) {
-
 				if (service.updateLoginStatus(id) == id) {
 					Account account = service.findAccountByID(id);
 					return modelMapper.map(account, AccountDTO.class);
 				}
-
 			}
 		}
 		return null;
@@ -310,6 +308,11 @@ public class AccountController {
 		return false;
 	}
 
+	@PutMapping(value = "/updateLoginStatus/{id}")
+	private int updateLoginStatus(@PathVariable(name = "id") int id) {
+		return service.updateLoginStatus(id);
+	}
+	
 	@PostMapping("/createRole")
 	private int createRole(@RequestBody RoleForm form) {
 		return roleService.createRole(form).getRole_id();

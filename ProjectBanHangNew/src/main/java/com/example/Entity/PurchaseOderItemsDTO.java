@@ -10,6 +10,8 @@ public class PurchaseOderItemsDTO {
 	private Integer purchase_order_items_id;
 
 	private Integer purchase_price;
+	
+	private Integer purchase_price_sale;
 
 	private Integer quantity;
 

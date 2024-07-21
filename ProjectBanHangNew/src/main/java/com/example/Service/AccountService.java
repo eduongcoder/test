@@ -121,7 +121,11 @@ public class AccountService implements IAccountService {
 	@Override
 	public int updateLoginStatus(int id) {
 		Account account = findAccountByID(id);
-		account.setIslogin(true);
+		if (account.isIslogin()) {
+			account.setIslogin(false);
+		}else {
+			account.setIslogin(true);
+		}
 		try {
 			service.save(account);
 			return id;

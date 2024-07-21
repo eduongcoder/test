@@ -119,6 +119,11 @@ public class ComponentConfiguration {
 			return saleService.getSalePrice(saleID);
 		};
 		
+		Converter<PurchaseOderItems, Integer> pricePurchaseSaleConverter = context -> {
+			int saleID = context.getSource().getVariant();
+			return saleService.getSalePrice(saleID);
+		};
+		
 		Converter<Category, Integer> priceSaleConverter = context -> {
 			int categoryID = context.getSource().getCategory_id();
 			return categoryService.getSalePrice(categoryID);
@@ -427,6 +432,7 @@ public class ComponentConfiguration {
 				map().setGender(
 						source.getProductVersion().getProduct().getTypeOfProductGender().getTypeOfProductGender());
 				map().setQuantity_real(source.getQuantity_real());
+				using(pricePurchaseSaleConverter).map(source,destination.getPurchase_price_sale());
 			}
 		});
 

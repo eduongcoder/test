@@ -10,6 +10,7 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean;
 
+import com.example.Handler.LoginStatusWebSocketHandler;
 import com.example.Handler.OrderStatusWebSocketHandler;
 import com.example.Handler.OrderWebSocketHandler;
 import com.example.Handler.ProductWebSocketHandler;
@@ -23,14 +24,15 @@ public class WebSocketConfig implements WebSocketConfigurer {
 	private final OrderWebSocketHandler orderWebSocketHandler;
 	private final ProductWebSocketHandler productWebSocketHandler;
 	private final OrderStatusWebSocketHandler orderStatusWebSocketHandler;
-
+	private final LoginStatusWebSocketHandler loginStatusWebSocketHandler;
 	
 	public WebSocketConfig(TestWebSocketHandler testWebSocketHandler,OrderWebSocketHandler orderWebSocketHandler,ProductWebSocketHandler productWebSocketHandler
-			,OrderStatusWebSocketHandler orderStatusWebSocketHandler) {
+			,OrderStatusWebSocketHandler orderStatusWebSocketHandler,LoginStatusWebSocketHandler loginStatusWebSocketHandler) {
 		this.testWebSocketHandler = testWebSocketHandler;
 		this.orderWebSocketHandler=orderWebSocketHandler;
 		this.productWebSocketHandler=productWebSocketHandler;
 		this.orderStatusWebSocketHandler=orderStatusWebSocketHandler;
+		this.loginStatusWebSocketHandler=loginStatusWebSocketHandler;
 	}
 
 	@Override
@@ -40,6 +42,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
 		registry.addHandler(orderWebSocketHandler, "/ws/order").setAllowedOrigins("*");	
 		registry.addHandler(productWebSocketHandler, "/ws/purchase").setAllowedOrigins("*");	
 		registry.addHandler(orderStatusWebSocketHandler, "/ws/orderstatus").setAllowedOrigins("*");	
+		registry.addHandler(loginStatusWebSocketHandler, "/ws/loginstatus").setAllowedOrigins("*");	
+
 	}
 
 
